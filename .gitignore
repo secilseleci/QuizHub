@@ -1,0 +1,79 @@
+# Build Results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# Rider
+.idea/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.dotCover
+*.DotSettings.user
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Mac files
+*.DS_Store
+
+# Azure Web Apps deployment
+.venv/
+.local/
+
+# npm packages
+node_modules/
+
+# Environment variables
+.env
+.env.*
+
+# VS Code directories
+.vscode/
+.history/
+
+# Visual Studio files and folders
+.vs/
+*.user
+*.suo
+
+# JetBrains Rider
+.idea/
+
+# NuGet packages
+*.nupkg
+*.snupkg
+.nuget/
+
+# Entity Framework Migrations
+Migrations/
+
+# Publish output
+publish/
+wwwroot/
+
+# Logs
+*.log
+
+# Resharper and Code Analysis
+_ReSharper*/
+*.[Dd]otSettings.user
+*.DotSettings
+
+# Test Results
+TestResults/
+*.trx
+*.coverage
+.coveragexml
+
+# Git Extensions and other Git-related files
+*.orig

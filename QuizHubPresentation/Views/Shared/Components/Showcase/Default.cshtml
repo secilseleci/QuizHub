@@ -1,0 +1,12 @@
+﻿@model IEnumerable<Quiz>
+
+<div class="text-center">
+    <h6 class="display-6">ShowCase</h6>
+</div>
+
+<div class="row">
+    @foreach (var q in Model)
+    {
+        <partial name="_QuizCard" model="q" />
+    }
+</div>

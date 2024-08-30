@@ -1,0 +1,26 @@
+﻿@page "/cart"
+@model CartModel
+
+<div>
+    <div class="text-center display-6">
+        Scores
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Quiz</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var line in Model.Cart?.Lines ?? Enumerable.Empty<CartLine>())
+            {
+                <tr>
+                    <td>@line.Quiz.Title</td>
+                    
+                </tr>
+            }
+        </tbody>
+      
+    </table>
+     
+</div>

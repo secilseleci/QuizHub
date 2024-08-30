@@ -1,0 +1,41 @@
+﻿@model Quiz
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="text-center">
+            <h6 class="display-6">
+                @Model.Title
+            </h6>
+
+          
+        </div>
+    </div>
+</div>
+
+
+<div class="text-center">
+    <div class="btn-group">
+        <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Index">
+            <i class="fa-solid fa-house"></i>
+            Home
+        </a>
+        <form id="@Model.QuizId" asp-page="/cart" method="post">
+            <input type="hidden" asp-for="QuizId" />
+            <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+            <button type="submit" class="btn btn-outline-secondary rounded-0">
+                <i class="fa fa-cart-plus"></i>
+                Add To Cart
+            </button>
+        </form>
+        <a class="btn btn-outline-secondary" asp-controller="Quiz" asp-action="Index">
+            <i class="fa-solid fa-list"></i>
+            Quizzes
+        </a>
+    </div>
+</div>
+
+@section Header {
+    <div>
+        Header for only Get
+    </div>
+}
