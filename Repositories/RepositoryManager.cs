@@ -12,27 +12,27 @@ namespace Repositories
         {
             private readonly RepositoryContext _context;
             private readonly IQuizRepository _quizRepository;
-            //private readonly IQuestionRepository _questionRepository;
-            //private readonly IOptionRepository _optionRepository;
+            private readonly IQuestionRepository _questionRepository;
+            private readonly IOptionRepository _optionRepository;
 
         public RepositoryManager(
                RepositoryContext context,
-               IQuizRepository quizRepository)
-               //IQuestionRepository questionRepository,
-               //IOptionRepository optionRepository)
+               IQuizRepository quizRepository,
+               IQuestionRepository questionRepository,
+               IOptionRepository optionRepository)
 
             {
                 _context = context;
                 _quizRepository = quizRepository;
-                //_questionRepository = questionRepository;
-                //_optionRepository = optionRepository;
+                _questionRepository = questionRepository;
+                _optionRepository = optionRepository;
              }
 
             public IQuizRepository Quiz => _quizRepository;
 
-            //public IQuestionRepository Question => _questionRepository;
+            public IQuestionRepository Question => _questionRepository;
 
-            //public IOptionRepository Option => _optionRepository;
+            public IOptionRepository Option => _optionRepository;
 
              public void Save()
                 {

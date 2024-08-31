@@ -10,8 +10,8 @@ namespace Entities.Models
     {
         public int QuizId { get; set; }
         public string? Title { get; set; }
-        //public ICollection<Question> Questions { get; set; }
-        public DateTime CreatedDate { get; set; }  
+        public ICollection<Question> Questions { get; set; }
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
         public int QuestionCount { get; set; }
         public bool ShowCase { get; set; }
     }

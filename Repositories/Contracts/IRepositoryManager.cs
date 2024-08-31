@@ -9,8 +9,8 @@ namespace Repositories.Contracts
     public interface IRepositoryManager
     {
         IQuizRepository Quiz { get; }
-        //IQuestionRepository Question { get; }
-        //IOptionRepository Option { get; }
+        IQuestionRepository Question { get; }
+        IOptionRepository Option { get; }
         void Save();
     }
 }

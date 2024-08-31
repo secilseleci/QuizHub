@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol.Core.Types;
 using QuizHubPresentation.Models;
 using Repositories;
 using Repositories.Contracts;
@@ -51,6 +52,9 @@ namespace QuizHubPresentation.Infrastructure.Extensions
         {
             services.AddScoped<IRepositoryManager, RepositoryManager>();
             services.AddScoped<IQuizRepository, QuizRepository>();
+            services.AddScoped<IQuestionRepository, QuestionRepository>();
+            services.AddScoped< IOptionRepository, OptionRepository> ();
+            services.AddScoped<IServiceManager, ServiceManager>();
         }
 
         public static void ConfigureServiceRegistration(this IServiceCollection services)
@@ -58,6 +62,8 @@ namespace QuizHubPresentation.Infrastructure.Extensions
             services.AddScoped<IServiceManager, ServiceManager>();
             services.AddScoped<IQuizService, QuizManager>();
             services.AddScoped<IAuthService, AuthManager>();
+            services.AddScoped<IQuestionService, QuestionManager>();
+            services.AddScoped<IOptionService, OptionManager>();
         }
 
         public static void ConfigureApplicationCookie(this IServiceCollection services)

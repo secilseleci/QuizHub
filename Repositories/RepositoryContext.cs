@@ -4,14 +4,16 @@ using Repositories.Config;
 using System.Reflection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace Repositories;
 
 public class RepositoryContext : IdentityDbContext<IdentityUser>
 {
     public DbSet<Quiz> Quizzes { get; set; }
-   
- 
+    public DbSet<Question> Questions { get; set; }
+    public DbSet<Option> Options { get; set; }
+
     public RepositoryContext(DbContextOptions<RepositoryContext> options) : base(options)
     {
 
@@ -21,8 +23,8 @@ public class RepositoryContext : IdentityDbContext<IdentityUser>
     {
         base.OnModelCreating(modelBuilder);
 
-        // modelBuilder.ApplyConfiguration(new ProductConfig());
-        // modelBuilder.ApplyConfiguration(new CategoryConfig());
+        modelBuilder.ApplyConfiguration(new QuizConfig());
+      
 
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }

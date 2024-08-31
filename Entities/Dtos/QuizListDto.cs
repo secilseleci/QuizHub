@@ -12,5 +12,8 @@ namespace Entities.Dtos
         public string Title { get; set; }
         public int QuestionCount { get; set; }
         public DateTime CreatedDate { get; set; }
+        public bool ShowCase { get; set; }
+
     }
+
 }

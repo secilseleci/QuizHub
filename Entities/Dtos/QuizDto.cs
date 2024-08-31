@@ -6,8 +6,9 @@ namespace Entities.Dtos
     {
         public string Title { get; set; }
         public int QuizId { get; set; }
-        //public ICollection<Question> Questions { get; set; }
+        public ICollection<QuestionDto> Questions { get; set; }
         public DateTime CreatedDate { get; set; }
         public int QuestionCount { get; set; }
-}
+        public bool ShowCase { get; set; }
+    }
 }

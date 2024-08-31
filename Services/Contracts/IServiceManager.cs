@@ -9,8 +9,8 @@ namespace Services.Contracts
     public interface IServiceManager
     {
         IQuizService QuizService { get; }
-        //IQuestionService QuestionService { get; }
-        //IOptionService OptionService { get; }
+        IQuestionService QuestionService { get; }
+        IOptionService OptionService { get; }
         IAuthService AuthService { get; }
     }
 }
