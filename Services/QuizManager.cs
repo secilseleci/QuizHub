@@ -1,11 +1,9 @@
-﻿using Entities.Models;
+﻿using AutoMapper;
+using Entities.Dtos;
+using Entities.Models;
+using Entities.RequestParameters;
 using Repositories.Contracts;
 using Services.Contracts;
-using AutoMapper;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Entities.Dtos;
-using Entities.RequestParameters;
 
 
 
@@ -42,6 +40,18 @@ namespace Services
 
         public void UpdateOneQuiz(QuizDtoForUpdate quizDto)
         {
+            if (quizDto == null)
+            {
+                throw new ArgumentNullException(nameof(quizDto), "Quiz data cannot be null.");
+            }
+
+            var existingQuiz = _manager.Quiz.GetOneQuiz(quizDto.QuizId, true);
+
+            if (existingQuiz == null)
+            {
+                throw new Exception("Quiz not found!");
+            }
+
             var entity = _mapper.Map<Quiz>(quizDto);
             _manager.Quiz.UpdateOneQuiz(entity);
             _manager.Save();

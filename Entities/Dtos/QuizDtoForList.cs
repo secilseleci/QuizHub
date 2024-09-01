@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Dtos
 {
-    public class QuizListDto
+    public class QuizDtoForList
     {
         public int QuizId { get; set; }
         public string Title { get; set; }

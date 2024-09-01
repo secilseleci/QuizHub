@@ -23,10 +23,22 @@ public class RepositoryContext : IdentityDbContext<IdentityUser>
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.ApplyConfiguration(new QuizConfig());
-      
 
+        modelBuilder.ApplyConfiguration(new QuizConfig());
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+        // Cascade Delete Konfigürasyonu
+        modelBuilder.Entity<Question>()
+            .HasOne(q => q.Quiz)
+            .WithMany(q => q.Questions)
+            .HasForeignKey(q => q.QuizId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Option>()
+            .HasOne(o => o.Question)
+            .WithMany(q => q.Options)
+            .HasForeignKey(o => o.QuestionId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 
 

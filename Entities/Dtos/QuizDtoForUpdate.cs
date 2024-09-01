@@ -8,6 +8,6 @@ namespace Entities.Dtos
 {
     public class QuizDtoForUpdate:QuizDto
     {
-        public bool ShowCase { get; set; }
+       
     }
 }
