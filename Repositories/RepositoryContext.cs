@@ -23,7 +23,7 @@ public class RepositoryContext : IdentityDbContext<IdentityUser>
     {
         base.OnModelCreating(modelBuilder);
 
-
+        modelBuilder.ApplyConfiguration(new IdentityRoleConfig());
         modelBuilder.ApplyConfiguration(new QuizConfig());
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 

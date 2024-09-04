@@ -17,7 +17,7 @@ namespace Services.Contracts
         void UpdateOneQuiz(QuizDtoForUpdate quizDto);
         void DeleteOneQuiz(int id);
 
-      
+        Quiz? GetQuizWithDetails(int quizId, bool trackChanges);
         QuizDtoForUpdate GetOneQuizForUpdate(int id, bool trackChanges);
     }
 }

@@ -53,8 +53,8 @@ namespace QuizHubPresentation.Infrastructure.Extensions
             services.AddScoped<IRepositoryManager, RepositoryManager>();
             services.AddScoped<IQuizRepository, QuizRepository>();
             services.AddScoped<IQuestionRepository, QuestionRepository>();
-            services.AddScoped< IOptionRepository, OptionRepository> ();
-            services.AddScoped<IServiceManager, ServiceManager>();
+            services.AddScoped<IOptionRepository, OptionRepository> ();
+           
         }
 
         public static void ConfigureServiceRegistration(this IServiceCollection services)

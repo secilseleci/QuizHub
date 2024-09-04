@@ -61,10 +61,8 @@ namespace QuizHubPresentation.Infrastructure.Extensions
 
                 var result = await userManager.CreateAsync(user, adminPassword);
 
-                if (!result.Succeeded) {
-                    var errors = string.Join(", ", result.Errors.Select(e => e.Description)); 
-                throw new Exception("Admin user could not been created.");
-                }
+                if (!result.Succeeded)
+                    throw new Exception("Admin user could not been created.");
 
                 var roleResult = await userManager.AddToRolesAsync(user,
                     roleManager

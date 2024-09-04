@@ -1,7 +1,10 @@
-﻿using Entities.Models;
+﻿using Microsoft.EntityFrameworkCore;
+
+using Entities.Models;
 using Entities.RequestParameters;
 using Repositories.Contracts;
 using Repositories.Extensions;
+using System.Linq;
 
 namespace Repositories
 {
@@ -23,6 +26,7 @@ namespace Repositories
         {
             return FindByCondition(p => p.QuizId.Equals(id), trackChanges);
         }
+
         public IQueryable<Quiz> GetShowCaseQuizzes(bool trackChanges)
         {
             return FindAll(trackChanges)
@@ -39,6 +43,14 @@ namespace Repositories
             .ToPaginate(q.PageNumber, q.PageSize);
         }
 
-        
+
+        public Quiz? GetQuizWithDetails(int quizId, bool trackChanges)
+        {
+            return FindAll(trackChanges)
+                   .Where(q => q.QuizId == quizId)
+                   .Include(q => q.Questions)
+                   .ThenInclude(q => q.Options)
+                   .SingleOrDefault();
+        }
     }
 }

@@ -1,37 +1,45 @@
 @model QuizDtoForInsertion
-
-<div class="text-center">
-    <div class="display-6">Create</div>
-</div>
-
-<form method="post" asp-action="Create" enctype="multipart/form-data" >
-
-    <div class="text-danger" asp-validation-summary="All"></div>
-
-   
-
-    <div class="form-group my-3">
-        <label asp-for="Title"></label>
+ 
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="Title">Quiz Title</label>
         <input asp-for="Title" class="form-control" />
     </div>
 
-    <div class="form-group my-3">
-        <label asp-for="QuestionCount"></label>
-        <input asp-for="QuestionCount" class="form-control" />
+    <div class="form-group">
+        <h4>Question 1</h4>
+        <!-- Order gizli alan -->
+        <input type="hidden" asp-for="Questions[0].Order" value="1" />
+
+      
+
+        <label asp-for="Questions[0].QuestionText">Question Text</label>
+        <textarea asp-for="Questions[0].QuestionText" class="form-control"></textarea>
     </div>
 
-  
 
-    <div class="form-group my-3">
-        <div class="btn-group">
-            <button class="btn btn-primary" type="submit">
-                <i class="fa fa-save"></i>
-                Save
-            </button>
-            <a asp-action="Index" class="btn btn-outline-primary">
-                <i class="fa fa-list"></i>
-                Quizzes
-            </a>
-        </div>
+    <div class="form-group">
+        <label>Options</label>
+        <ul>
+            <li>
+                <input asp-for="Questions[0].Options[0].OptionText" class="form-control" placeholder="Option 1" />
+                <input type="radio" name="Questions[0].CorrectOptionId" value="0" /> Correct Answer
+            </li>
+            <li>
+                <input asp-for="Questions[0].Options[1].OptionText" class="form-control" placeholder="Option 2" />
+                <input type="radio" name="Questions[0].CorrectOptionId" value="1" /> Correct Answer
+            </li>
+            <li>
+                <input asp-for="Questions[0].Options[2].OptionText" class="form-control" placeholder="Option 3" />
+                <input type="radio" name="Questions[0].CorrectOptionId" value="2" /> Correct Answer
+            </li>
+            <li>
+                <input asp-for="Questions[0].Options[3].OptionText" class="form-control" placeholder="Option 4" />
+                <input type="radio" name="Questions[0].CorrectOptionId" value="3" /> Correct Answer
+            </li>
+        </ul>
     </div>
+
+
+    <button type="submit" class="btn btn-primary">Create Quiz</button>
 </form>

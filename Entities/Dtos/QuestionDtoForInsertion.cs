@@ -8,9 +8,10 @@ namespace Entities.Dtos
 {
     public class QuestionDtoForInsertion 
     {
-        public string QuestionText { get; set; }   
+        public int Order { get; set; } 
+        public string QuestionText { get; set; } = string.Empty; 
+        public List<OptionDtoForInsertion> Options { get; set; } = new List<OptionDtoForInsertion>();
         public int CorrectOptionId { get; set; }   
-        public ICollection<OptionDto> Options { get; set; }   
         public int QuizId { get; set; }  
     }
 }

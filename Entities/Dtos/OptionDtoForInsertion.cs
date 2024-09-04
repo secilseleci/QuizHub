@@ -10,6 +10,6 @@ namespace Entities.Dtos
     {
         public string OptionText { get; set; }  
         public bool IsCorrect { get; set; }  
-        public int QuestionId { get; set; }  
+        public int QuestionId { get; set; }
     }
 }

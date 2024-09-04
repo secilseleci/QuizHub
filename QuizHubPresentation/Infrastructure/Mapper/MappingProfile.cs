@@ -11,9 +11,8 @@ public class MappingProfile : Profile
         // Quiz Mapping
         CreateMap<QuizDtoForInsertion, Quiz>().ReverseMap();
         CreateMap<QuizDtoForUpdate, Quiz>().ReverseMap();
-        CreateMap<QuizDtoForUpdate, Quiz>().ReverseMap();
         CreateMap<QuizDto, Quiz>().ReverseMap();
-        CreateMap<QuizDtoForList, Quiz>().ReverseMap();   
+        CreateMap<QuizDtoForList, Quiz>().ReverseMap();
 
         // Question Mapping
         CreateMap<QuestionDtoForInsertion, Question>().ReverseMap();

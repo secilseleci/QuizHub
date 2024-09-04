@@ -10,11 +10,12 @@ namespace Repositories.Contracts
         IQueryable<Quiz> GetShowCaseQuizzes(bool trackChanges);
 
         IQueryable<Quiz> GetAllQuizzesWithDetails(QuizRequestParameters q);
-
-        Quiz? GetOneQuiz(int id, bool trackChanges);
         void CreateOneQuiz(Quiz quiz);
         void UpdateOneQuiz(Quiz entity);
         void DeleteOneQuiz(Quiz quiz);
+        Quiz? GetOneQuiz(int id, bool trackChanges);
+     
+        Quiz? GetQuizWithDetails(int quizId, bool trackChanges);
 
     }
 }
