@@ -1,45 +1,115 @@
 @model QuizDtoForInsertion
- 
+
 <form asp-action="Create" method="post">
+<div class="container">
     <div class="form-group">
         <label asp-for="Title">Quiz Title</label>
         <input asp-for="Title" class="form-control" />
     </div>
 
-    <div class="form-group">
-        <h4>Question 1</h4>
-        <!-- Order gizli alan -->
-        <input type="hidden" asp-for="Questions[0].Order" value="1" />
+    <div class="questions-container">
 
+            <div class="form-group question-group">
+                <input type="hidden" asp-for="Questions[0].Order" value="1" />
+                <label asp-for="Questions[0].QuestionText">Question 1</label>
+                <textarea asp-for="Questions[0].QuestionText" class="form-control"></textarea>
       
 
-        <label asp-for="Questions[0].QuestionText">Question Text</label>
-        <textarea asp-for="Questions[0].QuestionText" class="form-control"></textarea>
-    </div>
+                <div class="options-container">
+                    <div class="form-group options-group">
+                        <ul id="options-list">
+                            <li>
+                                <input asp-for="Questions[0].Options[0].OptionText" class="form-control"  />
+                                <input type="radio" name="Questions[0].CorrectOptionId" value="0" /> is correct
+                            </li>
+                            <li>
+                                <input asp-for="Questions[0].Options[1].OptionText" class="form-control"  />
+                            <input type="radio" name="Questions[0].CorrectOptionId" value="1" /> is correct
+                            </li>
+         
+                        </ul> 
+                        <button type="button" id="add-option" class="btn btn-primary">Add Option</button>
+                    </div>
+                </div>
+         </div>
+    
+ 
+        </div>
 
 
-    <div class="form-group">
-        <label>Options</label>
-        <ul>
-            <li>
-                <input asp-for="Questions[0].Options[0].OptionText" class="form-control" placeholder="Option 1" />
-                <input type="radio" name="Questions[0].CorrectOptionId" value="0" /> Correct Answer
-            </li>
-            <li>
-                <input asp-for="Questions[0].Options[1].OptionText" class="form-control" placeholder="Option 2" />
-                <input type="radio" name="Questions[0].CorrectOptionId" value="1" /> Correct Answer
-            </li>
-            <li>
-                <input asp-for="Questions[0].Options[2].OptionText" class="form-control" placeholder="Option 3" />
-                <input type="radio" name="Questions[0].CorrectOptionId" value="2" /> Correct Answer
-            </li>
-            <li>
-                <input asp-for="Questions[0].Options[3].OptionText" class="form-control" placeholder="Option 4" />
-                <input type="radio" name="Questions[0].CorrectOptionId" value="3" /> Correct Answer
-            </li>
-        </ul>
-    </div>
+        <button type="button" id="add-question" class="btn btn-info">Add Question</button>
 
-
-    <button type="submit" class="btn btn-primary">Create Quiz</button>
+        <button type="submit" class="btn btn-success">Create Quiz</button>
+    </div>    
 </form>
+
+<script>
+    let optionCount = 2; // Ýlk soru için sabit 2 þýk var
+    let questionCount = 1; // Ýlk soru baþlangýçta mevcut
+
+    // Ýlk soruya þýk eklemek için event listener
+    document.getElementById("add-option").addEventListener("click", function () {
+        if (optionCount < 5) {
+            var newOption = document.createElement("li");
+
+            newOption.innerHTML = `
+                <input class="form-control" name="Questions[0].Options[${optionCount}].OptionText" />
+                <input type="radio" name="Questions[0].CorrectOptionId" value="${optionCount}" /> is correct
+            `;
+
+            document.getElementById("options-list").appendChild(newOption);
+            optionCount++;
+        }
+    });
+
+    // Yeni soru ekleme iþlemi
+    document.getElementById("add-question").addEventListener("click", function () {
+        questionCount++;
+        let newQuestion = document.createElement("div");
+
+        newQuestion.innerHTML = `
+            <div class="form-group question-group">
+                <label>Question ${questionCount}</label>
+                <textarea class="form-control" name="Questions[${questionCount - 1}].QuestionText"></textarea>
+                <input type="hidden" name="Questions[${questionCount - 1}].Order" value="${questionCount}" />
+
+                <div class="options-container">
+                    <div class="form-group options-group">
+                        <ul class="ul-item" id="options-list-${questionCount}">
+                            <li>
+                                <input class="form-control" name="Questions[${questionCount - 1}].Options[0].OptionText" />
+                                <input type="radio" name="Questions[${questionCount - 1}].CorrectOptionId" value="0" /> is correct
+                            </li>
+                            <li>
+                                <input class="form-control" name="Questions[${questionCount - 1}].Options[1].OptionText" />
+                                <input type="radio" name="Questions[${questionCount - 1}].CorrectOptionId" value="1" /> is correct
+                            </li>
+                        </ul>
+                        <button type="button" class="btn btn-primary add-option" data-question="${questionCount}">Add Option</button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.querySelector(".questions-container").appendChild(newQuestion);
+
+        // Her yeni soru için ayrý bir optionCount ve þýk ekleme iþlemi
+        let optionCountNew = 2; // Yeni sorular için baþlangýçta 2 þýk var
+        document.querySelector(`.add-option[data-question="${questionCount}"]`).addEventListener("click", function () {
+            let questionIndex = this.getAttribute("data-question");
+            let optionList = document.querySelector(`#options-list-${questionIndex}`);
+            let optionCountNew = optionList.children.length;
+
+            if (optionCountNew < 5) {
+                let newOption = document.createElement("li");
+
+                newOption.innerHTML = `
+                    <input class="form-control" name="Questions[${questionIndex - 1}].Options[${optionCountNew}].OptionText" />
+                    <input type="radio" name="Questions[${questionIndex - 1}].CorrectOptionId" value="${optionCountNew}" /> is correct
+                `;
+
+                optionList.appendChild(newOption);
+            }
+        });
+    });
+</script>

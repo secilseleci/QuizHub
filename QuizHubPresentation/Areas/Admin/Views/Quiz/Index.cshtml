@@ -25,7 +25,7 @@
                 <tr>
                     <th>QuizId</th>
                     <th>Quiz Title</th>
-                    <th>Showcase</th>
+                    <th>Question Count</th>
                     <th>Operations</th>
                 </tr>
             </thead>
@@ -35,11 +35,7 @@
                     <tr>
                         <td>@q.QuizId</td>
                         <td>@q.Title</td>
-                        <td>
-                            <div class="form-check form-switch">
-                                <input type="checkbox" class="form-check-input" checked="@q.ShowCase" disabled />
-                            </div>
-                        </td>
+                        <td>@q.QuestionCount</td>
                     
                         <td>
                             <div class="btn-group">
