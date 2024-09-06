@@ -21,7 +21,12 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
             _mapper = mapper;
         }
 
-         
+        //[HttpPost("add-quiz-from-json")]
+        //public IActionResult AddQuizFromJson([FromBody] string jsonData)
+        //{
+        //    _manager.QuizService.AddQuizFromJson(jsonData);  // Servisteki metodu çaðýrýyoruz
+        //    return Ok(new { message = "Quiz baþarýyla eklendi!" });
+        //}
 
         public IActionResult Index([FromQuery] QuizRequestParameters q)
         {

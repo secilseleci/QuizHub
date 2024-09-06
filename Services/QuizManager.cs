@@ -3,6 +3,7 @@ using Entities.Dtos;
 using Entities.Models;
 using Entities.RequestParameters;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Repositories;
 using Repositories.Contracts;
 using Services.Contracts;
@@ -119,5 +120,13 @@ namespace Services
             return _manager.Quiz.GetQuizWithDetails(quizId, trackChanges);
 
         }
+
+        //public void AddQuizFromJson(string jsonData)
+        //{
+        //    var quizDto = JsonConvert.DeserializeObject<QuizDtoForInsertion>(jsonData);
+        //    var quizEntity = _mapper.Map<Quiz>(quizDto);
+        //    _manager.Quiz.Create(quizEntity);
+        //    _manager.Save();
+        //}
     }
 }
