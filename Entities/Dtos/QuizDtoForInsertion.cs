@@ -9,7 +9,6 @@ namespace Entities.Dtos
     public class QuizDtoForInsertion
     {
         public int QuestionCount { get; set; }
-
         public string Title { get; set; } = string.Empty;
         public bool ShowCase { get; set; }
         public List<QuestionDtoForInsertion> Questions { get; set; } = new List<QuestionDtoForInsertion>();

@@ -1,69 +1,65 @@
-@using System.Diagnostics
 @model QuizDtoForUpdate
 
-<div class="text-center">
-    <div class="display-6">Update</div>
-</div>
+<form asp-action="Update" method="post">
+    <input type="hidden" name="QuizId" value="@Model.QuizId" />
 
-
-
-<form method="post" asp-action="Update" enctype="multipart/form-data">
-
-    <div class="text-danger" asp-validation-summary="All"></div>
-
-    <input type="hidden" asp-for="QuizId" />
-
-    <div class="form-group my-3">
-        <label asp-for="Title"></label>
-        <input asp-for="Title" class="form-control" />
-    </div>
-
-    <div class="form-check form-switch">
-        <input asp-for="ShowCase" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-        <label class="form-check-label" for="flexSwitchCheckDefault">Showcase</label>
-    </div>
-
-    @if (Model.Questions != null && Model.Questions.Count > 0)
-    {
+    <div class="container">
         <div class="form-group">
-            <h4>Question 1</h4>
-            <input type="hidden" asp-for="Questions[0].QuestionId" />
-            <label asp-for="Questions[0].QuestionText">Question Text</label>
-            <textarea asp-for="Questions[0].QuestionText" class="form-control"></textarea>
-            
+            <label asp-for="Title">Quiz Title</label>
+            <input asp-for="Title" class="form-control" />
+        </div>
+        <div class="form-check form-switch">
+            <input asp-for="ShowCase" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+            <label class="form-check-label" for="flexSwitchCheckDefault">Showcase</label>
+        </div>
+        <div class="questions-container">
+            @for (int i = 0; i < Model.Questions.Count; i++)
+            {
+                <div class="form-group question-group">
+                    <input type="hidden" asp-for="Questions[i].Order" value="@i" />
+                    <label asp-for="Questions[i].QuestionText">Question @(i + 1)</label>
+                    <textarea asp-for="Questions[i].QuestionText" class="form-control"></textarea>
+                    <input type="hidden" asp-for="Questions[i].QuestionId" />
+
+                    <div class="options-container">
+                        @for (int j = 0; j < Model.Questions[i].Options.Count; j++)
+                        {
+                            <div class="form-group">
+                                <input asp-for="Questions[i].Options[j].OptionText" class="form-control" />
+                                <input type="radio" name="Questions[@i].CorrectOptionId" value="@Model.Questions[i].Options[j].OptionId" @(Model.Questions[i].CorrectOptionId == Model.Questions[i].Options[j].OptionId ? "checked" : "") /> is correct
+                                <input type="hidden" asp-for="Questions[i].Options[j].OptionId" />
+                            </div>
+                        }
+                        <!-- Þýk ekleme butonu her sorunun altýnda olmalý -->
+                        <button type="button" class="btn btn-primary add-option" data-question="@i">Add Option</button>
+                    </div>
+                </div>
+            }
         </div>
 
-        <div class="form-group">
-            <label>Options</label>
-            <ul>
-                @for (int i = 0; i < Model.Questions[0].Options.Count; i++)
-                {
-                    <li>
-                        <input asp-for="Questions[0].Options[i].OptionText" class="form-control" placeholder="Option @(i + 1)" />
-                        <input type="radio" name="Questions[0].CorrectOptionId" value="@Model.Questions[0].Options[i].OptionId"
-                        @(Model.Questions[0].CorrectOptionId == Model.Questions[0].Options[i].OptionId ? "checked" : "") /> Correct Answer
-                        <input type="hidden" asp-for="Questions[0].Options[i].OptionId" />
-                    </li>
-                }
-            </ul>
-        </div>
-
-    }
-    else
-    {
-        <p>No questions available to update.</p>
-    }
-
-    <div class="form-group my-3">
-        <div class="btn-group">
-            <button class="btn btn-primary" type="submit">
-                <i class="fa fa-save"></i>
-                Update
-            </button>
-            <a asp-action="Index" class="btn btn-outline-primary">
-                <i class="fa fa-list"></i>
-                Quizzes
-            </a>
-        </div>
+        <button type="submit" class="btn btn-success">Update Quiz</button>
     </div>
 </form>
+
+@* <script>
+    // Þýk ekleme iþlemi
+    document.querySelectorAll('.add-option').forEach(button => {
+        button.addEventListener('click', function () {
+            let questionIndex = this.getAttribute('data-question');
+            let optionList = document.querySelector(`#options-list-${questionIndex}`);
+            let optionCount = optionList.children.length;
+
+            if (optionCount < 5) {
+                let newOption = document.createElement("li");
+
+                newOption.innerHTML = `
+                        <input class="form-control" name="Questions[${questionIndex}].Options[${optionCount}].OptionText" />
+                        <input type="radio" name="Questions[${questionIndex}].CorrectOptionId" value="${optionCount}" /> is correct
+                        <input type="hidden" name="Questions[${questionIndex}].Options[${optionCount}].OptionId" value="0" /> <!-- Þýk ID'si yoksa 0 yapýyoruz -->
+                    `;
+
+                optionList.appendChild(newOption);
+            }
+        });
+    });
+</script> *@

@@ -12,6 +12,7 @@ namespace Entities.Models
         public string? Title { get; set; }
         public ICollection<Question> Questions { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
+        public DateTime UpdatedDate { get; set; }
         public int QuestionCount { get; set; }
         public bool ShowCase { get; set; }
     }
