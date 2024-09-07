@@ -2,12 +2,8 @@
 using Entities.Dtos;
 using Entities.Models;
 using Entities.RequestParameters;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using Repositories;
 using Repositories.Contracts;
 using Services.Contracts;
-using System.Diagnostics;
 
 
 
@@ -103,9 +99,11 @@ namespace Services
                     question.CorrectOptionId = correctOption.OptionId;
                 }
             }
-           
+
             _manager.Save();
         }
+
+
         public void DeleteOneQuiz(int id)
         {
             Quiz quiz = GetOneQuiz(id, false);

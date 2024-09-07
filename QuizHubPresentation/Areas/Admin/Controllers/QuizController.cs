@@ -46,16 +46,18 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
             });
         }
 
+
+
         public IActionResult Create()
         {
             var quizDto = new QuizDtoForInsertion
             {
                 Questions = new List<QuestionDtoForInsertion>
                     {
-                        new QuestionDtoForInsertion 
-                        { 
-                            Order = 1, 
-                            Options = new List<OptionDtoForInsertion> 
+                        new QuestionDtoForInsertion
+                        {
+                            Order = 1,
+                            Options = new List<OptionDtoForInsertion>
                                 {
                                 new OptionDtoForInsertion { OptionText = string.Empty, IsCorrect = false },
                                 new OptionDtoForInsertion { OptionText = string.Empty, IsCorrect = false },
@@ -76,27 +78,39 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
         {
             if (quizDto.Questions == null || quizDto.Questions.Count == 0)
             {
-                ModelState.AddModelError(string.Empty, "Soru eklemeniz gerekiyor.");
+                ModelState.AddModelError(string.Empty, "En az bir soru eklemeniz gerekiyor.");
                 return View(quizDto);
             }
 
-            if (ModelState.IsValid)
+            bool correctOptionSelected = true;
+
+            foreach (var question in quizDto.Questions)
             {
-                foreach (var question in quizDto.Questions)
+                if (question.CorrectOptionId < 0 || question.CorrectOptionId >= question.Options.Count)
                 {
-                    if (question.CorrectOptionId >= 0 && question.CorrectOptionId < question.Options.Count)
-                    {
-                        question.Options[question.CorrectOptionId].IsCorrect = true;
-                    }
+                    correctOptionSelected = false;
+                    ModelState.AddModelError(string.Empty, $"Soru '{question.QuestionText}' için bir doðru seçenek seçmelisiniz.");
+                    return View(quizDto);
                 }
-
-                _manager.QuizService.CreateQuiz(quizDto);
-                TempData["success"] = $"{quizDto.Title} has been created.";
-                return RedirectToAction("Index");
             }
-            return View(quizDto);
-        }
 
+            if (!ModelState.IsValid)
+            {
+                return View(quizDto);
+            }
+
+            foreach (var question in quizDto.Questions)
+            {
+                if (question.CorrectOptionId >= 0 && question.CorrectOptionId < question.Options.Count)
+                {
+                    question.Options[question.CorrectOptionId].IsCorrect = true;
+                }
+            }
+         
+            _manager.QuizService.CreateQuiz(quizDto);
+            TempData["success"] = $"{quizDto.Title} baþarýyla oluþturuldu.";
+            return RedirectToAction("Index");
+        }
 
 
         public IActionResult Update([FromRoute(Name = "id")] int id)
