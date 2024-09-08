@@ -12,5 +12,6 @@ namespace Services.Contracts
         IQuestionService QuestionService { get; }
         IOptionService OptionService { get; }
         IAuthService AuthService { get; }
+        IUserQuizInfoService UserQuizInfoService { get; }
     }
 }
