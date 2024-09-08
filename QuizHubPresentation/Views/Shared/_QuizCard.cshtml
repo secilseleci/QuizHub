@@ -1,1 +1,22 @@
-﻿
+﻿@model Quiz
+
+<div class="col-md-3 my-3">
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">@Model.Title</h5>
+
+            <!-- Soru sayısını göstermek için -->
+            @if (Model.Questions != null)
+            {
+                <p class="card-text">This quiz has @Model.Questions.Count questions.</p>
+            }
+            else
+            {
+                <p class="card-text">No questions available.</p>
+            }
+
+            <a asp-action="Details" asp-controller="Home" asp-route-id="@Model.QuizId" class="btn btn-primary">Details</a>
+            <a asp-action="Start" asp-controller="Home" asp-route-id="@Model.QuizId" class="btn btn-secondary">Start</a>
+        </div>
+    </div>
+</div>

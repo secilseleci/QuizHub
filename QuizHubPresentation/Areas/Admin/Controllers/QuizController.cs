@@ -1,9 +1,11 @@
-using AutoMapper;
+ï»¿using AutoMapper;
 using Entities.Dtos;
+using Entities.Models;
 using Entities.RequestParameters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuizHubPresentation.Models;
+using Services;
 using Services.Contracts;
 
 namespace QuizHubPresentation.Areas.Admin.Controllers
@@ -24,8 +26,8 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
         //[HttpPost("add-quiz-from-json")]
         //public IActionResult AddQuizFromJson([FromBody] string jsonData)
         //{
-        //    _manager.QuizService.AddQuizFromJson(jsonData);  // Servisteki metodu çaðýrýyoruz
-        //    return Ok(new { message = "Quiz baþarýyla eklendi!" });
+        //    _manager.QuizService.AddQuizFromJson(jsonData);  // Servisteki metodu Ã§aÄŸÄ±rÄ±yoruz
+        //    return Ok(new { message = "Quiz baÅŸarÄ±yla eklendi!" });
         //}
 
         public IActionResult Index([FromQuery] QuizRequestParameters q)
@@ -89,7 +91,7 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
                 if (question.CorrectOptionId < 0 || question.CorrectOptionId >= question.Options.Count)
                 {
                     correctOptionSelected = false;
-                    ModelState.AddModelError(string.Empty, $"Soru '{question.QuestionText}' için bir doðru seçenek seçmelisiniz.");
+                    ModelState.AddModelError(string.Empty, $"Soru '{question.QuestionText}' iÃ§in bir doÃ°ru seÃ§enek seÃ§melisiniz.");
                     return View(quizDto);
                 }
             }
@@ -106,11 +108,15 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
                     question.Options[question.CorrectOptionId].IsCorrect = true;
                 }
             }
-         
+
             _manager.QuizService.CreateQuiz(quizDto);
-            TempData["success"] = $"{quizDto.Title} baþarýyla oluþturuldu.";
+            TempData["success"] = $"{quizDto.Title} baÃ¾arÃ½yla oluÃ¾turuldu.";
             return RedirectToAction("Index");
         }
+
+        
+
+
 
 
         public IActionResult Update([FromRoute(Name = "id")] int id)
@@ -125,7 +131,6 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
             ViewData["Title"] = model?.Title;
             return View(quizDto);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update([FromForm] QuizDtoForUpdate quizDto)
@@ -140,33 +145,32 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
                     var existingQuestion = existingQuiz.Questions.FirstOrDefault(q => q.QuestionId == question.QuestionId);
                     if (existingQuestion != null)
                     {
-                        question.Order = existingQuestion.Order;   
+                        question.Order = existingQuestion.Order;
 
                         foreach (var option in question.Options)
                         {
                             var existingOption = existingQuestion.Options.FirstOrDefault(o => o.OptionId == option.OptionId);
                             if (existingOption != null)
                             {
-                                option.IsCorrect = false;  
+                                option.IsCorrect = false;
                             }
                         }
                         var correctOption = question.Options.FirstOrDefault(o => o.OptionId == question.CorrectOptionId);
                         if (correctOption != null)
                         {
-                            correctOption.IsCorrect = true; 
+                            correctOption.IsCorrect = true;
                         }
                     }
                 }
 
                 _manager.QuizService.UpdateOneQuiz(quizDto);
 
-                TempData["success"] = "Quiz baþarýyla güncellendi.";
+                TempData["success"] = "Quiz baÃ¾arÃ½yla gÃ¼ncellendi.";
                 return RedirectToAction("Index");
             }
 
             return View(quizDto);
         }
-
 
 
 

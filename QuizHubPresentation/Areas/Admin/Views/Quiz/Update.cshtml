@@ -1,4 +1,4 @@
-@model QuizDtoForUpdate
+ï»¿@model QuizDtoForUpdate
 
 <form asp-action="Update" method="post">
     <input type="hidden" name="QuizId" value="@Model.QuizId" />
@@ -30,7 +30,7 @@
                                 <input type="hidden" asp-for="Questions[i].Options[j].OptionId" />
                             </div>
                         }
-                        <!-- Þýk ekleme butonu her sorunun altýnda olmalý -->
+                        <!-- ÃžÃ½k ekleme butonu her sorunun altÃ½nda olmalÃ½ -->
                         <button type="button" class="btn btn-primary add-option" data-question="@i">Add Option</button>
                     </div>
                 </div>
@@ -40,26 +40,3 @@
         <button type="submit" class="btn btn-success">Update Quiz</button>
     </div>
 </form>
-
-@* <script>
-    // Þýk ekleme iþlemi
-    document.querySelectorAll('.add-option').forEach(button => {
-        button.addEventListener('click', function () {
-            let questionIndex = this.getAttribute('data-question');
-            let optionList = document.querySelector(`#options-list-${questionIndex}`);
-            let optionCount = optionList.children.length;
-
-            if (optionCount < 5) {
-                let newOption = document.createElement("li");
-
-                newOption.innerHTML = `
-                        <input class="form-control" name="Questions[${questionIndex}].Options[${optionCount}].OptionText" />
-                        <input type="radio" name="Questions[${questionIndex}].CorrectOptionId" value="${optionCount}" /> is correct
-                        <input type="hidden" name="Questions[${questionIndex}].Options[${optionCount}].OptionId" value="0" /> <!-- Þýk ID'si yoksa 0 yapýyoruz -->
-                    `;
-
-                optionList.appendChild(newOption);
-            }
-        });
-    });
-</script> *@

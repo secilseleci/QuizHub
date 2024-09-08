@@ -1,18 +1,26 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Services.Contracts;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
-namespace QuizHubPresentation.Controllers
+namespace QuizHubPresentation.Areas.Admin.Controllers
 {
+  
     public class HomeController : Controller
     {
-  
         public IActionResult Index()
         {
-            ViewData["Title"] = "Welcome";
+            TempData["info"] = $"Welcome back, {DateTime.Now.ToShortTimeString()}";
+            return View();
+        }
+        public IActionResult Details()
+        {
+             
             return View();
         }
 
-
+        public IActionResult Start()
+        {
+             return View();
+        }
 
     }
 }

@@ -13,7 +13,7 @@ public class RepositoryContext : IdentityDbContext<IdentityUser>
     public DbSet<Quiz> Quizzes { get; set; }
     public DbSet<Question> Questions { get; set; }
     public DbSet<Option> Options { get; set; }
-
+    public DbSet<UserQuizInfo> UserQuizInfo { get; set; }
     public RepositoryContext(DbContextOptions<RepositoryContext> options) : base(options)
     {
 
