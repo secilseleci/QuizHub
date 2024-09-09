@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Start Quiz";
-}
+ }
 
 <div class="container mt-5 text-center">
     <button type="button" class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#startModal">
@@ -29,8 +29,7 @@
                 </div>
                 <div class="modal-footer">
                     <!-- Start Quiz Butonu (Form ile yeni action'a geçiyoruz) -->
-                    <form asp-action="StartQuiz" method="post">
-                        <input type="hidden" name="quizId" value="@ViewBag.QuizId" />
+                    <form asp-action="StartQuiz" asp-controller="Home" asp-route-quizid="@ViewBag.QuizId" method="post">
                         <button type="submit" class="btn btn-primary">Start Quiz</button>
                     </form>
                 </div>

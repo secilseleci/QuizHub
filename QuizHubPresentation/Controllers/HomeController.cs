@@ -48,6 +48,8 @@ namespace QuizHubPresentation.Controllers
             }
 
             ViewBag.QuizTitle = quiz.Title;
+            ViewBag.QuizId = quiz.QuizId;
+
             return View();
         }
 
@@ -55,9 +57,21 @@ namespace QuizHubPresentation.Controllers
         [Authorize]
         public IActionResult StartQuiz(int quizId)
         {
-            // Quiz Id'yi alıyoruz ve şimdilik basit bir view'e yönlendiriyoruz
-            ViewBag.QuizId = quizId;  // İleride quiz bilgilerini almak için
-            return View();
+            var quiz = _manager.Quiz.GetQuizWithDetails(quizId, trackChanges: false);
+            if (quiz == null)
+            {
+                return NotFound();
+            }
+
+            var quizDto = new QuizDtoForUser
+            {
+                QuizId = quiz.QuizId,
+                Title = quiz.Title,
+                Questions = quiz.Questions,             // Sorular ve seçenekler
+                QuestionCount = quiz.Questions.Count    // Toplam soru sayısı
+            }; 
+            
+            return View(quizDto);
         }
     }
 }

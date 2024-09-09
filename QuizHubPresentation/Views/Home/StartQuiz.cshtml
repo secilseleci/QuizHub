@@ -1,10 +1,54 @@
-﻿@{
-    ViewBag.Title = "Quiz Başladı";
+﻿@model QuizDtoForUser   
+
+@{
+    Layout = null;
 }
+ 
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between">
+            <h5>Quiz App</h5>
+            <button class="btn btn-primary">Kalan Süre: <span id="timeLeft">10</span></button>  
+        </div>
 
-<div class="container mt-5 text-center">
-    <h2>Quiz Başladı!</h2>
-    <p>Bu QuizId: @ViewBag.QuizId</p>
+        <div class="card-body">
+            <h5 class="card-title">@Model.Questions.First().QuestionText</h5>   
+            
+            <div class="list-group">
+                @foreach (var option in Model.Questions.First().Options)   
+                {
+                    <label class="list-group-item">
+                        <input type="radio" name="questionOptions" value="@option.OptionText">
+                        @option.OptionText
+                    </label>
+                }
+            </div>
+        </div>
 
-    <p>İyi Şanslar! Şu anda quiz sorularını burada göstereceğiz.</p>
+        <div class="card-footer text-muted d-flex justify-content-between">
+            <span>1 / @Model.QuestionCount</span>  <!-- Soru numarası -->
+            <button class="btn btn-primary" id="nextButton">Next</button>  <!-- Next butonu -->
+        </div>
+    </div>
 </div>
+
+<script>
+    // Timer için basit bir sayaç
+    var timeLeft = 10;
+    var timer = setInterval(function() {
+        timeLeft--;
+        document.getElementById("timeLeft").innerHTML = timeLeft;
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            // Zaman dolduğunda otomatik sonraki soruya geçebiliriz
+            document.getElementById("nextButton").click();
+        }
+    }, 1000);
+
+    // Next butonuna tıklayınca bir sonraki soruya geçiş
+    document.getElementById("nextButton").addEventListener("click", function() {
+        // Sıradaki soruya AJAX isteği ile geçişi buradan sağlayacağız
+    });
+</script>
+
+ 
