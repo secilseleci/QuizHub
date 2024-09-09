@@ -1,1 +1,41 @@
-﻿quiz çözme sayfammm
+﻿@{
+    ViewBag.Title = "Start Quiz";
+}
+
+<div class="container mt-5 text-center">
+    <button type="button" class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#startModal">
+        Start Now
+    </button>
+
+    <!-- Modal Yapısı -->
+    <div class="modal fade" id="startModal" tabindex="-1" aria-labelledby="startModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="startModalLabel">@ViewBag.QuizTitle - Ready to Start?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Bilgilendirme Metni -->
+                    <p><strong>@ViewBag.QuizTitle</strong> quizine başlamak üzeresiniz. Quizi çözemeden önce bilmeniz gereken detaylara göz atın:</p>
+                    <ul class="text-start">
+                        <li>Her soru süresi <strong>1 dakika</strong>dır.</li>
+                        <li>1 dakika içinde cevaplanmayan sorular <strong>boş</strong> sayılacaktır.</li>
+                        <li>Quiz sonuna kadar <strong>önceki sorulara dönemezsiniz</strong>.</li>
+                        <li>Her soruyu <strong>1 dakika içinde</strong> doğru cevaplayıp <strong>Next</strong> butonuna basarak sıradaki soruya geçebilirsiniz.</li>
+                        <li>Doğru/yanlış sayınızı quiz sonlandıktan sonra görebileceksiniz.</li>
+                    </ul>
+                    <p><strong>Başarılar!</strong></p>
+                </div>
+                <div class="modal-footer">
+                    <!-- Start Quiz Butonu (Form ile yeni action'a geçiyoruz) -->
+                    <form asp-action="StartQuiz" method="post">
+                        <input type="hidden" name="quizId" value="@ViewBag.QuizId" />
+                        <button type="submit" class="btn btn-primary">Start Quiz</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

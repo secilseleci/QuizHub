@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Repositories.Contracts;
 using Microsoft.AspNetCore.Identity;
 using Entities.Dtos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace QuizHubPresentation.Controllers
 {
@@ -32,17 +33,31 @@ namespace QuizHubPresentation.Controllers
                 return NotFound();   
             }
 
-            // Quiz'ten DTO'ya mapleme yapıyoruz
             var quizDto = _mapper.Map<QuizDtoForUserShowcase>(quiz);
-
-            // View'e DTO'yu gönderiyoruz
             return View(quizDto);
         }
 
-        public IActionResult Start()
+        [Authorize]  // Giriş yapmış kullanıcılar bu action'a erişebilir
+        public IActionResult Start(int id)
         {
-             return View();
+             var quiz = _manager.Quiz.GetOneQuiz(id, trackChanges: false);
+
+            if (quiz == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.QuizTitle = quiz.Title;
+            return View();
         }
 
+        [HttpPost]
+        [Authorize]
+        public IActionResult StartQuiz(int quizId)
+        {
+            // Quiz Id'yi alıyoruz ve şimdilik basit bir view'e yönlendiriyoruz
+            ViewBag.QuizId = quizId;  // İleride quiz bilgilerini almak için
+            return View();
+        }
     }
 }
