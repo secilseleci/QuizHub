@@ -4,15 +4,20 @@
     <div class="card shadow">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Quiz App</h5>
+        
+
             <button class="btn btn-primary">Kalan Süre: <span id="timeLeft">10</span></button>  <!-- Timer için -->
         </div>
 
         <div class="card-body">
-            <!-- Sorunun başlığı -->
-            <h4 class="card-title">@Model.Questions.First().QuestionText</h4>
+            <!-- Progress Bar (Sarı Çizgi) -->
+            <div class="progress" style="height: 5px;">
+                <div id="progressBar" class="progress-bar bg-warning" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>            
+            <h4 class="card-title my-3" id="questionText">@Model.Questions.First().QuestionText</h4>
 
-            <!-- Seçenekler - Radyo butonları -->
-            <div class="list-group mt-3">
+            <!-- Seçenekler için ID ekleyelim -->
+            <div class="list-group mt-3" id="optionsList">
                 @foreach (var option in Model.Questions.First().Options)
                 {
                     <label class="list-group-item d-flex align-items-center">
@@ -24,30 +29,89 @@
         </div>
 
         <div class="card-footer d-flex justify-content-between">
-            <!-- Soru numarası -->
-            <span>1 / @Model.QuestionCount</span>
+            <!-- Soru numarasını gösterme -->
+            <span id="questionOrder">@Model.Questions.First().Order / @Model.QuestionCount</span>
 
-            <!-- Next butonu -->
+            <!-- Next Butonu -->
             <button class="btn btn-primary" id="nextButton">Next</button>
         </div>
     </div>
 </div>
 
 <script>
-    // Timer için basit bir sayaç
-    var timeLeft = 10;
-    var timer = setInterval(function () {
-        timeLeft--;
-        document.getElementById("timeLeft").innerHTML = timeLeft;
-        if (timeLeft <= 0) {
-            clearInterval(timer);
-            // Zaman dolduğunda otomatik sonraki soruya geçebiliriz
-            document.getElementById("nextButton").click();
-        }
-    }, 1000);
 
-    // Next butonuna tıklayınca bir sonraki soruya geçiş
+
+
+    var timeLeft = 10;
+    var timer;
+    var totalDuration = timeLeft;
+    function startTimer() {
+        // Timer başlatma işlemi, her soruda timer'ı yeniden başlatıyoruz
+        clearInterval(timer); // Önceki timer'ı temizle (eğer varsa)
+
+        timeLeft = totalDuration; // Her soru için yeniden 10 saniyeden başlatıyoruz
+        document.getElementById("timeLeft").innerHTML = timeLeft;
+        var progressBar = document.getElementById("progressBar"); // Progress bar'ı seç
+
+        timer = setInterval(function () {
+            timeLeft--;
+            document.getElementById("timeLeft").innerHTML = timeLeft;
+            // Progress bar'ı güncelle (çubuğun genişliğini azalt)
+            var progressWidth = (timeLeft / totalDuration) * 100;
+            progressBar.style.width = progressWidth + "%";
+            // Zaman dolduysa otomatik olarak bir sonraki soruya geçiyoruz
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                nextQuestion(); // Zaman dolduğunda otomatik olarak bir sonraki soruya geçiyoruz
+            }
+        }, 1000);
+    }
+
     document.getElementById("nextButton").addEventListener("click", function () {
-        // Sıradaki soruya AJAX isteği ile geçişi buradan sağlayacağız
+        nextQuestion(); // Next butonuna tıklandığında bir sonraki soruya geç
     });
+
+    function nextQuestion() {
+        var quizId = "@Model.QuizId";  // Quiz ID'yi DTO'dan alıyoruz
+        var currentQuestionOrder = "@Model.Questions.First().Order";  // Şu anki soru sırası
+
+        $.ajax({
+            url: '/Home/NextQuestion',  // Sunucuda sıradaki soruyu almak için AJAX isteği
+            method: 'POST',
+            data: { quizId: quizId, currentQuestionOrder: currentQuestionOrder },
+            success: function (response) {
+                if (response.success) {
+                    // Yeni soruyu sayfada güncelle
+                    $('#questionText').text(response.questionText);
+                    $('#questionOrder').text(response.currentOrder + ' / ' + response.totalQuestions);
+
+                    // Seçenekleri güncelle
+                    var optionsList = $('#optionsList');
+                    optionsList.empty();  // Mevcut seçenekleri temizliyoruz
+                    response.options.forEach(function (option) {
+                        optionsList.append('<label class="list-group-item d-flex align-items-center">' +
+                            '<input type="radio" name="questionOptions" value="' + option + '" class="me-2">' +
+                            '<span>' + option + '</span>' +
+                            '</label>');
+                    });
+
+                    // Timer'ı her yeni soruda yeniden başlat
+                    startTimer();
+                } else {
+                    alert(response.message);  // Quiz tamamlandıysa mesaj göster
+                }
+            },
+            error: function (xhr, status, error) {
+                console.log("AJAX isteği başarısız oldu:", error);
+                alert("Bir hata meydana geldi: " + error);
+            }
+        });
+    }
+
+    // İlk soruyu başlatmak için sayfa yüklendiğinde timer başlat
+    window.onload = function () {
+        startTimer();
+    }
+
+
 </script>

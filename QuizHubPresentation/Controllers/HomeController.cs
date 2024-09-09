@@ -73,5 +73,43 @@ namespace QuizHubPresentation.Controllers
             
             return View(quizDto);
         }
+
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult NextQuestion(int quizId, int currentQuestionOrder)
+        {
+            Console.WriteLine($"Quiz ID: {quizId}, Current Question Order: {currentQuestionOrder}");
+
+            // Quiz'i sorularıyla birlikte alıyoruz
+            var quiz = _manager.Quiz.GetQuizWithDetails(quizId, trackChanges: false);
+
+            if (quiz == null)
+            {
+                return NotFound();
+            }
+
+            // Şu anki sorunun Order'ına göre bir sonraki soruyu alıyoruz
+            var nextQuestion = quiz.Questions.FirstOrDefault(q => q.Order == currentQuestionOrder + 1);
+
+            // Eğer bir sonraki soru yoksa (quiz bittiğinde)
+            if (nextQuestion == null)
+            {
+                return Json(new { success = false, message = "Quiz Completed" });  // Quiz tamamlandığında mesaj dönebiliriz
+            }
+
+            // Sıradaki soruyu JSON olarak döndürüyoruz
+            return Json(new
+            {
+                success = true,
+                questionText = nextQuestion.QuestionText,
+                options = nextQuestion.Options.Select(o => o.OptionText).ToList(),
+                currentOrder = nextQuestion.Order,  // Şu anki soru sırası (Order)
+                totalQuestions = quiz.Questions.Count  // Toplam soru sayısı
+            });
+        }
+
+
+
     }
 }

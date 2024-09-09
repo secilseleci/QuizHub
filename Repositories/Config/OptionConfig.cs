@@ -64,13 +64,13 @@ namespace Repositories.Config
                  {
                      OptionId = 7,
                      QuestionId = 2,
-                     OptionText = "Berlin",
+                     OptionText = "Tokyo",
                      IsCorrect = false
                  }, new Option
                  {
                      OptionId = 8,
                      QuestionId = 2,
-                     OptionText = "Berlin",
+                     OptionText = "İstanbul",
                      IsCorrect = false
                  },
 
