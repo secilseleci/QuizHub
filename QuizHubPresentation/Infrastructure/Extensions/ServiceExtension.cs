@@ -55,6 +55,8 @@ namespace QuizHubPresentation.Infrastructure.Extensions
             services.AddScoped<IQuestionRepository, QuestionRepository>();
             services.AddScoped<IOptionRepository, OptionRepository> ();
             services.AddScoped<IUserQuizInfoRepository, UserQuizInfoRepository>();
+           services.AddScoped<IUserAnswerRepository, UserAnswerRepository>();
+
         }
 
         public static void ConfigureServiceRegistration(this IServiceCollection services)
@@ -65,6 +67,8 @@ namespace QuizHubPresentation.Infrastructure.Extensions
             services.AddScoped<IQuestionService, QuestionManager>();
             services.AddScoped<IOptionService, OptionManager>();
             services.AddScoped<IUserQuizInfoService, UserQuizInfoManager>();
+            services.AddScoped<IUserAnswerService, UserAnswerManager>();
+
         }
 
         public static void ConfigureApplicationCookie(this IServiceCollection services)

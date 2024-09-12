@@ -17,6 +17,7 @@ public class UserQuizInfo
     public int CorrectAnswer { get; set; }
     public int FalseAnswer { get; set; }
     public int BlankAnswer { get; set; }
+    public ICollection<UserAnswer> UserAnswers { get; set; }  // UserAnswer ile ilişki
 
 }
 

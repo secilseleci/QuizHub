@@ -18,7 +18,8 @@ namespace Entities.Models
         public int QuizId { get; set; }
         public Quiz Quiz { get; set; }  
         public ICollection<Option> Options { get; set; }
-       
+        public ICollection<UserAnswer> UserAnswers { get; set; }  // UserAnswer ile ilişki
+
 
     }
 }

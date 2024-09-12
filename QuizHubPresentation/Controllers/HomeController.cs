@@ -4,6 +4,8 @@ using Repositories.Contracts;
 using Microsoft.AspNetCore.Identity;
 using Entities.Dtos;
 using Microsoft.AspNetCore.Authorization;
+using Entities.Models;
+using System.Security.Claims;
 
 namespace QuizHubPresentation.Controllers
 {
@@ -104,6 +106,22 @@ namespace QuizHubPresentation.Controllers
             return View();
         }
 
+        [HttpPost]
+        [Authorize]
+        public IActionResult SaveAnswer(int quizId, int questionId, int selectedOptionId)
+        {
+            // Kullanıcı bilgilerini al (giriş yapmış kullanıcıyı alıyoruz)
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userQuizInfo = _manager.UserQuizInfo.GetUserQuizInfoByQuizIdAndUserId(quizId, userId, trackChanges: true);
+
+            if (userQuizInfo == null)
+            {
+                return BadRequest("User or Quiz information not found.");
+            }
+
+
+            return Json(new { success = true, message = "Yanıt başarıyla kaydedildi." });
+        }
 
     }
 }

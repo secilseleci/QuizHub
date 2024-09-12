@@ -13,12 +13,12 @@ namespace Services
     {
         private readonly IRepositoryManager _manager;
         private readonly IMapper _mapper;
-        
+
         public QuizManager(IRepositoryManager manager, IMapper mapper)
         {
             _manager = manager;
             _mapper = mapper;
-            
+
         }
 
 
@@ -34,7 +34,7 @@ namespace Services
 
         public void UpdateOneQuiz(QuizDtoForUpdate quizDto)
         {
-           var existingQuiz = _manager.Quiz.GetQuizWithDetails(quizDto.QuizId, false);
+            var existingQuiz = _manager.Quiz.GetQuizWithDetails(quizDto.QuizId, false);
 
             if (existingQuiz == null)
                 throw new Exception("Quiz not found!");

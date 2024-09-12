@@ -19,10 +19,6 @@ namespace QuizHubPresentation.Models
             cart.Session = session;
             return cart;
         }
-        public override void AddItem(Quiz quiz, int quantity)
-        {
-            base.AddItem(quiz, quantity);
-            Session?.SetJson<SessionCart>("cart", this);
-        }
+        
     }
 }

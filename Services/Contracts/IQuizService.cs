@@ -20,8 +20,8 @@ namespace Services.Contracts
         Quiz? GetQuizWithDetails(int quizId, bool trackChanges);
         QuizDtoForUpdate GetOneQuizForUpdate(int id, bool trackChanges);
 
-  
-            //void AddQuizFromJson(string jsonData);
-      
+
+        //void AddQuizFromJson(string jsonData);
+
     }
 }

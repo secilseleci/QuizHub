@@ -10,15 +10,15 @@ namespace Repositories
 {
     public class QuizRepository : RepositoryBase<Quiz>, IQuizRepository
     {
-        public QuizRepository(RepositoryContext context) : base(context) 
-    
-        { 
-    
+        public QuizRepository(RepositoryContext context) : base(context)
+
+        {
+
         }
 
         public void CreateOneQuiz(Quiz quiz) => Create(quiz);
         public void UpdateOneQuiz(Quiz entity) => Update(entity);
-        public void DeleteOneQuiz(Quiz quiz)=>Remove(quiz);
+        public void DeleteOneQuiz(Quiz quiz) => Remove(quiz);
 
         public IQueryable<Quiz> GetAllQuizzes(bool trackChanges) => FindAll(trackChanges);
 

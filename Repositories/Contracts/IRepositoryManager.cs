@@ -12,6 +12,8 @@ namespace Repositories.Contracts
         IQuestionRepository Question { get; }
         IOptionRepository Option { get; }
         IUserQuizInfoRepository UserQuizInfo { get; }
+        IUserAnswerRepository UserAnswer { get; }
+
         void Save();
     }
 }

@@ -3,7 +3,7 @@ using Entities.RequestParameters;
 
 namespace Repositories.Contracts
 {
-    public interface IQuizRepository:IRepositoryBase<Quiz>
+    public interface IQuizRepository : IRepositoryBase<Quiz>
     {
 
         IQueryable<Quiz> GetAllQuizzes(bool trackChanges);
@@ -14,7 +14,7 @@ namespace Repositories.Contracts
         void UpdateOneQuiz(Quiz entity);
         void DeleteOneQuiz(Quiz quiz);
         Quiz? GetOneQuiz(int id, bool trackChanges);
-     
+
         Quiz? GetQuizWithDetails(int quizId, bool trackChanges);
 
     }

@@ -9,12 +9,12 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         // Quiz Mapping
-        CreateMap<QuizDtoForInsertion, Quiz>().ReverseMap();
-        CreateMap<QuizDtoForUpdate, Quiz>().ReverseMap();
-        CreateMap<QuizDto, Quiz>().ReverseMap();
-        CreateMap<QuizDtoForList, Quiz>().ReverseMap();
-        CreateMap<QuizDtoForUserShowcase,Quiz>().ReverseMap();
-        CreateMap<QuizDtoForUser, Quiz>().ReverseMap();
+        CreateMap<QuizDtoForInsertion, UserAnswer>().ReverseMap();
+        CreateMap<QuizDtoForUpdate, UserAnswer>().ReverseMap();
+        CreateMap<QuizDto, UserAnswer>().ReverseMap();
+        CreateMap<QuizDtoForList, UserAnswer>().ReverseMap();
+        CreateMap<QuizDtoForUserShowcase,UserAnswer>().ReverseMap();
+        CreateMap<QuizDtoForUser, UserAnswer>().ReverseMap();
         
         // Question Mapping
         CreateMap<QuestionDtoForInsertion, Question>().ReverseMap();
