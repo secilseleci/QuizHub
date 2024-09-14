@@ -28,14 +28,14 @@ public class RepositoryContext : IdentityDbContext<IdentityUser>
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         modelBuilder.Entity<UserQuizInfo>()
-       .HasMany(uqi => uqi.UserAnswers)
-       .WithOne(ua => ua.UserQuizInfo)
-       .OnDelete(DeleteBehavior.Cascade); // Cascade Delete kullanımı
-        
+      .HasMany(uqi => uqi.UserAnswers)
+      .WithOne(ua => ua.UserQuizInfo)
+      .OnDelete(DeleteBehavior.Restrict); // Cascade yerine Restrict kullan
+
         modelBuilder.Entity<UserAnswer>()
-        .HasOne(ua => ua.Question)
-        .WithMany(q => q.UserAnswers)
-        .OnDelete(DeleteBehavior.Restrict); // Restrict kullanarak diğer ilişkide döngüsel silme sorunlarını engelleyin
+           .HasOne(ua => ua.Question)
+           .WithMany(q => q.UserAnswers)
+           .OnDelete(DeleteBehavior.Restrict); // Diğer ilişkilerde de aynı şekilde davran
 
     }
 

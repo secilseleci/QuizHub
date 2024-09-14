@@ -25,7 +25,7 @@ namespace Repositories.Config
                     QuizId = 1,
                     Title = "World Capitals Quiz1",
                     ShowCase = true,
-                    QuestionCount = 2
+                    QuestionCount = 4
                 },
                 new Quiz
                 {

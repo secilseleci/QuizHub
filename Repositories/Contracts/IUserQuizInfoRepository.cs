@@ -10,7 +10,7 @@ namespace Repositories.Contracts
     public interface IUserQuizInfoRepository : IRepositoryBase<UserQuizInfo>
     {
         UserQuizInfo? GetUserQuizInfoByQuizIdAndUserId(int quizId, string userId, bool trackChanges);
-
+        void CreateOneUserQuizInfo(UserQuizInfo userQuizInfo);
     }
 
 }

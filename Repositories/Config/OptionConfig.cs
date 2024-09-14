@@ -80,27 +80,86 @@ namespace Repositories.Config
                 {
                     OptionId = 9,
                     QuestionId = 3,
+                    OptionText = "New York",
+                    IsCorrect = false
+                },
+                new Option
+                {
+                    OptionId =10,
+                    QuestionId = 3,
+                    OptionText = "Washington",
+                    IsCorrect = true
+                },
+                 new Option
+                 {
+                     OptionId = 11,
+                     QuestionId = 3,
+                     OptionText = "Tokyo",
+                     IsCorrect = false
+                 }, new Option
+                 {
+                     OptionId = 12,
+                     QuestionId = 3,
+                     OptionText = "İstanbul",
+                     IsCorrect = false
+                 },
+
+                 new Option
+                 {
+                     OptionId = 13,
+                     QuestionId = 4,
+                     OptionText = "Adana",
+                     IsCorrect = false
+                 },
+                new Option
+                {
+                    OptionId = 14,
+                    QuestionId = 4,
+                    OptionText = "Manisa",
+                    IsCorrect = false,
+                },
+                new Option
+                {
+                    OptionId = 15,
+                    QuestionId = 4,
+                    OptionText = "Ottava",
+                    IsCorrect = true,
+                },
+                 new Option
+                 {
+                     OptionId = 16,
+                     QuestionId = 4,
+                     OptionText = "Moskova",
+                     IsCorrect = false
+                 },
+
+
+
+                new Option
+                {
+                    OptionId = 17,
+                    QuestionId = 5,
                     OptionText = "Berlin",
                     IsCorrect = false
                 },
                 new Option
                 {
-                    OptionId = 10,
-                    QuestionId = 3,
+                    OptionId = 18,
+                    QuestionId = 5,
                     OptionText = "Ankara",
                     IsCorrect = true
                 },
                 new Option
                 {
-                    OptionId = 11,
-                    QuestionId = 3,
+                    OptionId = 19,
+                    QuestionId = 5,
                     OptionText = "Tokyo",
                     IsCorrect = false
                 },
                  new Option
                  {
-                    OptionId = 12,
-                    QuestionId = 3,
+                    OptionId = 20,
+                    QuestionId = 5,
                     OptionText = "Paris",
                     IsCorrect = false
                 },
@@ -109,29 +168,29 @@ namespace Repositories.Config
 
                  new Option
                  {
-                     OptionId = 13,
-                     QuestionId = 4,
+                     OptionId = 21,
+                     QuestionId = 6,
                      OptionText = "Tokyo",
                      IsCorrect = false
                  },
                 new Option
                 {
-                    OptionId = 14,
-                    QuestionId = 4,
+                    OptionId = 22,
+                    QuestionId = 6,
                     OptionText = "Osaka",
                     IsCorrect = false
                 },
                 new Option
                 {
-                    OptionId = 15,
-                    QuestionId = 4,
+                    OptionId = 23,
+                    QuestionId = 6,
                     OptionText = "Madrid",
                     IsCorrect = true
                 },
                  new Option
                  {
-                     OptionId = 16,
-                     QuestionId = 4,
+                     OptionId = 24,
+                     QuestionId = 6,
                      OptionText = "Paris",
                      IsCorrect = false
                  },
@@ -140,29 +199,29 @@ namespace Repositories.Config
 
                   new Option
                   {
-                      OptionId = 17,
-                      QuestionId = 5,
+                      OptionId = 25,
+                      QuestionId = 7,
                       OptionText = "Tokyo",
                       IsCorrect = false
                   },
                 new Option
                 {
-                    OptionId = 18,
-                    QuestionId = 5,
+                    OptionId = 26,
+                    QuestionId = 7,
                     OptionText = "Rome",
                     IsCorrect = true
                 },
                 new Option
                 {
-                    OptionId = 19,
-                    QuestionId = 5,
+                    OptionId = 27,
+                    QuestionId = 7,
                     OptionText = "İstanbul",
                     IsCorrect = false
                 },
                  new Option
                  {
-                     OptionId = 20,
-                     QuestionId = 5,
+                     OptionId = 28,
+                     QuestionId = 7,
                      OptionText = "Edirne",
                      IsCorrect = false
                  },
@@ -173,29 +232,29 @@ namespace Repositories.Config
 
                   new Option
                   {
-                      OptionId = 21,
-                      QuestionId = 6,
+                      OptionId = 29,
+                      QuestionId = 8,
                       OptionText = "Tokyo",
                       IsCorrect = true
                   },
                 new Option
                 {
-                    OptionId = 22,
-                    QuestionId = 6,
+                    OptionId = 30,
+                    QuestionId = 8,
                     OptionText = "Berlin",
                     IsCorrect = false
                 },
                 new Option
                 {
-                    OptionId = 23,
-                    QuestionId = 6,
+                    OptionId = 31,
+                    QuestionId = 8,
                     OptionText = "Ankara",
                     IsCorrect = false
                 },
                  new Option
                  {
-                     OptionId = 24,
-                     QuestionId = 6,
+                     OptionId = 32,
+                     QuestionId = 8,
                      OptionText = "London",
                      IsCorrect = true
                  }
