@@ -26,7 +26,7 @@
         </div>
 
         <div class="card-footer d-flex justify-content-between">
-            <span id="questionOrder">@Model.Questions.First().Order / @Model.QuestionCount</span>    
+            <span id="questionOrder">@Model.Questions.First().Order / @Model.QuestionCount</span>
             <button class="btn btn-warning" id="finishButton" style="display:none;">Quizi Bitir</button>
 
 
@@ -36,14 +36,14 @@
 </div>
 
 <script>
-     var currentQuestionOrder = @Model.Questions.First().Order;  // İlk sorunun sırası, sayfa yüklendiğinde ayarlanıyor.
+    var currentQuestionOrder = @Model.Questions.First().Order;  // İlk sorunun sırası, sayfa yüklendiğinde ayarlanıyor.
     var questionId = @Model.Questions.First().QuestionId;  // İlk sorunun ID'si, ilk yüklemede ayarlanıyor
 
     // Next butonuna tıklayınca hem cevabı kaydediyoruz hem de sıradaki soruya geçiyoruz
     document.getElementById("nextButton").addEventListener("click", function () {
         var selectedOptionId = $('input[name="questionOptions"]:checked').val();  // Seçilen şık
         var quizId = '@Model.QuizId';  // Quiz ID
- 
+
         if (!selectedOptionId) {
             alert("Lütfen bir seçenek seçin!");
             return;
@@ -67,16 +67,16 @@
         });
     });
 
-     function nextQuestion() {
-        var quizId = "@Model.QuizId";  
- 
+    function nextQuestion() {
+        var quizId = "@Model.QuizId";
+
         $.ajax({
             url: '/Home/NextQuestion',
             method: 'POST',
-            data: { quizId: quizId, currentQuestionOrder: currentQuestionOrder },   
+            data: { quizId: quizId, currentQuestionOrder: currentQuestionOrder },
             success: function (response) {
                 if (response.success) {
-                     $('#questionText').text(response.questionText);
+                    $('#questionText').text(response.questionText);
                     $('#questionOrder').text(response.currentOrder + ' / ' + response.totalQuestions);
 
                     var optionsList = $('#optionsList');
@@ -84,19 +84,19 @@
                     response.options.forEach(function (option) {
                         optionsList.append('<label class="list-group-item d-flex align-items-center">' +
 
-                        '<input type="radio" name="questionOptions" value="' + option.id + '" class="me-2">' +   
-                            '<span>' + option.text + '</span>' +   
+                            '<input type="radio" name="questionOptions" value="' + option.id + '" class="me-2">' +
+                            '<span>' + option.text + '</span>' +
                             '</label>');
                     });
 
-                     currentQuestionOrder = response.currentOrder; 
-                    questionId = response.questionId; 
+                    currentQuestionOrder = response.currentOrder;
+                    questionId = response.questionId;
 
-                } 
+                }
                 else {
                     $('#nextButton').hide();
                     $('#finishButton').show();
-                    }
+                }
             },
             error: function (xhr, status, error) {
                 console.log("AJAX isteği başarısız oldu:", error);
@@ -106,6 +106,23 @@
     }
 
     document.getElementById("finishButton").addEventListener("click", function () {
-        window.location.href = "/Home/QuizCompleted";
+         $.ajax({
+            url: '/Home/FinishQuiz',   
+            method: 'POST',
+            success: function (response) {
+                if (response.success) 
+                {
+,                    window.location.href = "/Home/QuizCompleted";
+                } 
+                else 
+                {
+                    alert("Quiz bitirilemedi. Lütfen tekrar deneyin.");
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("Bir hata oluştu: " + error);
+            }
+        });
     });
+
 </script>

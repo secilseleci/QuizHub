@@ -11,6 +11,8 @@ namespace Repositories.Contracts
     {
         UserQuizInfo? GetUserQuizInfoByQuizIdAndUserId(int quizId, string userId, bool trackChanges);
         void CreateOneUserQuizInfo(UserQuizInfo userQuizInfo);
+        UserQuizInfo GetUserQuizInfoById(int userQuizInfoId, bool trackChanges);
+
     }
 
 }

@@ -147,6 +147,44 @@ namespace QuizHubPresentation.Controllers
         }
 
 
+        [HttpPost]
+        [Authorize]
+        public IActionResult FinishQuiz()
+        {
+            // 1. UserQuizInfoId'yi session'dan al
+            var userQuizInfoId = HttpContext.Session.GetInt32("UserQuizInfoId");
+            if (!userQuizInfoId.HasValue)
+            {
+                return BadRequest("UserQuizInfoId bulunamadı. Quiz'e başlamamış olabilirsiniz.");
+            }
+
+            // 2. UserQuizInfo veritabanında var mı kontrol 
+            var userQuizInfo = _manager.UserQuizInfo.GetUserQuizInfoById(userQuizInfoId.Value,false);
+            if (userQuizInfo == null)
+            {
+                return NotFound("UserQuizInfo bulunamadı.");
+            }
+
+            // 3. UserQuizInfoId'ye göre tüm cevapları al
+            var userAnswers = _manager.UserAnswer.GetUserAnswersByQuizInfoId(userQuizInfoId.Value, false);
+
+            // 4. Doğru ve yanlış cevapların sayısını hesapla
+            var correctAnswers = userAnswers.Count(a => a.IsCorrect);
+            var falseAnswers = userAnswers.Count(a => !a.IsCorrect);
+
+            // 5. UserQuizInfo'yu güncelle
+            userQuizInfo.IsCompleted = true;  
+            userQuizInfo.CompletedAt = DateTime.Now; 
+            userQuizInfo.CorrectAnswer = correctAnswers;  
+            userQuizInfo.FalseAnswer = falseAnswers;  
+
+            _manager.UserQuizInfo.Update(userQuizInfo);
+            _manager.Save();
+
+            return Json(new { success = true });
+        }
+
+
         // Private metot: Sık tekrarlanan quiz sorgusu için
         private Quiz GetQuizWithDetails(int quizId)
         {

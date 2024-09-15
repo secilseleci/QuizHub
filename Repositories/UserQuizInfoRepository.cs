@@ -15,23 +15,18 @@ public class UserQuizInfoRepository : RepositoryBase<UserQuizInfo>, IUserQuizInf
     public void CreateOneUserQuizInfo(UserQuizInfo userQuizInfo) => Create(userQuizInfo);
     public void UpdateOneUserQuizInfo(UserQuizInfo entity) => Update(entity);
     public void RemoveOneUserQuizInfo(UserQuizInfo userQuizInfo) => Remove(userQuizInfo);
-    public IQueryable<UserQuizInfo> FindAll(bool trackChanges)
-    {
-        throw new NotImplementedException();
-    }
+   
 
-    public UserQuizInfo? FindByCondition(Expression<Func<UserQuizInfo, bool>> expression, bool trackChanges)
-    {
-        throw new NotImplementedException();
-    }
-
-    // Kullanıcı ve quizId'ye göre UserQuizInfo'yu bul
     public UserQuizInfo? GetUserQuizInfoByQuizIdAndUserId(int quizId, string userId, bool trackChanges)
     {
         return trackChanges
             ? _context.UserQuizInfo.SingleOrDefault(uqi => uqi.QuizId == quizId && uqi.UserId == userId)
             : _context.UserQuizInfo.AsNoTracking().SingleOrDefault(uqi => uqi.QuizId == quizId && uqi.UserId == userId);
     }
+    public UserQuizInfo GetUserQuizInfoById(int userQuizInfoId, bool trackChanges)
+    {
+        return FindByCondition(uqi => uqi.UserQuizInfoId == userQuizInfoId, trackChanges);  // ID'si eşleşen tek kaydı getir
+    }
 
-  
+
 }
