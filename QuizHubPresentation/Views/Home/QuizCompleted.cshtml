@@ -1,5 +1,13 @@
-﻿<div class="container text-center">
+﻿@model Entities.Dtos.UserQuizInfoDtoForCompleted
+
+<div class="container text-center">
     <h2>Quiz Completed!</h2>
     <p>Congratulations, you've completed the quiz.</p>
+
+    <!-- Doğru, yanlış ve skor bilgileri -->
+    <p><strong>Correct Answers:</strong> @Model.CorrectAnswer</p>
+    <p><strong>False Answers:</strong> @Model.FalseAnswer</p>
+    <p><strong>Score:</strong> @Model.Score</p>
+
     <a href="/Home" class="btn btn-primary">Go Back to Home</a>
 </div>

@@ -32,11 +32,10 @@ public class MappingProfile : Profile
         CreateMap<UserDtoForCreation, IdentityUser>().ReverseMap(); ;
         CreateMap<UserDtoForUpdate, IdentityUser>().ReverseMap();
 
-        // UserQuizInfo -> QuizDetailsViewModel mapping
-        CreateMap<UserQuizInfo, QuizDetailsViewModel>()
-            .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Quiz.Title))  // Quiz başlığı
-            .ForMember(dest => dest.QuestionCount, opt => opt.MapFrom(src => src.Quiz.Questions.Count))  // Soru sayısı
-            .ForMember(dest => dest.EstimatedTime, opt => opt.MapFrom(src => src.Quiz.Questions.Count * 1))  // Soru başına 1 dakika
-            .ForMember(dest => dest.IsCompleted, opt => opt.MapFrom(src => src.IsCompleted));  // Tamamlanma durumu
-    }
+        // UserQuizInfo mapping
+      
+
+        CreateMap<UserQuizInfoDtoForCompleted, UserQuizInfo>().ReverseMap();
+
+     }
 }

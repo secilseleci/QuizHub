@@ -141,10 +141,7 @@ namespace QuizHubPresentation.Controllers
             });
 
         }
-        public IActionResult QuizCompleted()
-        {
-            return View();
-        }
+         
 
 
         [HttpPost]
@@ -184,6 +181,27 @@ namespace QuizHubPresentation.Controllers
             return Json(new { success = true });
         }
 
+
+
+        [Authorize]
+        public IActionResult QuizCompleted()
+        {
+            // 1. UserQuizInfoId'yi session'dan al
+            var userQuizInfoId = HttpContext.Session.GetInt32("UserQuizInfoId");
+            if (!userQuizInfoId.HasValue)
+            {
+                return BadRequest("UserQuizInfoId bulunamadı.");
+            }
+
+            var userQuizInfo = _manager.UserQuizInfo.GetUserQuizInfoById(userQuizInfoId.Value, false);
+            if (userQuizInfo == null)
+            {
+                return NotFound("UserQuizInfo bulunamadı.");
+            }
+
+            var quizInfoDto = _mapper.Map<UserQuizInfoDtoForCompleted>(userQuizInfo);
+            return View(quizInfoDto);
+        }
 
         // Private metot: Sık tekrarlanan quiz sorgusu için
         private Quiz GetQuizWithDetails(int quizId)
