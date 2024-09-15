@@ -1,16 +1,22 @@
 ﻿@model QuizDtoForUser
 
-
 <div class="container mt-5">
     <div class="card shadow">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Quiz App</h5>
 
-
+            <!-- Geri sayım -->
+            <div id="countdownTimer" class="rounded-circle bg-danger text-white d-flex justify-content-center align-items-center"
+                 style="width: 50px; height: 50px; font-size: 1.5rem;">
+                10
+            </div>
         </div>
 
         <div class="card-body">
-
+            <!-- Progress Bar -->
+            <div class="progress mb-4">
+                <div id="progressBar" class="progress-bar bg-success" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
 
             <h4 class="card-title my-3" id="questionText">@Model.Questions.First().QuestionText</h4>
 
@@ -29,7 +35,6 @@
             <span id="questionOrder">@Model.Questions.First().Order / @Model.QuestionCount</span>
             <button class="btn btn-warning" id="finishButton" style="display:none;">Quizi Bitir</button>
 
-
             <button class="btn btn-primary" id="nextButton">Next</button>
         </div>
     </div>
@@ -38,15 +43,67 @@
 <script>
     var currentQuestionOrder = @Model.Questions.First().Order;  // İlk sorunun sırası, sayfa yüklendiğinde ayarlanıyor.
     var questionId = @Model.Questions.First().QuestionId;  // İlk sorunun ID'si, ilk yüklemede ayarlanıyor
+    var timerDuration = 10;  // Geri sayım süresi (10 saniye)
+    var timerInterval;
+
+    function startTimer() {
+        var timeLeft = timerDuration;
+        var progressBarWidth = 100;
+        var progressBarDecreasePerSecond = 100 / timerDuration;  // Progress bar azalma oranı
+
+        // Geri sayımı başlat
+        document.getElementById("countdownTimer").textContent = timeLeft;
+
+        // Her 1 saniyede bir geri sayımı güncelle
+        timerInterval = setInterval(function () {
+            timeLeft--;
+            progressBarWidth -= progressBarDecreasePerSecond;
+
+            // Geri sayımı ve progress bar'ı güncelle
+            document.getElementById("countdownTimer").textContent = timeLeft;
+            document.getElementById("progressBar").style.width = progressBarWidth + "%";
+
+            // Eğer süre biterse
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);  // Timer'ı durduruyoruz
+
+                // Eğer kullanıcı cevap vermediyse selectedOptionId = 0 olarak ayarla (boş cevap)
+                var selectedOptionId = 0;  // Boş cevap
+                var quizId = '@Model.QuizId';  // Quiz ID
+
+                // Boş cevabı kaydetmek için AJAX isteği yapıyoruz
+                $.ajax({
+                    url: '/Home/SaveAnswer',
+                    method: 'POST',
+                    data: {
+                        quizId: quizId,
+                        questionId: questionId,
+                        selectedOptionId: selectedOptionId  // 0 olarak gönderiyoruz
+                    },
+                    success: function (response) {
+                        nextQuestion();  // Başarıyla kaydedildikten sonra bir sonraki soruya geçiyoruz
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Cevap kaydedilemedi:", error);
+                    }
+                });
+            }
+        }, 1000);
+    }
+
+
+    // İlk soru yüklendiğinde timer'ı başlat
+    startTimer();
 
     // Next butonuna tıklayınca hem cevabı kaydediyoruz hem de sıradaki soruya geçiyoruz
     document.getElementById("nextButton").addEventListener("click", function () {
+        clearInterval(timerInterval);  // Timer'ı durdur
         var selectedOptionId = $('input[name="questionOptions"]:checked').val();  // Seçilen şık
         var quizId = '@Model.QuizId';  // Quiz ID
 
         if (!selectedOptionId) {
-            alert("Lütfen bir seçenek seçin!");
-            return;
+            selectedOptionId = 0;  // Boş cevap
+
         }
 
         // Cevabı kaydetmek için AJAX isteği yapıyoruz
@@ -68,6 +125,7 @@
     });
 
     function nextQuestion() {
+        clearInterval(timerInterval);  // Timer'ı durdur
         var quizId = "@Model.QuizId";
 
         $.ajax({
@@ -83,7 +141,6 @@
                     optionsList.empty();  // Eski seçenekleri temizliyoruz
                     response.options.forEach(function (option) {
                         optionsList.append('<label class="list-group-item d-flex align-items-center">' +
-
                             '<input type="radio" name="questionOptions" value="' + option.id + '" class="me-2">' +
                             '<span>' + option.text + '</span>' +
                             '</label>');
@@ -92,6 +149,8 @@
                     currentQuestionOrder = response.currentOrder;
                     questionId = response.questionId;
 
+                    // Yeni soruya geçildiğinde timer'ı tekrar başlat
+                    startTimer();
                 }
                 else {
                     $('#nextButton').hide();
@@ -106,16 +165,13 @@
     }
 
     document.getElementById("finishButton").addEventListener("click", function () {
-         $.ajax({
-            url: '/Home/FinishQuiz',   
+        $.ajax({
+            url: '/Home/FinishQuiz',
             method: 'POST',
             success: function (response) {
-                if (response.success) 
-                {
-                   window.location.href = "/Home/QuizCompleted";
-                } 
-                else 
-                {
+                if (response.success) {
+                    window.location.href = "/Home/QuizCompleted";
+                } else {
                     alert("Quiz bitirilemedi. Lütfen tekrar deneyin.");
                 }
             },
@@ -124,5 +180,4 @@
             }
         });
     });
-
 </script>

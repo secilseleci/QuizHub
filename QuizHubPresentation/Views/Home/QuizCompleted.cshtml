@@ -16,6 +16,7 @@
                         <tr>
                             <th scope="col">Correct Answers</th>
                             <th scope="col">False Answers</th>
+                            <th scope="col">Blank Answers</th>
                             <th scope="col">Score</th>
                         </tr>
                     </thead>
@@ -23,6 +24,7 @@
                         <tr>
                             <td class="text-success">@Model.CorrectAnswer</td>
                             <td class="text-danger">@Model.FalseAnswer</td>
+                            <td class="text-danger">@Model.BlankAnswer</td>
                             <td class="text-primary">@Model.Score</td>
                         </tr>
                     </tbody>

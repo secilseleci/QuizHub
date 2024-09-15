@@ -86,19 +86,25 @@ namespace QuizHubPresentation.Controllers
                 return BadRequest("Geçersiz soru ID'si.");
             }
 
-            var selectedOption = _manager.Option.GetOneOption(selectedOptionId, false);
-            if (selectedOption == null)
-            {
-                return BadRequest("Geçersiz seçenek ID'si.");
-            }
+        
+            bool isBlank = selectedOptionId == 0;  // Boş cevap kontrolü
+            bool isCorrect = false;  // Varsayılan olarak cevap yanlış
 
-            var isCorrect = selectedOptionId == question.CorrectOptionId;  // Doğru cevap kontrolü
+            if (!isBlank)
+            {
+                var selectedOption = _manager.Option.GetOneOption(selectedOptionId, false);
+                if (selectedOption == null)
+                {
+                    return BadRequest("Geçersiz seçenek ID'si.");
+                }
+                isCorrect = selectedOptionId == question.CorrectOptionId;  // Doğru cevap kontrolü
+            }
 
             var userAnswer = new UserAnswer
             {
                 UserQuizInfoId = userQuizInfoId.Value,
                 QuestionId = questionId,
-                SelectedOptionId = selectedOptionId,
+                SelectedOptionId = isBlank ? (int?)null : selectedOptionId,
                 IsCorrect = isCorrect  // Doğru olup olmadığını burada belirliyoruz
             };
 
@@ -167,13 +173,14 @@ namespace QuizHubPresentation.Controllers
 
             // 4. Doğru ve yanlış cevapların sayısını hesapla
             var correctAnswers = userAnswers.Count(a => a.IsCorrect);
-            var falseAnswers = userAnswers.Count(a => !a.IsCorrect);
-
+            var falseAnswers = userAnswers.Count(a => !a.IsCorrect && a.SelectedOptionId != null);  // Yanlış cevaplar (seçenek varsa ve yanlışsa)
+            var blankAnswers = userAnswers.Count(a => a.SelectedOptionId == null);  // Boş cevaplar (seçenek yoksa)
             // 5. UserQuizInfo'yu güncelle
             userQuizInfo.IsCompleted = true;  
             userQuizInfo.CompletedAt = DateTime.Now; 
             userQuizInfo.CorrectAnswer = correctAnswers;  
-            userQuizInfo.FalseAnswer = falseAnswers;  
+            userQuizInfo.FalseAnswer = falseAnswers;
+            userQuizInfo.BlankAnswer = blankAnswers;
 
             _manager.UserQuizInfo.Update(userQuizInfo);
             _manager.Save();

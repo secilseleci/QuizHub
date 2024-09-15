@@ -17,7 +17,7 @@ namespace Entities.Models
         public int QuestionId { get; set; }             // Hangi soruya ait olduğunu belirtir
         public Question Question { get; set; }          // Question ile ilişki
 
-        public int SelectedOptionId { get; set; }       // Kullanıcının seçtiği şıkkın ID'si
+        public int? SelectedOptionId { get; set; }       // Kullanıcının seçtiği şıkkın ID'si
         public Option SelectedOption { get; set; }      // Seçilen şık ile ilişki
 
         public bool IsCorrect { get; set; }             // Cevap doğru mu, yanlış mı

@@ -10,6 +10,7 @@ namespace Entities.Dtos
     {
         public int CorrectAnswer { get; set; }
         public int FalseAnswer { get; set; }
+        public int BlankAnswer { get; set; }
         public int Score { get; set; }
 
     }
