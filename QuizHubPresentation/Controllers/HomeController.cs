@@ -154,33 +154,39 @@ namespace QuizHubPresentation.Controllers
         [Authorize]
         public IActionResult FinishQuiz()
         {
-            // 1. UserQuizInfoId'yi session'dan al
             var userQuizInfoId = HttpContext.Session.GetInt32("UserQuizInfoId");
             if (!userQuizInfoId.HasValue)
             {
                 return BadRequest("UserQuizInfoId bulunamadı. Quiz'e başlamamış olabilirsiniz.");
             }
 
-            // 2. UserQuizInfo veritabanında var mı kontrol 
             var userQuizInfo = _manager.UserQuizInfo.GetUserQuizInfoById(userQuizInfoId.Value,false);
             if (userQuizInfo == null)
             {
                 return NotFound("UserQuizInfo bulunamadı.");
             }
+            var quiz = GetQuizWithDetails(userQuizInfo.QuizId);   
+            var totalQuestions = quiz.Questions.Count;
 
-            // 3. UserQuizInfoId'ye göre tüm cevapları al
             var userAnswers = _manager.UserAnswer.GetUserAnswersByQuizInfoId(userQuizInfoId.Value, false);
 
-            // 4. Doğru ve yanlış cevapların sayısını hesapla
             var correctAnswers = userAnswers.Count(a => a.IsCorrect);
-            var falseAnswers = userAnswers.Count(a => !a.IsCorrect && a.SelectedOptionId != null);  // Yanlış cevaplar (seçenek varsa ve yanlışsa)
-            var blankAnswers = userAnswers.Count(a => a.SelectedOptionId == null);  // Boş cevaplar (seçenek yoksa)
-            // 5. UserQuizInfo'yu güncelle
+            var falseAnswers = userAnswers.Count(a => !a.IsCorrect && a.SelectedOptionId != null);  
+            var blankAnswers = userAnswers.Count(a => a.SelectedOptionId == null);  
+            
+            double successRate = ((double)correctAnswers / totalQuestions) * 100;
+            bool isSuccessful = successRate >= 60;
+
             userQuizInfo.IsCompleted = true;  
             userQuizInfo.CompletedAt = DateTime.Now; 
             userQuizInfo.CorrectAnswer = correctAnswers;  
             userQuizInfo.FalseAnswer = falseAnswers;
             userQuizInfo.BlankAnswer = blankAnswers;
+
+
+           
+            userQuizInfo.Score = (int)successRate;
+
 
             _manager.UserQuizInfo.Update(userQuizInfo);
             _manager.Save();

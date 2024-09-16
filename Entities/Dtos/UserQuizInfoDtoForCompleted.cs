@@ -12,6 +12,8 @@ namespace Entities.Dtos
         public int FalseAnswer { get; set; }
         public int BlankAnswer { get; set; }
         public int Score { get; set; }
-
+        public bool IsSuccessfull {  get; set; }
+        public bool IsCompleted { get; set; }
+        public DateTime? CompletedAt { get; set; }
     }
 }

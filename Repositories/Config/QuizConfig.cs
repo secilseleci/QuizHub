@@ -20,26 +20,27 @@ namespace Repositories.Config
 
             // Seed data - Quiz
             builder.HasData(
+                
                 new Quiz
                 {
                     QuizId = 1,
-                    Title = "World Capitals Quiz1",
+                    Title = "World Capitals",
                     ShowCase = true,
-                    QuestionCount = 4
+                    QuestionCount = 8
                 },
                 new Quiz
                 {
                     QuizId = 2,
-                    Title = "World Capitals Quiz2",
+                    Title = "World Country",
                     ShowCase = true,
                     QuestionCount = 2
                 },
                 new Quiz
                 {
                     QuizId = 3,
-                    Title = "World Capitals Quiz3",
+                    Title = "General Knowledge",
                     ShowCase = true,
-                    QuestionCount = 2
+                    QuestionCount = 3
                 }
             );
         }
