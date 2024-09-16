@@ -1,0 +1,12 @@
+﻿<div class="container mt-5">
+    <h3>Upload An Excel File!</h3>
+    <br />
+    <form asp-controller="Quiz" asp-action="UploadExcel" enctype="multipart/form-data" method="post">
+        <div class="form-group">
+            <label for="fileUpload">Choose Your Excel File</label>
+            <input type="file" name="file" id="fileUpload" required  accept=".xlsx, .xls" class="form-control">
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Upload</button>
+    </form>
+</div>

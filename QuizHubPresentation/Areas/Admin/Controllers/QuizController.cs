@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
 using Entities.Dtos;
-using Entities.Models;
 using Entities.RequestParameters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuizHubPresentation.Models;
-using Services;
 using Services.Contracts;
+using System.IO;
+using ClosedXML.Excel;
+using Microsoft.AspNetCore.Http;
+using Entities.Models;
+
 
 namespace QuizHubPresentation.Areas.Admin.Controllers
 {
@@ -23,12 +26,7 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
             _mapper = mapper;
         }
 
-        //[HttpPost("add-quiz-from-json")]
-        //public IActionResult AddQuizFromJson([FromBody] string jsonData)
-        //{
-        //    _manager.QuizService.AddQuizFromJson(jsonData);  // Servisteki metodu çağırıyoruz
-        //    return Ok(new { message = "Quiz başarıyla eklendi!" });
-        //}
+       
 
         public IActionResult Index([FromQuery] QuizRequestParameters q)
         {
@@ -47,8 +45,6 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
                 Pagination = pagination
             });
         }
-
-
 
         public IActionResult Create()
         {
@@ -115,10 +111,6 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
         }
 
         
-
-
-
-
         public IActionResult Update([FromRoute(Name = "id")] int id)
         {
 
@@ -131,6 +123,8 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
             ViewData["Title"] = model?.Title;
             return View(quizDto);
         }
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update([FromForm] QuizDtoForUpdate quizDto)
@@ -173,8 +167,6 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
         }
 
 
-
-
         [HttpGet]
         public IActionResult Delete([FromRoute(Name = "id")] int id)
         {
@@ -182,5 +174,102 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
             TempData["danger"] = "The quiz has been removed.";
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public IActionResult UploadExcel()
+        {
+            return View();  
+        }
+
+        [HttpPost]
+        public IActionResult UploadExcel(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("Excel dosyası yüklenmedi.");
+            }
+
+            using (var stream = new MemoryStream())
+            {
+                file.CopyTo(stream);
+                using (var workbook = new XLWorkbook(stream))
+                {
+                    var worksheet = workbook.Worksheet(1);  
+                    var rows = worksheet.RowsUsed();
+
+                    var quizTitle = rows.Skip(1).First().Cell(1).Value.ToString();
+
+                    var quiz = new Quiz
+                    {
+                        Title = quizTitle,
+                        CreatedDate = DateTime.Now,
+                        Questions = new List<Question>()
+                    };
+
+                    foreach (var row in rows.Skip(1))  
+                    {
+                        var questionText = row.Cell(2).Value.ToString();
+                        var option1 = row.Cell(3).IsEmpty() ? null : row.Cell(3).Value.ToString(); 
+                        var option2 = row.Cell(4).IsEmpty() ? null : row.Cell(4).Value.ToString();  
+                        var option3 = row.Cell(5).IsEmpty() ? null : row.Cell(5).Value.ToString();  
+                        var option4 = row.Cell(6).IsEmpty() ? null : row.Cell(6).Value.ToString();  
+                        var option5 = row.Cell(7).IsEmpty() ? null : row.Cell(7).Value.ToString(); 
+
+                        var correctAnswer = row.Cell(8).Value.ToString();  
+
+                        var optionList = new List<Option>();
+
+                        if (!string.IsNullOrWhiteSpace(option1))
+                        {
+                            optionList.Add(new Option { OptionText = option1, IsCorrect = (option1 == correctAnswer) });
+                        }
+                        if (!string.IsNullOrWhiteSpace(option2))
+                        {
+                            optionList.Add(new Option { OptionText = option2, IsCorrect = (option2 == correctAnswer) });
+                        }
+                        if (!string.IsNullOrWhiteSpace(option3))
+                        {
+                            optionList.Add(new Option { OptionText = option3, IsCorrect = (option3 == correctAnswer) });
+                        }
+                        if (!string.IsNullOrWhiteSpace(option4))
+                        {
+                            optionList.Add(new Option { OptionText = option4, IsCorrect = (option4 == correctAnswer) });
+                        }
+                        if (!string.IsNullOrWhiteSpace(option5))
+                        {
+                            optionList.Add(new Option { OptionText = option5, IsCorrect = (option5 == correctAnswer) });
+                        }
+
+                       
+                        if (optionList.Count < 2)
+                        {
+                            continue; 
+                        }
+
+                        var question = new Question
+                        {
+                            QuestionText = questionText,
+                            Quiz = quiz,
+                            Options = optionList
+                        };
+
+                        var correctOption = optionList.FirstOrDefault(o => o.IsCorrect);
+                        if (correctOption != null)
+                        {
+                            question.CorrectOptionId = correctOption.OptionId;  // Doğru cevabın OptionId'sini ayarla
+                        }
+
+                        quiz.Questions.Add(question);
+                    }
+
+                    var quizDto = _mapper.Map<QuizDtoForInsertion>(quiz);
+                    _manager.QuizService.CreateQuiz(quizDto);
+                }
+            }
+            return RedirectToAction("Index", "Quiz");
+        }
+
+
+
     }
 }
