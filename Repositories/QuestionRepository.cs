@@ -7,9 +7,11 @@ namespace Repositories
 {
     public class QuestionRepository : RepositoryBase<Question>, IQuestionRepository
     {
-        public QuestionRepository(RepositoryContext context) : base(context) { }
+ 
+        public QuestionRepository(RepositoryContext context) : base(context) { 
+         }
 
-
+       
         public void CreateOneQuestion(Question question) => Create(question);
         public void UpdateOneQuestion(Question entity) => Update(entity);
         public void DeleteOneQuestion(Question question) => Remove(question);
@@ -30,12 +32,20 @@ namespace Repositories
 
         public Question? GetOneQuestionWithOptions(int id, bool trackChanges)
         {
-            return _context.Questions
-                    .Where(q => q.QuestionId == id)
-                    .Include(q => q.Options)
-                    .SingleOrDefault();
-        }
- 
+            var query = _context.Questions
+                        .Include(q => q.Options)
+                        .Where(q => q.QuestionId == id);
 
+            if (!trackChanges)
+            {
+                query = query.AsNoTracking();
+            }
+
+            return query.SingleOrDefault();
+        }
+
+
+        
+    
     }
 }

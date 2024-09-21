@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Entities.Dtos;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using Repositories.Contracts;
 using Services.Contracts;
 
@@ -19,9 +20,15 @@ namespace Services
             _mapper = mapper;
         }
 
-        public void CreateOneQuestion(QuestionDtoForInsertion questionDto)
+        public void CreateOneQuestion(QuestionDto questionDto)
         {
             Question question = _mapper.Map<Question>(questionDto);
+            foreach (var optionDto in questionDto.Options)
+            {
+                var option = _mapper.Map<Option>(optionDto);   
+                option.Question = question;  
+                question.Options.Add(option);   
+            }
             _manager.Question.Create(question);
             _manager.Save();
         }
@@ -50,7 +57,7 @@ namespace Services
         }
 
        
-        public void UpdateOneQuestion(QuestionDtoForUpdate questionDto)
+        public void UpdateOneQuestion(QuestionDto questionDto)
         {
             if (questionDto == null)
             {
@@ -80,6 +87,13 @@ namespace Services
             return _manager.Question.GetQuestionsByQuizId(quizId, trackChanges);
 
         }
+
+       
+
+
+        
+
+
     }
-    }
+}
 

@@ -182,9 +182,9 @@ namespace QuizHubPresentation.Controllers
             userQuizInfo.CorrectAnswer = correctAnswers;  
             userQuizInfo.FalseAnswer = falseAnswers;
             userQuizInfo.BlankAnswer = blankAnswers;
+            userQuizInfo.IsSuccessful = isSuccessful;
 
 
-           
             userQuizInfo.Score = (int)successRate;
 
 

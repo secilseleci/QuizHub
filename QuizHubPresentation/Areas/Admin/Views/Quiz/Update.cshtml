@@ -1,6 +1,6 @@
 ﻿@model QuizDtoForUpdate
 
-<form asp-action="Update" method="post">
+<form asp-action="UpdateExisting" method="post">
     <input type="hidden" name="QuizId" value="@Model.QuizId" />
 
     <div class="container">
@@ -8,10 +8,12 @@
             <label asp-for="Title">Quiz Title</label>
             <input asp-for="Title" class="form-control" />
         </div>
+
         <div class="form-check form-switch">
             <input asp-for="ShowCase" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
             <label class="form-check-label" for="flexSwitchCheckDefault">Showcase</label>
         </div>
+
         <div class="questions-container">
             @for (int i = 0; i < Model.Questions.Count; i++)
             {
@@ -22,16 +24,18 @@
                     <input type="hidden" asp-for="Questions[i].QuestionId" />
 
                     <div class="options-container">
-                        @for (int j = 0; j < Model.Questions[i].Options.Count; j++)
-                        {
-                            <div class="form-group">
-                                <input asp-for="Questions[i].Options[j].OptionText" class="form-control" />
-                                <input type="radio" name="Questions[@i].CorrectOptionId" value="@Model.Questions[i].Options[j].OptionId" @(Model.Questions[i].CorrectOptionId == Model.Questions[i].Options[j].OptionId ? "checked" : "") /> is correct
-                                <input type="hidden" asp-for="Questions[i].Options[j].OptionId" />
-                            </div>
-                        }
-                        <!-- Þýk ekleme butonu her sorunun altýnda olmalý -->
-                        <button type="button" class="btn btn-primary add-option" data-question="@i">Add Option</button>
+                        <!-- Her soruya ait QuestionId'yi data-question-id ile ekliyoruz -->
+                        <ul id="options-list-@i" class="ul-item" data-question-id="@Model.Questions[i].QuestionId">
+                            @for (int j = 0; j < Model.Questions[i].Options.Count; j++)
+                            {
+                                <li>
+                                    <input asp-for="Questions[i].Options[j].OptionText" class="form-control" />
+                                    <input type="radio" name="Questions[@i].CorrectOptionId" value="@Model.Questions[i].Options[j].OptionId" @(Model.Questions[i].CorrectOptionId == Model.Questions[i].Options[j].OptionId ? "checked" : "") /> is correct
+                                    <input type="hidden" asp-for="Questions[i].Options[j].OptionId" />
+                                </li>
+                            }
+                        </ul>
+                        <button type="button" class="btn btn-primary add-option" data-question="@i" @(Model.Questions[i].Options.Count >= 5 ? "style='display:none;'" : "")>Add Option</button>
                     </div>
                 </div>
             }
@@ -40,3 +44,46 @@
         <button type="submit" class="btn btn-success">Update Quiz</button>
     </div>
 </form>
+
+<script>
+    document.querySelectorAll(".add-option").forEach(button => {
+        button.addEventListener("click", function () {
+            // Hangi soruya şık eklediğimizi bulmak için questionIndex ve questionId alıyoruz
+            let questionIndex = this.getAttribute("data-question");
+            let optionList = document.querySelector(`#options-list-${questionIndex}`);
+            let questionId = optionList.getAttribute("data-question-id"); // data-question-id'den questionId alıyoruz
+
+            let optionCount = optionList.querySelectorAll("li").length;
+
+            if (optionCount < 5) {
+                // AJAX ile yeni şık ekleme isteği gönderiyoruz
+                $.ajax({
+                    url: '/Quiz/CreateOption',  
+                    type: 'POST',
+                    data: {
+                        questionId: questionId, // Veritabanına göndereceğimiz questionId
+                        optionText: 'New Option' // Varsayılan metin (bunu kullanıcı girişi ile değiştirebilirsin)
+                    },
+                    success: function (response) {
+                        // Backend'den gelen yeni OptionId ve OptionText ile yeni şık ekliyoruz
+                        let newOption = document.createElement("li");
+                        newOption.innerHTML = `
+                                <input class="form-control" name="Questions[${questionIndex}].Options[${optionCount}].OptionText" value="${response.optionText}" />
+                                <input type="radio" name="Questions[${questionIndex}].CorrectOptionId" value="${response.optionId}" /> is correct
+                                <input type="hidden" name="Questions[${questionIndex}].Options[${optionCount}].OptionId" value="${response.optionId}" />
+                            `;
+                        optionList.appendChild(newOption);
+
+                        // 5 şıktan fazla eklenirse butonu gizle
+                        if (optionCount + 1 >= 5) {
+                            button.style.display = 'none';
+                        }
+                    },
+                    error: function () {
+                        alert("Şık eklenirken bir hata oluştu.");
+                    }
+                });
+            }
+        });
+    });
+</script>

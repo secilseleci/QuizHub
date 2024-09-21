@@ -22,7 +22,7 @@ namespace Services
             _manager = manager;
             _mapper = mapper;
         }
-        public void CreateOneOption(OptionDtoForInsertion optionDto)
+        public void CreateOneOption(OptionDto optionDto)
         {
             Option option=_mapper.Map<Option>(optionDto);
             _manager.Option.Create(option);
@@ -55,7 +55,7 @@ namespace Services
         }
 
 
-        public void UpdateOneOption(OptionDtoForUpdate optionDto)
+        public void UpdateOneOption(OptionDto optionDto)
         {
             if (optionDto == null)
             {

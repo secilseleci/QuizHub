@@ -34,6 +34,8 @@ namespace QuizHubPresentation.Infrastructure.Extensions
                 options.Password.RequireLowercase = false;
                 options.Password.RequireDigit = false;
                 options.Password.RequiredLength = 6;
+                options.Password.RequireNonAlphanumeric = false;
+
             })
             .AddEntityFrameworkStores<RepositoryContext>();
         }
@@ -46,7 +48,7 @@ namespace QuizHubPresentation.Infrastructure.Extensions
                 options.IdleTimeout = TimeSpan.FromMinutes(10);
             });
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<Cart>(c => SessionCart.GetCart(c));
+        
         }
         public static void ConfigureRepositoryRegistration(this IServiceCollection services)
         {

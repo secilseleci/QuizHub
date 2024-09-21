@@ -14,6 +14,6 @@ namespace Entities.Dtos
         public bool ShowCase { get; set; }
         public DateTime UpdatedDate { get; set; }= DateTime.Now;
 
-        public List<QuestionDtoForUpdate> Questions { get; set; } = new List<QuestionDtoForUpdate>();
+        public List<QuestionDto> Questions { get; set; } = new List<QuestionDto>();
     }
 }

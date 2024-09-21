@@ -18,8 +18,8 @@ namespace Services.Contracts
         Option? GetOneOption(int id, bool trackChanges);
 
         Option? GetCorrectOptionForQuestion(int questionId, bool trackChanges);
-        void CreateOneOption(OptionDtoForInsertion optionDto);
-        void UpdateOneOption(OptionDtoForUpdate optionDto);
+        void CreateOneOption(OptionDto optionDto);
+        void UpdateOneOption(OptionDto optionDto);
         void DeleteOneOption(int id);
 
 

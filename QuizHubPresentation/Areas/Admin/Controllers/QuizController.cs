@@ -9,6 +9,9 @@ using System.IO;
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Http;
 using Entities.Models;
+using Microsoft.CodeAnalysis.Options;
+using NuGet.Packaging;
+using Repositories;
 
 
 namespace QuizHubPresentation.Areas.Admin.Controllers
@@ -19,11 +22,14 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
     {
         private readonly IServiceManager _manager;
         private readonly IMapper _mapper;
-        public QuizController(IServiceManager manager,IMapper mapper)
+     
+        public QuizController(IServiceManager manager,IMapper mapper 
+            )
 
         {
             _manager = manager; 
             _mapper = mapper;
+           
         }
 
        
@@ -50,17 +56,17 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
         {
             var quizDto = new QuizDtoForInsertion
             {
-                Questions = new List<QuestionDtoForInsertion>
+                Questions = new List<QuestionDto>
                     {
-                        new QuestionDtoForInsertion
+                        new QuestionDto
                         {
                             Order = 1,
-                            Options = new List<OptionDtoForInsertion>
+                            Options = new List<OptionDto>
                                 {
-                                new OptionDtoForInsertion { OptionText = string.Empty, IsCorrect = false },
-                                new OptionDtoForInsertion { OptionText = string.Empty, IsCorrect = false },
-                                new OptionDtoForInsertion { OptionText = string.Empty, IsCorrect = false },
-                                new OptionDtoForInsertion { OptionText = string.Empty, IsCorrect = false }
+                                new OptionDto { OptionText = string.Empty, IsCorrect = false },
+                                new OptionDto { OptionText = string.Empty, IsCorrect = false },
+                                new OptionDto { OptionText = string.Empty, IsCorrect = false },
+                                new OptionDto { OptionText = string.Empty, IsCorrect = false }
                 }
             }
         }
@@ -84,11 +90,18 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
 
             foreach (var question in quizDto.Questions)
             {
-                if (question.CorrectOptionId < 0 || question.CorrectOptionId >= question.Options.Count)
+                var optionList = question.Options.ToList();
+
+                if (question.CorrectOptionId < 0 || question.CorrectOptionId >= optionList.Count)
                 {
                     correctOptionSelected = false;
-                    ModelState.AddModelError(string.Empty, $"Soru '{question.QuestionText}' için bir doðru seçenek seçmelisiniz.");
+                    ModelState.AddModelError(string.Empty, $"Soru '{question.QuestionText}' için bir doğru seçenek seçmelisiniz.");
                     return View(quizDto);
+                }
+
+                if (question.CorrectOptionId >= 0 && question.CorrectOptionId < optionList.Count)
+                {
+                    optionList[question.CorrectOptionId].IsCorrect = true;
                 }
             }
 
@@ -97,20 +110,13 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
                 return View(quizDto);
             }
 
-            foreach (var question in quizDto.Questions)
-            {
-                if (question.CorrectOptionId >= 0 && question.CorrectOptionId < question.Options.Count)
-                {
-                    question.Options[question.CorrectOptionId].IsCorrect = true;
-                }
-            }
-
             _manager.QuizService.CreateQuiz(quizDto);
-            TempData["success"] = $"{quizDto.Title} baþarýyla oluþturuldu.";
+            TempData["success"] = $"{quizDto.Title} başarıyla oluşturuldu.";
             return RedirectToAction("Index");
         }
 
-        
+
+
         public IActionResult Update([FromRoute(Name = "id")] int id)
         {
 
@@ -165,6 +171,9 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
 
             return View(quizDto);
         }
+
+
+
 
 
         [HttpGet]

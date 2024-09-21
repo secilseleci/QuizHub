@@ -1,0 +1,17 @@
+﻿@model QuizHubPresentation.Models.Profile.PerformanceViewModel
+<div class="container">
+<div>
+    <h3>Hello, @Model.UserName!</h3>
+    <p>Here is your performance score:</p>
+
+    <!-- Ortalama skoru önce dışarıda gösteriyoruz -->
+    <p>Average Score: @Model.AverageScore%</p>
+
+    <!-- Progress Bar -->
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" style="width:@Model.AverageScore.ToString(System.Globalization.CultureInfo.InvariantCulture)%; min-width: 20px;" aria-valuenow="@Model.AverageScore" aria-valuemin="0" aria-valuemax="100">
+        </div>
+    </div>
+</div>
+</div>
+

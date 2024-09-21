@@ -14,9 +14,9 @@ namespace Services.Contracts
         IEnumerable<Question> GetQuestionsByQuizId(int quizId, bool trackChanges);
         Question? GetOneQuestion(int id, bool trackChanges);
         Question? GetOneQuestionWithOptions(int id, bool trackChanges);
-        void CreateOneQuestion(QuestionDtoForInsertion questionDto);
-        void UpdateOneQuestion(QuestionDtoForUpdate questionDto);
+        void CreateOneQuestion(QuestionDto questionDto);
+        void UpdateOneQuestion(QuestionDto questionDto);
         void DeleteOneQuestion(int id);
-
+        
     }
 }

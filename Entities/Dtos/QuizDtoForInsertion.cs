@@ -13,6 +13,6 @@ namespace Entities.Dtos
         [Required(ErrorMessage = "Title is required")] 
         public string Title { get; set; } = string.Empty;
         public bool ShowCase { get; set; }
-        public List<QuestionDtoForInsertion> Questions { get; set; } = new List<QuestionDtoForInsertion>();
+        public List<QuestionDto> Questions { get; set; } = new List<QuestionDto>();
     }
 }

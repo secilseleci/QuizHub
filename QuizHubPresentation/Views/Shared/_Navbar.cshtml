@@ -22,10 +22,10 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                 <li class="nav-item">
-                   
-                    <a class="nav-link" aria-current="page" asp-area="" asp-page="/Scores">
+
+                        <a class="nav-link" aria-current="page" asp-controller="MyProfile" asp-action="Index">
                         <i class="fa-solid fa-star"></i>
-                        Scores (@await Component.InvokeAsync("CartSummary"))
+                        My Profile 
                     </a>
                     </li>
                     }
