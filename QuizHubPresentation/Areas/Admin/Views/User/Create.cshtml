@@ -10,49 +10,49 @@
             <div class="form-group my-3">
                 <label asp-for="UserName"></label>
                 <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
 
             <div class="form-group my-3">
                 <label asp-for="Email"></label>
                 <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
 
             <div class="form-group my-3">
                 <label asp-for="Password"></label>
                 <input asp-for="Password" class="form-control" />
-                <small class="form-text text-muted">
-                    Password must be at least 6 characters long, include a number, an uppercase letter, a lowercase
-                    letter, and a special character.
-                </small>
+                <span asp-validation-for="Password" class="text-danger"></span>
             </div>
 
-            <div class="form-group my-3">
-                <label asp-for="PhoneNumber"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
+            <div class="form-group">
+                <label asp-for="DepartmentId">Select Department:</label>
+                <select asp-for="DepartmentId" class="form-control" asp-items="ViewBag.Departments">
+                    <option value="">-- Select Department --</option>
+                </select>
+                <span asp-validation-for="DepartmentId" class="text-danger"></span>
             </div>
-
-            <div class="form-group my-3">
-                <div class="btn-group d-flex justify-content-end">
-                    <input type="submit" class="btn btn-primary" />
-                    <a asp-action="Index" class="btn btn-outline-primary">
-                        <i class="fa fa-solid fa-arrow-left"></i>
-                        Back
-                    </a>
-                </div>
-            </div>
-
         </div>
+
         <div class="col-md-6">
             <div class="lead p-2 mt-2">
                 Roles
-                @foreach (var item in Model.Roles)
+                @foreach (var role in ViewBag.Roles)
                 {
                     <div class="form-check my-2">
-                        <input type="checkbox" name="Roles" value="@item" class="form-check-input" />
-                        <label class="form-check-label">@item</label>
+                        <input type="checkbox" name="Roles" value="@role" class="form-check-input" />
+                        <label class="form-check-label">@role</label>
                     </div>
                 }
             </div>
         </div>
+
+        <div class="form-group my-3">
+            <input type="submit" class="btn btn-primary" />
+        </div>
     </div>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

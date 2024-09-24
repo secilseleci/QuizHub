@@ -24,7 +24,9 @@ namespace Repositories
 
         public Quiz? GetOneQuiz(int id, bool trackChanges)
         {
-            return FindByCondition(p => p.QuizId.Equals(id), trackChanges);
+            return trackChanges
+                   ? _context.Quizzes.SingleOrDefault(q => q.QuizId == id)
+                   : _context.Quizzes.AsNoTracking().SingleOrDefault(q => q.QuizId == id);
         }
 
         public IQueryable<Quiz> GetShowCaseQuizzes(bool trackChanges)

@@ -102,5 +102,34 @@ namespace Services
             var quizDto = _mapper.Map<QuizDtoForUpdate>(quiz);
             return quizDto;
         }
+
+
+        public void AssignQuizToUsers(int quizId, List<string> userIds)
+        {
+            foreach (var userId in userIds)
+            {
+                // Zaten atanmışsa tekrar eklememek için kontrol
+                var existingAssignment = _manager.UserQuizInfo
+                    .FindByCondition(q => q.QuizId == quizId && q.UserId == userId, false);
+
+                if (existingAssignment == null)
+                {
+                    var assignment = new UserQuizInfo
+                    {
+                        QuizId = quizId,
+                        UserId = userId,
+                        IsCompleted = false,
+                        Score = 0,
+                        CorrectAnswer = 0,
+                        FalseAnswer = 0,
+                        BlankAnswer = 0
+                    };
+                    _manager.UserQuizInfo.CreateOneUserQuizInfo(assignment);
+                }
+            }
+
+            _manager.Save();
+        }
+
     }
 }

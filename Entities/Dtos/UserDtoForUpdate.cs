@@ -1,9 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace Entities.Dtos
 {
     public record UserDtoForUpdate : UserDto
     {
         public HashSet<string> UserRoles { get; set; } = new HashSet<string>();
+
+
     }
 }

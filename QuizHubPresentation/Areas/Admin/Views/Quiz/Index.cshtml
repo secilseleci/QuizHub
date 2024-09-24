@@ -51,10 +51,9 @@
                                    asp-action="Delete" asp-route-id="@q.QuizId">
                                     <i class="fa fa-trash"></i>
                                 </a>
-                                <a data-toggle="tooltip" data-placement="top" title="Web" class="btn btn-info"
-                                   target="_blank" asp-area="" asp-controller="QuizId" asp-action="Get"
-                                   asp-route-id="@q.QuizId">
-                                    <i class="fa fa-search"></i>
+                                <a data-toggle="tooltip" data-placement="top" title="Assign to Users" class="btn btn-info"
+                                   asp-action="Assign" asp-route-id="@q.QuizId">
+                                    <i class="fa fa-users"></i>  
                                 </a>
                             </div>
                         </td>

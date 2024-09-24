@@ -22,8 +22,24 @@ namespace QuizHubPresentation.Controllers
         }
         public IActionResult Index()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");  // Eğer kullanıcı giriş yapmamışsa login sayfasına yönlendir
+            }
             TempData["info"] = $"Welcome back, {DateTime.Now.ToShortTimeString()}";
-            return View();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+             var userQuizInfos = _manager.UserQuizInfo
+               .FindAll(false)  
+               .Where(q => q.UserId == userId && q.Quiz.ShowCase)  
+               .ToList();  
+
+                  
+                    var quizzes = userQuizInfos
+                        .Select(q => q.Quiz)
+                        .ToList();
+
+
+            return View(quizzes);
         }
 
         public IActionResult Details(int id)

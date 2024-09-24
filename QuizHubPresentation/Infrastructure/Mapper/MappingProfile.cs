@@ -24,8 +24,8 @@ public class MappingProfile : Profile
         CreateMap<OptionDto, Option>().ReverseMap();
  
         // User Mapping
-        CreateMap<UserDtoForCreation, IdentityUser>().ReverseMap(); ;
-        CreateMap<UserDtoForUpdate, IdentityUser>().ReverseMap();
+        CreateMap<UserDtoForCreation, ApplicationUser>().ReverseMap(); ;
+        CreateMap<UserDtoForUpdate, ApplicationUser>().ReverseMap();
 
         // UserQuizInfo mapping
       

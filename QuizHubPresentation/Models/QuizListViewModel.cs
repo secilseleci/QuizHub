@@ -6,7 +6,6 @@ namespace QuizHubPresentation.Models
         public IEnumerable<Quiz> Quizzes { get; set; } = Enumerable.Empty<Quiz>();
         public Pagination Pagination { get; set; } = new();
 
-        public int TotalCount => Quizzes.Count();
     }
 }
 

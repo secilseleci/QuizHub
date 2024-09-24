@@ -1,8 +1,12 @@
+using Microsoft.Extensions.Logging;
 using QuizHubPresentation.Infrastructure.Extensions;
  
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole(); // Konsola loglama eklendi
+builder.Logging.AddDebug(); // Debug penceresine loglama eklendi
+ 
 builder.Services.AddControllers();
 builder.Services.AddControllersWithViews(); // MVC hizmetlerini ekler
 builder.Services.AddRazorPages();
@@ -25,7 +29,7 @@ app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseAuthentication();
-app.UseAuthorization();
+app.UseAuthorization(); 
 app.UseCors("AllowAll");
 
 app.UseEndpoints(endpoints =>

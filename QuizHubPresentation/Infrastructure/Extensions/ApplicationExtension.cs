@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Entities.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Repositories;
 
@@ -35,12 +36,12 @@ namespace QuizHubPresentation.Infrastructure.Extensions
             const string adminUser = "Admin";
             const string adminPassword = "Admin+123456";
 
-            // UserManager
-            UserManager<IdentityUser> userManager = app
+            // UserManager (IdentityUser yerine ApplicationUser kullanıyoruz)
+            UserManager<ApplicationUser> userManager = app
                 .ApplicationServices
                 .CreateScope()
                 .ServiceProvider
-                .GetRequiredService<UserManager<IdentityUser>>();
+                .GetRequiredService<UserManager<ApplicationUser>>();
 
             // RoleManager
             RoleManager<IdentityRole> roleManager = app
@@ -49,13 +50,12 @@ namespace QuizHubPresentation.Infrastructure.Extensions
                 .ServiceProvider
                 .GetRequiredService<RoleManager<IdentityRole>>();
 
-            IdentityUser user = await userManager.FindByNameAsync(adminUser);
-            if (user is null)
+            ApplicationUser user = await userManager.FindByNameAsync(adminUser);
+            if (user == null)
             {
-                user = new IdentityUser()
+                user = new ApplicationUser()
                 {
                     Email = "zcomert@samsun.edu.tr",
-                    PhoneNumber = "5061112233",
                     UserName = adminUser,
                 };
 
@@ -72,7 +72,7 @@ namespace QuizHubPresentation.Infrastructure.Extensions
                 );
 
                 if (!roleResult.Succeeded)
-                    throw new Exception("System have problems with role defination for admin.");
+                    throw new Exception("System has problems with role definition for admin.");
             }
         }
     }

@@ -1,6 +1,8 @@
+using AutoMapper;
 using Entities.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Services.Contracts;
 
 namespace QuizHubPresentation.Areas.Admin.Controllers
@@ -10,49 +12,84 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
     public class UserController : Controller
     {
         private readonly IServiceManager _manager;
+        private readonly IMapper _mapper;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(IServiceManager manager)
+        public UserController(IServiceManager manager, IMapper mapper, ILogger<UserController> logger)
         {
             _manager = manager;
+            _mapper = mapper;
+            _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var users = _manager.AuthService.GetAllUsers();
+            var users = await  _manager.AuthService.GetAllUsersWithRolesAsync();
             return View(users);
         }
+
+        [HttpGet]
         public IActionResult Create()
         {
-            return View(new UserDtoForCreation()
-            {
-                Roles = new HashSet<string>(_manager
-                    .AuthService
-                    .Roles
-                    .Select(r => r.Name)
-                    .ToList())
-            });
+            var departments = _manager.DepartmentService.GetAllDepartments(false);
+            var roles = _manager.AuthService.Roles.Select(r => r.Name).ToList();
+
+            // ViewBag ile Departments listesini view'e gönderiyoruz
+            ViewBag.Departments = new SelectList(departments, "DepartmentId", "Name");
+            ViewBag.Roles = roles;
+
+            return View(new UserDtoForCreation());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([FromForm] UserDtoForCreation userDto)
         {
-            if (!ModelState.IsValid || string.IsNullOrWhiteSpace(userDto.Password))
+            if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("Password", "Password is required.");
+                // Eğer validasyon hatası varsa, bilgileri tekrar yükleyip kullanıcıya geri döndür
+                var departments = _manager.DepartmentService.GetAllDepartments(false);
+                ViewBag.Departments = new SelectList(departments, "DepartmentId", "Name");
+
+                var roles = _manager.AuthService.Roles.Select(r => r.Name).ToList();
+                ViewBag.Roles = roles;
+
                 return View(userDto);
             }
 
+            // Eğer validasyon başarılıysa kullanıcıyı oluştur
             var result = await _manager.AuthService.CreateUser(userDto);
-            return result.Succeeded
-                ? RedirectToAction("Index")
-                : View(userDto); // Hata durumunda kullanıcıyı geri döndür
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index");
+            }
+
+            // Hata olursa aynı şekilde bilgileri doldur
+            var departmentsList = _manager.DepartmentService.GetAllDepartments(false);
+            ViewBag.Departments = new SelectList(departmentsList, "DepartmentId", "Name");
+
+            var rolesList = _manager.AuthService.Roles.Select(r => r.Name).ToList();
+            ViewBag.Roles = rolesList;
+
+            return View(userDto);
         }
+
+
+
         public async Task<IActionResult> Update([FromRoute(Name = "id")] string id)
         {
             var user = await _manager.AuthService.GetOneUserForUpdate(id);
+
+            // Department listesi veritabanından çekiliyor
+            var departments = _manager.DepartmentService.GetAllDepartments(false);
+
+            // Seçilen departmentId'yi belirtiyoruz ve ViewModel'e ekliyoruz
+            user.Departments = new SelectList(departments, "DepartmentId", "Name", user.DepartmentId);
+
             return View(user);
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -60,11 +97,16 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _manager.AuthService.Update(userDto);
+                // Kullanıcı bilgilerini güncelle
+                await _manager.AuthService.UpdateUser(userDto);
+
                 return RedirectToAction("Index");
             }
-            return View();
+
+            return View(userDto);  // Hata durumunda tekrar formu göster
         }
+
+
         public async Task<IActionResult> ResetPassword([FromRoute(Name = "id")] string id)
         {
             return View(new ResetPasswordDto()

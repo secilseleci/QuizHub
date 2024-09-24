@@ -1,6 +1,14 @@
-﻿<div class="text-center my-5 border-bottom">
-   
-</div>
+﻿<div class=" my-5 border-bottom">
+   <div class="row">
+        <div class="col-md-3">
+            @await Component.InvokeAsync("Score")
+        </div>
+        <div class="col-md-9">
+            
 
+        </div>
+    </div>
+</div>
  
+   
 @await Component.InvokeAsync("ShowCase", new { page = "default" })

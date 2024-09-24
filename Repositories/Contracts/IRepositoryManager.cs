@@ -13,6 +13,7 @@ namespace Repositories.Contracts
         IOptionRepository Option { get; }
         IUserQuizInfoRepository UserQuizInfo { get; }
         IUserAnswerRepository UserAnswer { get; }
+        IDepartmentRepository Department { get; } // Departman repository eklendi
 
         void Save();
     }

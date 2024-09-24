@@ -1,17 +1,14 @@
 ﻿using AutoMapper;
+using ClosedXML.Excel;
 using Entities.Dtos;
+using Entities.Models;
 using Entities.RequestParameters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using QuizHubPresentation.Models;
 using Services.Contracts;
-using System.IO;
-using ClosedXML.Excel;
-using Microsoft.AspNetCore.Http;
-using Entities.Models;
-using Microsoft.CodeAnalysis.Options;
-using NuGet.Packaging;
-using Repositories;
+using Microsoft.AspNetCore.Identity;
 
 
 namespace QuizHubPresentation.Areas.Admin.Controllers
@@ -20,22 +17,26 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
     [Authorize(Roles ="Admin")]
     public class QuizController : Controller
     {
+        private readonly UserManager<ApplicationUser> _userManager;
+
         private readonly IServiceManager _manager;
         private readonly IMapper _mapper;
-     
-        public QuizController(IServiceManager manager,IMapper mapper 
+
+        public QuizController(IServiceManager manager,IMapper mapper, UserManager<ApplicationUser> userManager
             )
 
         {
             _manager = manager; 
             _mapper = mapper;
-           
+            _userManager = userManager;
+
         }
 
-       
+
 
         public IActionResult Index([FromQuery] QuizRequestParameters q)
         {
+          
             ViewData["Title"] = "Quizzes";
 
             var quizzes = _manager.QuizService.GetAllQuizzesWithDetails(q);
@@ -115,8 +116,6 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-
-
         public IActionResult Update([FromRoute(Name = "id")] int id)
         {
 
@@ -129,7 +128,6 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
             ViewData["Title"] = model?.Title;
             return View(quizDto);
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -171,10 +169,6 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
 
             return View(quizDto);
         }
-
-
-
-
 
         [HttpGet]
         public IActionResult Delete([FromRoute(Name = "id")] int id)
@@ -278,6 +272,67 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
             return RedirectToAction("Index", "Quiz");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Assign(int id)
+        {
+            var quiz = _manager.QuizService.GetOneQuiz(id, false);
+            if (id == 0)
+            {
+                throw new Exception("Geçersiz quizId değeri!");
+            }
+
+
+            var departments = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "IT", Text = "IT" },
+                new SelectListItem { Value = "HR", Text = "Human Resources" },
+                new SelectListItem { Value = "Finance", Text = "Finance" }
+            };
+
+
+            var model = new AssignQuizViewModel
+            {
+                QuizId = id,
+                QuizTitle = quiz.Title,
+                Departments = departments  // Departmanlar listesini gönder
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Assign(AssignQuizViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+              return View(model);
+            }
+
+            // Seçilen departmana ait kullanıcıları bul
+            var allUsers = _userManager.Users.ToList();
+
+            var usersInDepartment = new List<IdentityUser>();
+            foreach (var user in allUsers)
+            {
+                var claims = await _userManager.GetClaimsAsync(user);
+                var departmentClaim = claims.FirstOrDefault(c => c.Type == "Department" && c.Value == model.SelectedDepartment);
+
+                if (departmentClaim != null)
+                {
+                    // Bu kullanıcı seçilen departmana ait, listeye ekle
+                    usersInDepartment.Add(user);
+                }
+            }
+
+            var userIds = usersInDepartment.Select(u => u.Id).ToList();
+
+            // Quiz'i bu kullanıcılara atayın
+            _manager.QuizService.AssignQuizToUsers(model.QuizId, userIds);
+
+            TempData["success"] = "Quiz başarıyla seçilen departmandaki kullanıcılara atandı.";
+            return RedirectToAction("Index");
+        }
 
 
     }

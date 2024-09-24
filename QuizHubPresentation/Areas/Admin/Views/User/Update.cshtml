@@ -17,10 +17,10 @@
                 <input asp-for="Email" class="form-control" />
             </div>
 
-
-            <div class="form-group my-3">
-                <label asp-for="PhoneNumber"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
+            <div class="form-group">
+                <label asp-for="DepartmentId">Select Department:</label>
+                <select asp-for="DepartmentId" class="form-control" asp-items="Model.Departments">
+                </select>
             </div>
 
             <div class="form-group my-3">

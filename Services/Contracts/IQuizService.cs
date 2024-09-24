@@ -16,6 +16,7 @@ namespace Services.Contracts
         Quiz? GetQuizWithDetails(int quizId, bool trackChanges);
         QuizDtoForUpdate GetOneQuizForUpdate(int id, bool trackChanges);
 
+        void AssignQuizToUsers(int quizId, List<string> userIds);
 
 
     }

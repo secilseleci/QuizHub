@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol.Core.Types;
 using QuizHubPresentation.Models;
 using Repositories;
 using Repositories.Contracts;
@@ -13,20 +12,20 @@ namespace QuizHubPresentation.Infrastructure.Extensions
 {
     public static class ServiceExtension
     {
-        public static void ConfigureDbContext(this IServiceCollection services,
-            IConfiguration configuration)
+        public static void ConfigureDbContext(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<RepositoryContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("sqlconnection"),
                     b => b.MigrationsAssembly("Repositories"));
-
                 options.EnableSensitiveDataLogging(true);
             });
         }
+
         public static void ConfigureIdentity(this IServiceCollection services)
         {
-            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            // IdentityUser yerine ApplicationUser kullanıyoruz
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.SignIn.RequireConfirmedEmail = false;
                 options.User.RequireUniqueEmail = true;
@@ -35,10 +34,11 @@ namespace QuizHubPresentation.Infrastructure.Extensions
                 options.Password.RequireDigit = false;
                 options.Password.RequiredLength = 6;
                 options.Password.RequireNonAlphanumeric = false;
-
             })
-            .AddEntityFrameworkStores<RepositoryContext>();
+            .AddEntityFrameworkStores<RepositoryContext>()
+            .AddDefaultTokenProviders();
         }
+
         public static void ConfigureSession(this IServiceCollection services)
         {
             services.AddDistributedMemoryCache();
@@ -48,17 +48,17 @@ namespace QuizHubPresentation.Infrastructure.Extensions
                 options.IdleTimeout = TimeSpan.FromMinutes(10);
             });
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-        
         }
+
         public static void ConfigureRepositoryRegistration(this IServiceCollection services)
         {
             services.AddScoped<IRepositoryManager, RepositoryManager>();
             services.AddScoped<IQuizRepository, QuizRepository>();
             services.AddScoped<IQuestionRepository, QuestionRepository>();
-            services.AddScoped<IOptionRepository, OptionRepository> ();
+            services.AddScoped<IOptionRepository, OptionRepository>();
             services.AddScoped<IUserQuizInfoRepository, UserQuizInfoRepository>();
-           services.AddScoped<IUserAnswerRepository, UserAnswerRepository>();
-
+            services.AddScoped<IUserAnswerRepository, UserAnswerRepository>();
+            services.AddScoped<IDepartmentRepository, DepartmentRepository>();  // Yeni eklediğimiz repository
         }
 
         public static void ConfigureServiceRegistration(this IServiceCollection services)
@@ -70,7 +70,7 @@ namespace QuizHubPresentation.Infrastructure.Extensions
             services.AddScoped<IOptionService, OptionManager>();
             services.AddScoped<IUserQuizInfoService, UserQuizInfoManager>();
             services.AddScoped<IUserAnswerService, UserAnswerManager>();
-
+            services.AddScoped<IDepartmentService, DepartmentManager>();  // Yeni eklediğimiz service
         }
 
         public static void ConfigureApplicationCookie(this IServiceCollection services)
@@ -83,6 +83,7 @@ namespace QuizHubPresentation.Infrastructure.Extensions
                 options.AccessDeniedPath = new PathString("/Account/AccessDenied");
             });
         }
+
         public static void ConfigureRouting(this IServiceCollection services)
         {
             services.AddRouting(options =>
@@ -90,7 +91,6 @@ namespace QuizHubPresentation.Infrastructure.Extensions
                 options.LowercaseUrls = true;
                 options.AppendTrailingSlash = false;
             });
-
         }
     }
 }

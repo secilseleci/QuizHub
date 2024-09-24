@@ -1,4 +1,4 @@
-@model IEnumerable<IdentityUser>
+@model IEnumerable<UserDto>
 
 <div class="text-center my-5">
     <div class="display-6 border-bottom">Users</div>
@@ -11,35 +11,50 @@
     </a>
 </div>
 
-<table>
+<table class="table table-striped">
     <thead>
         <tr>
-            <th>Id</th>
+          
             <th>UserName</th>
+            <th>Department</th>
             <th>Roles</th>
             <th>Operations</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (IdentityUser user in Model)
+        @foreach (var user in Model)
         {
             <tr>
-                <td>@user.Id</td>
-                <td>@user.UserName</td>
-                <td user-name="@user.UserName" user-role=""></td>
+                
+                 <td>@user.UserName</td>
+                <td>@user.Department</td>
+                <td>
+                    @if (user.Roles != null && user.Roles.Count > 0)
+                    {
+                        <ul>
+                            @foreach (var role in user.Roles)
+                            {
+                                <li>@role</li> <!-- Roller liste olarak gösteriliyor -->
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <span>No Roles Assigned</span>
+                    }
+                </td>
                 <td>
                     <div class="btn-group">
-                        <a class="btn btn-warning rounded-0" asp-action="Update" asp-route-id="@user.UserName">
-                            <i class="fa fa-solid fa-edit"></i>
-                            Edit</a>
-                        <a class="btn btn-info rounded-0" asp-action="ResetPassword" asp-route-id="@user.UserName">
-                            <i class="fa fa-solid fa-edit"></i>
-                            Reset Password</a>
+                        <a class="btn btn-warning rounded-0" asp-action="Update" asp-route-id="@user.Id">
+                            <i class="fa fa-solid fa-edit"></i> Edit
+                        </a>
+                        <a class="btn btn-info rounded-0" asp-action="ResetPassword" asp-route-id="@user.Id">
+                            <i class="fa fa-solid fa-edit"></i> Reset Password
+                        </a>
                         <form method="post" asp-action="DeleteOneUser">
                             <input type="hidden" name="UserName" value="@user.UserName" />
                             <button type="submit" class="btn btn-danger rounded-0">
-                                <i class="fa fa-solid fa-trash"></i>
-                                Delete
+                                <i class="fa fa-solid fa-trash"></i> Delete
                             </button>
                         </form>
                     </div>
