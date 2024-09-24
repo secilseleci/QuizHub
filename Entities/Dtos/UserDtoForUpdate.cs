@@ -5,8 +5,7 @@ namespace Entities.Dtos
 {
     public record UserDtoForUpdate : UserDto
     {
-        public HashSet<string> UserRoles { get; set; } = new HashSet<string>();
-
+        public List<string> UserRoles { get; set; } = new List<string>(); // Roller
 
     }
 }

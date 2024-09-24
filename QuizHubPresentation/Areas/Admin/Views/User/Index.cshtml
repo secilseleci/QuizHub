@@ -1,8 +1,9 @@
-@model IEnumerable<UserDto>
+@model IEnumerable<UserDtoForList>
 
 <div class="text-center my-5">
     <div class="display-6 border-bottom">Users</div>
 </div>
+ 
 
 <div class="d-flex justify-content-end">
     <a asp-action="Create" class="btn btn-outline-success">
@@ -13,7 +14,8 @@
 
 <table class="table table-striped">
     <thead>
-        <tr>
+        <tr>    
+
           
             <th>UserName</th>
             <th>Department</th>

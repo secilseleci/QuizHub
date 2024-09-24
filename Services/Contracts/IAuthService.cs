@@ -14,11 +14,11 @@ namespace Services.Contracts
         Task<IdentityResult> CreateUser(UserDtoForCreation userDto);
         Task<ApplicationUser> GetOneUser(string userName);
         Task UpdateUser(UserDtoForUpdate userDto);
-        Task<UserDtoForUpdate> GetOneUserForUpdate(string userName);
+        Task<UserDtoForUpdate> GetOneUserForUpdate(string id);
         Task<IdentityResult> ResetPassword(ResetPasswordDto model);
         Task<IdentityResult> DeleteOneUser(string userName);
         Task AssignDepartmentToUser(string userId, int departmentId);  // Departman atama metodu
-        Task<List<UserDto>> GetAllUsersWithRolesAsync();
+        Task<List<UserDtoForList>> GetAllUsersWithRolesAsync();
 
 
 

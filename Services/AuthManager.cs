@@ -4,6 +4,7 @@ using Services.Contracts;
 using AutoMapper;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Services
 {
@@ -12,34 +13,38 @@ namespace Services
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;  // IdentityUser yerine ApplicationUser
         private readonly IMapper _mapper;
+         
 
-        public AuthManager(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IMapper mapper)
+        public AuthManager(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IMapper mapper  )
         {
             _roleManager = roleManager;
             _userManager = userManager;
             _mapper = mapper;
         }
-        public async Task<List<UserDto>> GetAllUsersWithRolesAsync()
-        {
+      
+            public async Task<List<UserDtoForList>> GetAllUsersWithRolesAsync()
+            {
             var users = await _userManager.Users.Include(u => u.Department).ToListAsync();
 
-            var userWithRolesList = new List<UserDto>();
+            var userWithRolesList = new List<UserDtoForList>();
 
             foreach (var user in users)
             {
-                var roles = await _userManager.GetRolesAsync(user); // Kullanıcının rollerini al
-                userWithRolesList.Add(new UserDto
+                var roles = await _userManager.GetRolesAsync(user);
+
+                // Kullanıcıyı DTO'ya map ediyoruz ve departman adını ekliyoruz
+                userWithRolesList.Add(new UserDtoForList
                 {
-                   
+                    Id = user.Id,
                     UserName = user.UserName,
-                    Email = user.Email,
-                    Department = user.Department?.Name,  // Departman adı (DepartmentId yerine)
-                    Roles = roles.ToList()  // Roller
+                    Department = user.Department?.Name,  // Departman adı burada dinamik olarak geliyor
+                    Roles = roles.ToList()
                 });
             }
 
             return userWithRolesList;
-        }
+            }
+ 
 
         public IEnumerable<IdentityRole> Roles => _roleManager.Roles;
 
@@ -58,35 +63,7 @@ namespace Services
             throw new Exception("User could not be found.");
         }
 
-        public async Task<UserDtoForUpdate> GetOneUserForUpdate(string userName)
-        {
-            var user = await GetOneUser(userName);
-            var userDto = _mapper.Map<UserDtoForUpdate>(user);
-            userDto.Roles = new List<string>(Roles.Select(r => r.Name).ToList());
-            userDto.UserRoles = new HashSet<string>(await _userManager.GetRolesAsync(user));
-            return userDto;
-        }
-
-        public async Task UpdateUser(UserDtoForUpdate userDto)
-        {
-            var user = await GetOneUser(userDto.UserName);
-
-            
-            user.Email = userDto.Email;
-            var appUser = user as ApplicationUser;
-            if (appUser != null)
-            {
-                appUser.DepartmentId = userDto.DepartmentId;
-            }
-            var result = await _userManager.UpdateAsync(user);
-
-            if (userDto.Roles.Count > 0)
-            {
-                var userRoles = await _userManager.GetRolesAsync(user);
-                await _userManager.RemoveFromRolesAsync(user, userRoles);
-                await _userManager.AddToRolesAsync(user, userDto.Roles);
-            }
-        }
+     
 
         public async Task<IdentityResult> DeleteOneUser(string userName)
         {
@@ -129,6 +106,69 @@ namespace Services
             }
 
             return result;
+        }
+
+        public async Task<UserDtoForUpdate> GetOneUserForUpdate(string id)
+        {
+            // Kullanıcıyı bul, Departman ve Roller dahil
+            var user = await _userManager.Users
+                .Include(u => u.Department) // Departman bilgisi dahil
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            if (user == null)
+                throw new Exception("User not found.");
+
+            // Kullanıcıyı DTO'ya map ediyoruz
+            var userDto = _mapper.Map<UserDtoForUpdate>(user);
+
+            var userRoles = await _userManager.GetRolesAsync(user);
+            userDto.UserRoles = userRoles.ToList();  // Kullanıcıya atanmış rolleri dto'ya ekle
+            var allRoles = _roleManager.Roles.Select(r => r.Name).ToList();
+            userDto.Roles = allRoles;  // Sistem'deki tüm rolleri dto'ya ekle
+            return userDto;
+        }
+
+
+        public async Task UpdateUser(UserDtoForUpdate userDto)
+        {
+             var user = await _userManager.Users
+                .FirstOrDefaultAsync(u => u.UserName == userDto.UserName);
+
+            if (user == null)
+                throw new Exception("User not found.");
+
+            // Kullanıcının emailini ve departmanını güncelle
+            user.Email = userDto.Email;
+            if (user is ApplicationUser appUser)
+            {
+                appUser.DepartmentId = userDto.DepartmentId;
+            }
+
+            // Kullanıcıyı güncelle
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+                throw new Exception("User could not be updated.");
+
+            // Kullanıcının mevcut rollerini al ve güncelle
+            var userRoles = await _userManager.GetRolesAsync(user);
+            var rolesToRemove = userRoles.Except(userDto.UserRoles).ToList();
+            var rolesToAdd = userDto.UserRoles.Except(userRoles).ToList();
+
+            // Eski rolleri kaldır
+            if (rolesToRemove.Any())
+            {
+                var removeResult = await _userManager.RemoveFromRolesAsync(user, rolesToRemove);
+                if (!removeResult.Succeeded)
+                    throw new Exception("Roles could not be removed.");
+            }
+
+            // Yeni rolleri ekle
+            if (rolesToAdd.Any())
+            {
+                var addResult = await _userManager.AddToRolesAsync(user, rolesToAdd);
+                if (!addResult.Succeeded)
+                    throw new Exception("Roles could not be added.");
+            }
         }
 
     }

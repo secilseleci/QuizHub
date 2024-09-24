@@ -1,15 +1,17 @@
 @model UserDtoForUpdate
 
 <div class="text-center my-5">
-    <div class="display-6">Update (@Model.UserName)</div>
+    <div class="display-6">Update User</div>
 </div>
 
 <form method="post" asp-action="Update">
+    <input type="hidden" asp-for="Id" />
+
     <div class="row">
         <div class="col-md-6">
             <div class="form-group my-3">
                 <label asp-for="UserName"></label>
-                <input asp-for="UserName" class="form-control" />
+                <input asp-for="UserName" class="form-control" readonly />  
             </div>
 
             <div class="form-group my-3">
@@ -17,40 +19,33 @@
                 <input asp-for="Email" class="form-control" />
             </div>
 
-            <div class="form-group">
-                <label asp-for="DepartmentId">Select Department:</label>
-                <select asp-for="DepartmentId" class="form-control" asp-items="Model.Departments">
-                </select>
-            </div>
-
             <div class="form-group my-3">
-                <div class="btn-group d-flex justify-content-end">
-                    <input type="submit" class="btn btn-primary" />
-                    <a asp-action="Index" class="btn btn-outline-primary">
-                        <i class="fa fa-solid fa-arrow-left"></i>
-                        Back
-                    </a>
-                </div>
-            </div>
+                <label asp-for="DepartmentId">Select Department:</label>
+                <select asp-for="DepartmentId" class="form-control" asp-items="ViewBag.Departments">
+                    <option value="">-- Select Department --</option>
+                </select>              
 
+            </div>
         </div>
+
         <div class="col-md-6">
             <div class="lead p-2 mt-2">
                 Roles
-                @foreach (var item in Model.Roles)
+                @foreach (var role in Model.Roles)
                 {
                     <div class="form-check my-2">
-                        <input type="checkbox" 
-                            name="Roles" 
-                            value="@item" 
-                            checked="@(Model.UserRoles.Contains(@item))"
-                            class="form-check-input" />
-                        <label class="form-check-label">@item</label>
+                        <input type="checkbox" name="UserRoles" value="@role" class="form-check-input"
+                        @(Model.UserRoles.Contains(role) ? "checked" : "") />
+                        <label class="form-check-label">@role</label>
                     </div>
                 }
             </div>
-            <div class="text-muted">
-                Please choose the roles for the user.
+        </div>
+
+        <div class="col-md-12">
+            <div class="btn-group d-flex justify-content-end">
+                <input type="submit" class="btn btn-primary" value="Update User" />
+                <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
             </div>
         </div>
     </div>

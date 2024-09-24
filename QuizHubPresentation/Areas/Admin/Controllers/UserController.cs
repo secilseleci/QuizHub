@@ -47,7 +47,6 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                // Eğer validasyon hatası varsa, bilgileri tekrar yükleyip kullanıcıya geri döndür
                 var departments = _manager.DepartmentService.GetAllDepartments(false);
                 ViewBag.Departments = new SelectList(departments, "DepartmentId", "Name");
 
@@ -57,7 +56,6 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
                 return View(userDto);
             }
 
-            // Eğer validasyon başarılıysa kullanıcıyı oluştur
             var result = await _manager.AuthService.CreateUser(userDto);
 
             if (result.Succeeded)
@@ -65,7 +63,6 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            // Hata olursa aynı şekilde bilgileri doldur
             var departmentsList = _manager.DepartmentService.GetAllDepartments(false);
             ViewBag.Departments = new SelectList(departmentsList, "DepartmentId", "Name");
 
@@ -76,35 +73,36 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
         }
 
 
-
-        public async Task<IActionResult> Update([FromRoute(Name = "id")] string id)
+        [HttpGet]
+        public async Task<IActionResult> Update(string id)
         {
             var user = await _manager.AuthService.GetOneUserForUpdate(id);
-
-            // Department listesi veritabanından çekiliyor
             var departments = _manager.DepartmentService.GetAllDepartments(false);
+            ViewBag.Departments = new SelectList(departments, "DepartmentId", "Name", user.DepartmentId);
 
-            // Seçilen departmentId'yi belirtiyoruz ve ViewModel'e ekliyoruz
-            user.Departments = new SelectList(departments, "DepartmentId", "Name", user.DepartmentId);
-
-            return View(user);
+            return View(user);  
         }
+
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update([FromForm] UserDtoForUpdate userDto)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                // Kullanıcı bilgilerini güncelle
-                await _manager.AuthService.UpdateUser(userDto);
+                var departments = _manager.DepartmentService.GetAllDepartments(false);
+                ViewBag.Departments = new SelectList(departments, "DepartmentId", "Name", userDto.DepartmentId);
+                var allRoles = _manager.AuthService.Roles.Select(r => r.Name).ToList();
+                userDto.Roles = allRoles;
 
-                return RedirectToAction("Index");
+                return View(userDto);
             }
+            await _manager.AuthService.UpdateUser(userDto);
 
-            return View(userDto);  // Hata durumunda tekrar formu göster
+            return RedirectToAction("Index");
         }
+
 
 
         public async Task<IActionResult> ResetPassword([FromRoute(Name = "id")] string id)
