@@ -24,7 +24,7 @@ namespace Services
       
             public async Task<List<UserDtoForList>> GetAllUsersWithRolesAsync()
             {
-            var users = await _userManager.Users.Include(u => u.Department).ToListAsync();
+            var users = await _userManager.Users.Include(u => u.DepartmentName).ToListAsync();
 
             var userWithRolesList = new List<UserDtoForList>();
 
@@ -37,7 +37,7 @@ namespace Services
                 {
                     Id = user.Id,
                     UserName = user.UserName,
-                    Department = user.Department?.Name,  // Departman adı burada dinamik olarak geliyor
+                    DepartmentName = user.DepartmentName?.DeparmentName,  // Departman adı burada dinamik olarak geliyor
                     Roles = roles.ToList()
                 });
             }
@@ -112,7 +112,7 @@ namespace Services
         {
             // Kullanıcıyı bul, Departman ve Roller dahil
             var user = await _userManager.Users
-                .Include(u => u.Department) // Departman bilgisi dahil
+                .Include(u => u.DepartmentName) // Departman bilgisi dahil
                 .FirstOrDefaultAsync(u => u.Id == id);
 
             if (user == null)

@@ -10,6 +10,9 @@ namespace Repositories
         {
         }
 
+        public IQueryable<Department> GetAllDepartments(bool trackChanges) => FindAll(trackChanges);
+       
+
         public Department GetDepartmentWithUsers(int departmentId, bool trackChanges)
         {
             return FindAll(trackChanges)
@@ -18,5 +21,9 @@ namespace Repositories
                    .SingleOrDefault();
         }
 
+        public Department? GetOneDepartment(int id, bool trackChanges)
+        {
+            return FindByCondition(d => d.DepartmentId.Equals(id), trackChanges);
+        }
     }
 }

@@ -15,5 +15,7 @@ namespace Entities.Models
         public DateTime UpdatedDate { get; set; }
         public int QuestionCount { get; set; }
         public bool ShowCase { get; set; }
+        public ICollection<Department> Departments { get; set; }
+
     }
 }

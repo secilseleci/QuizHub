@@ -10,7 +10,8 @@ namespace QuizHubPresentation.Models
 
         public List<SelectListItem> Departments { get; set; } = new List<SelectListItem>();
 
-        // Seçilen departman
-        public string SelectedDepartment { get; set; }
+        // Seçilen departmanlar
+         public List<string> SelectedDepartments { get; set; } = new List<string>();
+
     }
 }

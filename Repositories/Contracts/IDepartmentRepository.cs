@@ -9,7 +9,11 @@ namespace Repositories.Contracts
 {
     public interface IDepartmentRepository : IRepositoryBase<Department>
     {
+        IQueryable<Department> GetAllDepartments(bool trackChanges);
+        
+
         Department GetDepartmentWithUsers(int departmentId, bool trackChanges);
+        Department? GetOneDepartment(int id, bool trackChanges);
 
     }
 }

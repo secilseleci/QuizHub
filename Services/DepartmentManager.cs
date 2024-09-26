@@ -28,5 +28,13 @@ namespace Services
         {
             return _repository.Department.GetDepartmentWithUsers(departmentId, trackChanges);
         }
+
+        public Department? GetOneDepartment(int id, bool trackChanges)
+        {
+            var department = _repository.Department.GetOneDepartment(id, trackChanges);
+            if (department is null)
+                throw new Exception("department not found!");
+            return department;
+        }
     }
 }

@@ -50,5 +50,6 @@ app.UseEndpoints(endpoints =>
 
 app.ConfigureAndCheckMigration();
 app.ConfigureLocalization();
-app.ConfigureDefaultAdminUser();
+await app.ConfigureDefaultAdminUser();
+await app.ConfigureDevelopmentUsers(); 
 app.Run();

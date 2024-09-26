@@ -12,6 +12,6 @@ namespace Entities.Models
         public int? DepartmentId { get; set; } // Kullanıcının departmanı için ID
 
         // Navigasyon özelliği
-        public Department Department { get; set; }
+        public Department DepartmentName { get; set; }
     }
 }

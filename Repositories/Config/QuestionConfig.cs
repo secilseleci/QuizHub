@@ -138,7 +138,27 @@ namespace Repositories.Config
                      Order = 3,
                      QuestionText = "Which planet is known as the Red Planet?",
                      CorrectOptionId =  54,
-                 }
+                 },
+
+
+                    // Quiz 4 - Bilişim Soruları
+                    new Question
+                    {
+                        QuestionId = 15,
+                        QuizId = 4,
+                        Order = 1,
+                        QuestionText = "What does CPU stand for?",
+                        CorrectOptionId = 57 // Doğru cevap "Central Processing Unit" olacak
+                    },
+                    new Question
+                    {
+                        QuestionId = 16,
+                        QuizId = 4,
+                        Order = 2,
+                        QuestionText = "Which programming language is primarily used for web development?",
+                        CorrectOptionId = 61 // Doğru cevap "JavaScript" olacak
+                    }
+
             );
         }
     }

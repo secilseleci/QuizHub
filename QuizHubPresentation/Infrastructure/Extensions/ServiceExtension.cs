@@ -24,7 +24,6 @@ namespace QuizHubPresentation.Infrastructure.Extensions
 
         public static void ConfigureIdentity(this IServiceCollection services)
         {
-            // IdentityUser yerine ApplicationUser kullanıyoruz
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.SignIn.RequireConfirmedEmail = false;

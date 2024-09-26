@@ -7,7 +7,7 @@ namespace Entities.Models
             public int UserQuizInfoId { get; set; }
 
             public string UserId { get; set; }  // IdentityUser'daki Id, string tipindedir
-            public IdentityUser User { get; set; }  // IdentityUser ile ilişkilendirme
+            public ApplicationUser User { get; set; }  // IdentityUser ile ilişkilendirme
 
             public int QuizId { get; set; }
             public Quiz Quiz { get; set; }

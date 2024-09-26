@@ -48,7 +48,7 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 var departments = _manager.DepartmentService.GetAllDepartments(false);
-                ViewBag.Departments = new SelectList(departments, "DepartmentId", "Name");
+                ViewBag.Departments = new SelectList(departments, "DepartmentId", "DepartmentName");
 
                 var roles = _manager.AuthService.Roles.Select(r => r.Name).ToList();
                 ViewBag.Roles = roles;
@@ -64,7 +64,7 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
             }
 
             var departmentsList = _manager.DepartmentService.GetAllDepartments(false);
-            ViewBag.Departments = new SelectList(departmentsList, "DepartmentId", "Name");
+            ViewBag.Departments = new SelectList(departmentsList, "DepartmentId", "DepartmentName");
 
             var rolesList = _manager.AuthService.Roles.Select(r => r.Name).ToList();
             ViewBag.Roles = rolesList;
@@ -78,7 +78,7 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
         {
             var user = await _manager.AuthService.GetOneUserForUpdate(id);
             var departments = _manager.DepartmentService.GetAllDepartments(false);
-            ViewBag.Departments = new SelectList(departments, "DepartmentId", "Name", user.DepartmentId);
+            ViewBag.Departments = new SelectList(departments, "DepartmentId", "DepartmentName", user.DepartmentId);
 
             return View(user);  
         }
@@ -92,7 +92,7 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 var departments = _manager.DepartmentService.GetAllDepartments(false);
-                ViewBag.Departments = new SelectList(departments, "DepartmentId", "Name", userDto.DepartmentId);
+                ViewBag.Departments = new SelectList(departments, "DepartmentId", "DepartmentName", userDto.DepartmentId);
                 var allRoles = _manager.AuthService.Roles.Select(r => r.Name).ToList();
                 userDto.Roles = allRoles;
 

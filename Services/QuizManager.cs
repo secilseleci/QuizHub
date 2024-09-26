@@ -2,6 +2,8 @@
 using Entities.Dtos;
 using Entities.Models;
 using Entities.RequestParameters;
+using Microsoft.EntityFrameworkCore;
+using Repositories;
 using Repositories.Contracts;
 using Services.Contracts;
 
@@ -13,12 +15,13 @@ namespace Services
     {
         private readonly IRepositoryManager _manager;
         private readonly IMapper _mapper;
+        private readonly RepositoryContext _context;
 
-        public QuizManager(IRepositoryManager manager, IMapper mapper)
+        public QuizManager(IRepositoryManager manager, IMapper mapper, RepositoryContext context)
         {
             _manager = manager;
             _mapper = mapper;
-
+            _context = context;
         }
 
         public void CreateQuiz(QuizDtoForInsertion quizDto)
@@ -60,13 +63,11 @@ namespace Services
 
             _manager.Save();
         }
-
         public IEnumerable<Quiz> GetAllQuizzes(bool trackChanges)
         {
             return _manager.Quiz.GetAllQuizzes(trackChanges);
 
         }
-
         public Quiz? GetOneQuiz(int id, bool trackChanges)
             {
                 var quiz = _manager.Quiz.GetOneQuiz(id, trackChanges);
@@ -74,24 +75,15 @@ namespace Services
                     throw new Exception("Quiz not found!");
                 return quiz;
             }
-
-        public IEnumerable<Quiz> GetShowCaseQuizzes(bool trackChanges)
-                {
-                    var quizzes = _manager.Quiz.GetShowCaseQuizzes(trackChanges);
-                    return quizzes;
-                }
-
         public IEnumerable<Quiz> GetAllQuizzesWithDetails(QuizRequestParameters q)
         {
             return _manager.Quiz.GetAllQuizzesWithDetails(q);
         }
-
         public Quiz? GetQuizWithDetails(int quizId, bool trackChanges)
         {
             return _manager.Quiz.GetQuizWithDetails(quizId, trackChanges);
 
         }
-
         public QuizDtoForUpdate GetOneQuizForUpdate(int id, bool trackChanges)
         {
             var quiz = _manager.Quiz.GetQuizWithDetails(id, trackChanges);
@@ -102,34 +94,41 @@ namespace Services
             var quizDto = _mapper.Map<QuizDtoForUpdate>(quiz);
             return quizDto;
         }
-
-
-        public void AssignQuizToUsers(int quizId, List<string> userIds)
+        public void AssignQuizToDepartments(int quizId, List<int> departmentIds)
         {
-            foreach (var userId in userIds)
-            {
-                // Zaten atanmışsa tekrar eklememek için kontrol
-                var existingAssignment = _manager.UserQuizInfo
-                    .FindByCondition(q => q.QuizId == quizId && q.UserId == userId, false);
+            var quiz = _manager.Quiz.GetOneQuiz(quizId, true);
 
-                if (existingAssignment == null)
+            if (quiz == null)
+            {
+                throw new Exception("Quiz bulunamadı!");
+            }
+            if (quiz.Departments == null)
+            {
+                quiz.Departments = new List<Department>();
+            }
+            foreach (var departmentId in departmentIds)
+            {
+                var department = _manager.Department.GetOneDepartment(departmentId,true);
+
+                if (department == null)
                 {
-                    var assignment = new UserQuizInfo
-                    {
-                        QuizId = quizId,
-                        UserId = userId,
-                        IsCompleted = false,
-                        Score = 0,
-                        CorrectAnswer = 0,
-                        FalseAnswer = 0,
-                        BlankAnswer = 0
-                    };
-                    _manager.UserQuizInfo.CreateOneUserQuizInfo(assignment);
+                    throw new Exception($"Department {departmentId} bulunamadı!");
                 }
+
+                if (!quiz.Departments.Contains(department))
+                {
+                    quiz.Departments.Add(department);
+                }
+                _manager.Save();  
+
             }
 
-            _manager.Save();
         }
 
+      public IEnumerable<Quiz> GetShowCaseQuizzes(bool trackChanges)
+                {
+                    var quizzes = _manager.Quiz.GetShowCaseQuizzes(trackChanges);
+                    return quizzes;
+                }
     }
 }

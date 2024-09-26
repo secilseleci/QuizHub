@@ -15,7 +15,7 @@ namespace Entities.Dtos
         [Required(ErrorMessage = "UserName is required.")]
         public string? UserName { get; init; }
 
-        public string Department { get; set; }  // Departman adı buraya set ediliyor
+        public string DepartmentName { get; set; }  // Departman adı buraya set ediliyor
 
 
 

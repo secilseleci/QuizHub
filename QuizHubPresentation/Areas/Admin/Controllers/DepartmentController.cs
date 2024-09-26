@@ -6,18 +6,18 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles ="Admin")]
-    public class RoleController : Controller
+    public class DepartmentController : Controller
     {
         private readonly IServiceManager _manager;
 
-        public RoleController(IServiceManager manager)
+        public DepartmentController(IServiceManager manager)
         {
             _manager = manager;
         }
 
         public IActionResult Index()
         {
-            return View(_manager.AuthService.Roles);
+            return View();
         }
     }
 }

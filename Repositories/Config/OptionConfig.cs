@@ -422,9 +422,69 @@ namespace Repositories.Config
                        QuestionId = 14,
                        OptionText = "Saturn",
                        IsCorrect =  false,
-                   }
-                     
+                   },
 
+
+                // Quiz 4 - Bilişim Soruları Seçenekleri
+                // Soru 1 - What does CPU stand for?
+                new Option
+                {
+                    OptionId = 57, // Doğru cevap
+                    QuestionId = 15,
+                    OptionText = "Central Processing Unit",
+                    IsCorrect = true
+                },
+                new Option
+                {
+                    OptionId = 58,
+                    QuestionId = 15,
+                    OptionText = "Computer Personal Unit",
+                    IsCorrect = false
+                },
+                new Option
+                {
+                    OptionId = 59,
+                    QuestionId = 15,
+                    OptionText = "Central Power Unit",
+                    IsCorrect = false
+                },
+                new Option
+                {
+                    OptionId = 60,
+                    QuestionId = 15,
+                    OptionText = "Control Processing Unit",
+                    IsCorrect = false
+                },
+
+                // Soru 2 - Which programming language is primarily used for web development?
+                new Option
+                {
+                    OptionId = 61, // Doğru cevap
+                    QuestionId = 16,
+                    OptionText = "JavaScript",
+                    IsCorrect = true
+                },
+                new Option
+                {
+                    OptionId = 62,
+                    QuestionId = 16,
+                    OptionText = "Python",
+                    IsCorrect = false
+                },
+                new Option
+                {
+                    OptionId = 63,
+                    QuestionId = 16,
+                    OptionText = "C#",
+                    IsCorrect = false
+                },
+                new Option
+                {
+                    OptionId = 64,
+                    QuestionId = 16,
+                    OptionText = "Ruby",
+                    IsCorrect = false
+                }
 
 
             );

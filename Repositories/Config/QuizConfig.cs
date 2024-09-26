@@ -41,6 +41,13 @@ namespace Repositories.Config
                     Title = "General Knowledge",
                     ShowCase = true,
                     QuestionCount = 3
+                },
+                new Quiz
+                {
+                    QuizId = 4,
+                    Title = "Bilişim",
+                    ShowCase = true,
+                    QuestionCount = 2
                 }
             );
         }

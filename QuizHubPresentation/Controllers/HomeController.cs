@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Entities.Dtos;
 using Entities.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Repositories.Contracts;
 using System.Security.Claims;
@@ -11,33 +13,38 @@ namespace QuizHubPresentation.Controllers
 
     public class HomeController : Controller
     {
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IRepositoryManager _manager;
         private readonly IMapper _mapper;
        
-        public HomeController(IRepositoryManager manager, IMapper mapper )
+        public HomeController(IRepositoryManager manager, IMapper mapper,UserManager<ApplicationUser> userManager)
         {
             _manager = manager;
             _mapper = mapper;
+            _userManager = userManager;
           
         }
         public IActionResult Index()
         {
             if (!User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Login", "Account");  // Eğer kullanıcı giriş yapmamışsa login sayfasına yönlendir
+                return RedirectToAction("Login", "Account");
             }
+
             TempData["info"] = $"Welcome back, {DateTime.Now.ToShortTimeString()}";
+
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-             var userQuizInfos = _manager.UserQuizInfo
-               .FindAll(false)  
-               .Where(q => q.UserId == userId && q.Quiz.ShowCase)  
-               .ToList();  
+            var user = _userManager.FindByIdAsync(userId).Result;   
+            var departmentId = user?.DepartmentId;
 
-                  
-                    var quizzes = userQuizInfos
-                        .Select(q => q.Quiz)
-                        .ToList();
+            var userQuizInfos = _manager.UserQuizInfo
+                .FindAll(false)
+                .Where(q => q.UserId == userId && q.Quiz.ShowCase && q.Quiz.Departments.Any(d => d.DepartmentId == departmentId))
+                .ToList();
 
+            var quizzes = userQuizInfos
+                .Select(q => q.Quiz)
+                .ToList();
 
             return View(quizzes);
         }
@@ -165,7 +172,6 @@ namespace QuizHubPresentation.Controllers
         }
          
 
-
         [HttpPost]
         [Authorize]
         public IActionResult FinishQuiz()
@@ -211,7 +217,6 @@ namespace QuizHubPresentation.Controllers
         }
 
 
-
         [Authorize]
         public IActionResult QuizCompleted()
         {
@@ -232,7 +237,6 @@ namespace QuizHubPresentation.Controllers
             return View(quizInfoDto);
         }
 
-        // Private metot: Sık tekrarlanan quiz sorgusu için
         private Quiz GetQuizWithDetails(int quizId)
         {
             var quiz = _manager.Quiz.GetQuizWithDetails(quizId, trackChanges: false);

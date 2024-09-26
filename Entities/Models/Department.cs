@@ -1,18 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Entities.Models
+﻿namespace Entities.Models
 {
     public class Department
     {
         public int DepartmentId { get; set; }
-        public string Name { get; set; }
+        public string DeparmentName { get; set; }
 
-        // Kullanıcılarla ilişki
-        public ICollection<ApplicationUser> Users { get; set; }  // IdentityUser yerine ApplicationUser kullanıyoruz
+        public ICollection<Quiz> Quizzes { get; set; }
+        public ICollection<ApplicationUser> Users { get; set; }  
     }
 }

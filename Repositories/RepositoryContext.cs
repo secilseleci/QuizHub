@@ -1,10 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Entities.Models;
-using Repositories.Config;
-using System.Reflection;
+﻿using Entities.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace Repositories;
 
@@ -16,6 +14,8 @@ public class RepositoryContext : IdentityDbContext<IdentityUser>
     public DbSet<UserQuizInfo> UserQuizInfo { get; set; }
     public DbSet<UserAnswer> UserAnswers { get; set; }
     public DbSet<Department> Departments { get; set; }
+    public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+
     public RepositoryContext(DbContextOptions<RepositoryContext> options) : base(options)
     {
 
@@ -27,28 +27,33 @@ public class RepositoryContext : IdentityDbContext<IdentityUser>
 
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
+        modelBuilder.Entity<Quiz>()
+       .HasMany(q => q.Departments)
+       .WithMany(d => d.Quizzes)
+       .UsingEntity(j => j.ToTable("QuizDepartments"));
+
         modelBuilder.Entity<UserQuizInfo>()
-                .HasMany(uqi => uqi.UserAnswers)
-                 .WithOne(ua => ua.UserQuizInfo)
-                 .OnDelete(DeleteBehavior.Restrict);
+        .HasMany(uqi => uqi.UserAnswers)
+        .WithOne(ua => ua.UserQuizInfo)
+        .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<UserAnswer>()
-               .HasOne(ua => ua.Question)
-               .WithMany(q => q.UserAnswers)
-               .OnDelete(DeleteBehavior.Restrict); // Diğer ilişkilerde de aynı şekilde davran
-                                                   // Kullanıcı-Departman ilişkisi
+        .HasOne(ua => ua.Question)
+        .WithMany(q => q.UserAnswers)
+        .OnDelete(DeleteBehavior.Restrict); 
+                                                   
         modelBuilder.Entity<ApplicationUser>()
-            .HasOne(u => u.Department)
-            .WithMany(d => d.Users)
-            .HasForeignKey(u => u.DepartmentId)
-          .OnDelete(DeleteBehavior.Restrict);
+        .HasOne(u => u.DepartmentName)
+        .WithMany(d => d.Users)
+        .HasForeignKey(u => u.DepartmentId)
+        .OnDelete(DeleteBehavior.Restrict);
 
 
         modelBuilder.Entity<Department>().HasData(
-    new Department { DepartmentId = 1, Name = "IT" },
-    new Department { DepartmentId = 2, Name = "HR" },
-    new Department { DepartmentId = 3, Name = "Finance" }
-);
+        new Department { DepartmentId = 1, DeparmentName = "IT" },
+        new Department { DepartmentId = 2, DeparmentName = "HR" },
+        new Department { DepartmentId = 3, DeparmentName = "Designer" });
+
     }
 
 

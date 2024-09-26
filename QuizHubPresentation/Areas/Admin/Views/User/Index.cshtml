@@ -6,6 +6,8 @@
  
 
 <div class="d-flex justify-content-end">
+ 
+
     <a asp-action="Create" class="btn btn-outline-success">
         <i class="fa fa-solid fa-plus"></i>
         Add User
@@ -29,7 +31,7 @@
             <tr>
                 
                  <td>@user.UserName</td>
-                <td>@user.Department</td>
+                <td>@user.DepartmentName</td>
                 <td>
                     @if (user.Roles != null && user.Roles.Count > 0)
                     {

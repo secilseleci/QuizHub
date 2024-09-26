@@ -2,22 +2,26 @@
 
 <form method="post">
     <input type="hidden" asp-for="QuizId" />
+    <input type="hidden" asp-for="QuizTitle" />
     <div class="form-group">
         <label>Quiz: @Model.QuizTitle</label>
     </div>
 
     <div class="form-group">
-        <label for="SelectedDepartment">Select Department:</label>
-        <select asp-for="SelectedDepartment" class="form-control">
+        <label>Select Departments:</label>
+        <div>
             @foreach (var department in Model.Departments)
             {
-                <option value="@department.Value">@department.Text</option>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="SelectedDepartments" value="@department.Value" />
+                    <label class="form-check-label">@department.Text</label>
+                </div>
             }
-        </select>
+        </div>
     </div>
 
     <div class="form-group mt-3">
         <input type="submit" value="Assign" class="btn btn-primary" />
-        <a class="btn btn-secondary" asp-action="Index">Cancel</a>
+        <a class="btn btn-secondary" asp-action="Index">back</a>
     </div>
 </form>
