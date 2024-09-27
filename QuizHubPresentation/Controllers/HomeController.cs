@@ -32,34 +32,7 @@ namespace QuizHubPresentation.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            TempData["info"] = $"Welcome back, {DateTime.Now.ToShortTimeString()}";
-
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = _userManager.FindByIdAsync(userId).Result;
-            var departmentId = user?.DepartmentId;
-
-            if (departmentId == null)
-            {
-                return NotFound("Department not found for this user.");
-            }
-            var quizzes = _manager.Quiz.GetShowCaseQuizzes(false)
-                           .Include(q => q.Departments)
-                           .ToList();
-            foreach (var quiz in quizzes)
-            {
-                Console.WriteLine($"Quiz Title: {quiz.Title}, QuizId: {quiz.QuizId}");
-                foreach (var dept in quiz.Departments)
-                {
-                    Console.WriteLine($"DepartmentId: {dept.DepartmentId}");
-                }
-            }
-            quizzes = quizzes.Where(q => q.Departments != null && q.Departments.Any(d => d.DepartmentId == departmentId)).ToList();
-            foreach (var quiz in quizzes)
-            {
-                Console.WriteLine($"Filtered Quiz Title: {quiz.Title}, QuizId: {quiz.QuizId}");
-            }
-
-            return View(quizzes);
+            return View();
         }
 
 

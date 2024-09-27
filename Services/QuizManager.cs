@@ -125,10 +125,18 @@ namespace Services
 
         }
 
-      public IEnumerable<Quiz> GetShowCaseQuizzes(bool trackChanges)
+            public IEnumerable<Quiz> GetShowCaseQuizzes(bool trackChanges)
                 {
             var quizzes = _manager.Quiz.GetShowCaseQuizzes(trackChanges);
             return quizzes;
-        }
+                 }
+
+
+            public IQueryable<Quiz> GetQuizzesWithDepartments(bool trackChanges)
+            {
+                return _context.Quizzes
+                               .Include(q => q.Departments)  
+                               .AsQueryable();
+            }
     }
 }
