@@ -1,13 +1,18 @@
-@model Department
+@model IEnumerable<Department>
 
 <div class="text-center my-5 border-bottom">
     <div class="display-6">Departments</div>
 </div>
 
-@* <ul class="list-group my-5">
+<ul class="list-group my-5">
     @foreach (var department in Model)
     {
-        <li class="list-group-item">@department.DeparmentName</li>
-    } 
-  
-</ul> *@
+        <li class="list-group-item">
+            @department.DepartmentName
+            <a class="btn btn-sm btn-primary float-end"
+               href="@Url.Action("Quizzes", "Department", new { departmentId = department.DepartmentId })">
+                View Quizzes
+            </a>
+        </li>
+    }
+</ul>

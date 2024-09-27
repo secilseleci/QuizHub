@@ -18,7 +18,7 @@ namespace Entities.Dtos
         public string? Email { get; init; }
 
         [Required(ErrorMessage = "Department is required.")]
-        public int DepartmentId { get; set; }  // Sadece ID alanı validasyona dahil
+        public int DepartmentId { get; init; }  // Sadece ID alanı validasyona dahil
 
         public List<string> Roles { get; set; } = new List<string>();  // Roller, aynı şekilde validasyona dahil değil
 

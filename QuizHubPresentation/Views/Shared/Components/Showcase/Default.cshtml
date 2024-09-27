@@ -4,13 +4,12 @@
     <h6 class="display-6">
         <i class="fa-solid fa-hourglass"></i>
         Quizzes Assigned to You
-
     </h6>
 </div>
 
 <div class="row">
     @foreach (var q in Model)
     {
-        <partial name="_QuizCard" model="q" />
+               <partial name="_QuizCard" model="q" />
     }
 </div>

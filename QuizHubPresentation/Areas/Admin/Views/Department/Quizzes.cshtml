@@ -1,0 +1,12 @@
+﻿@model IEnumerable<Quiz>
+
+<div class="text-center my-5 border-bottom">
+    <div class="display-6">Quizzes Assigned to This Department</div>
+</div>
+
+<ul class="list-group my-5">
+    @foreach (var quiz in Model)
+    {
+        <li class="list-group-item">@quiz.Title</li>
+    }
+</ul>

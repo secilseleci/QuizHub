@@ -43,16 +43,16 @@ public class RepositoryContext : IdentityDbContext<IdentityUser>
         .OnDelete(DeleteBehavior.Restrict); 
                                                    
         modelBuilder.Entity<ApplicationUser>()
-        .HasOne(u => u.DepartmentName)
+        .HasOne(u => u.Department)
         .WithMany(d => d.Users)
         .HasForeignKey(u => u.DepartmentId)
         .OnDelete(DeleteBehavior.Restrict);
 
 
         modelBuilder.Entity<Department>().HasData(
-        new Department { DepartmentId = 1, DeparmentName = "IT" },
-        new Department { DepartmentId = 2, DeparmentName = "HR" },
-        new Department { DepartmentId = 3, DeparmentName = "Designer" });
+        new Department { DepartmentId = 1, DepartmentName = "IT" },
+        new Department { DepartmentId = 2, DepartmentName = "HR" },
+        new Department { DepartmentId = 3, DepartmentName = "Designer" });
 
     }
 

@@ -1,4 +1,5 @@
 using AutoMapper;
+using DocumentFormat.OpenXml.Bibliography;
 using Entities.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,11 +32,18 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            var departments = _manager.DepartmentService.GetAllDepartments(false);
-            var roles = _manager.AuthService.Roles.Select(r => r.Name).ToList();
+            var departments = _manager.DepartmentService.GetAllDepartments(false)?.ToList();
+            if (departments == null || !departments.Any())
+            {
+                ModelState.AddModelError("", "No departments found.");
+                return View(new UserDtoForCreation());
+            }
 
-            // ViewBag ile Departments listesini view'e gönderiyoruz
-            ViewBag.Departments = new SelectList(departments, "DepartmentId", "Name");
+            // Tek seçimli SelectList kullanıyoruz
+            ViewBag.Departments = new SelectList(departments, "DepartmentId", "DepartmentName");
+
+            // Rolleri alıyoruz, birden fazla seçilebilir olacak
+            var roles = _manager.AuthService.Roles.Select(r => r.Name).ToList();
             ViewBag.Roles = roles;
 
             return View(new UserDtoForCreation());

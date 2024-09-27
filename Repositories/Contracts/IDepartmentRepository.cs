@@ -14,6 +14,7 @@ namespace Repositories.Contracts
 
         Department GetDepartmentWithUsers(int departmentId, bool trackChanges);
         Department? GetOneDepartment(int id, bool trackChanges);
+        Department GetDepartmentWithQuizzes(int departmentId, bool trackChanges);
 
     }
 }

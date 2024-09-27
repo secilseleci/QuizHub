@@ -32,7 +32,8 @@ namespace Repositories
         public IQueryable<Quiz> GetShowCaseQuizzes(bool trackChanges)
         {
             return FindAll(trackChanges)
-            .Where(p => p.ShowCase == true);
+               .Where(q => q.ShowCase)
+               .Include(q => q.Departments);      
 
 
         }

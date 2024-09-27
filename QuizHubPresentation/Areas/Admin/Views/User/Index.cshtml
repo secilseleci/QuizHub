@@ -21,6 +21,8 @@
           
             <th>UserName</th>
             <th>Department</th>
+            <th>DepartmentId</th>
+
             <th>Roles</th>
             <th>Operations</th>
         </tr>
@@ -32,6 +34,7 @@
                 
                  <td>@user.UserName</td>
                 <td>@user.DepartmentName</td>
+                <td>@user.DepartmentId</td>
                 <td>
                     @if (user.Roles != null && user.Roles.Count > 0)
                     {

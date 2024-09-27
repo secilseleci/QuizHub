@@ -25,5 +25,13 @@ namespace Repositories
         {
             return FindByCondition(d => d.DepartmentId.Equals(id), trackChanges);
         }
+
+        public Department GetDepartmentWithQuizzes(int departmentId, bool trackChanges)
+        {
+            return FindAll(trackChanges)
+                   .Where(d => d.DepartmentId == departmentId)
+                   .Include(d => d.Quizzes)  // Departmana atanmış quizleri dahil et
+                   .SingleOrDefault();
+        }
     }
 }

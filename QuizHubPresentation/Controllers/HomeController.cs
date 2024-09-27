@@ -5,6 +5,7 @@ using Entities.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Repositories.Contracts;
 using System.Security.Claims;
 
@@ -34,20 +35,34 @@ namespace QuizHubPresentation.Controllers
             TempData["info"] = $"Welcome back, {DateTime.Now.ToShortTimeString()}";
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = _userManager.FindByIdAsync(userId).Result;   
+            var user = _userManager.FindByIdAsync(userId).Result;
             var departmentId = user?.DepartmentId;
 
-            var userQuizInfos = _manager.UserQuizInfo
-                .FindAll(false)
-                .Where(q => q.UserId == userId && q.Quiz.ShowCase && q.Quiz.Departments.Any(d => d.DepartmentId == departmentId))
-                .ToList();
-
-            var quizzes = userQuizInfos
-                .Select(q => q.Quiz)
-                .ToList();
+            if (departmentId == null)
+            {
+                return NotFound("Department not found for this user.");
+            }
+            var quizzes = _manager.Quiz.GetShowCaseQuizzes(false)
+                           .Include(q => q.Departments)
+                           .ToList();
+            foreach (var quiz in quizzes)
+            {
+                Console.WriteLine($"Quiz Title: {quiz.Title}, QuizId: {quiz.QuizId}");
+                foreach (var dept in quiz.Departments)
+                {
+                    Console.WriteLine($"DepartmentId: {dept.DepartmentId}");
+                }
+            }
+            quizzes = quizzes.Where(q => q.Departments != null && q.Departments.Any(d => d.DepartmentId == departmentId)).ToList();
+            foreach (var quiz in quizzes)
+            {
+                Console.WriteLine($"Filtered Quiz Title: {quiz.Title}, QuizId: {quiz.QuizId}");
+            }
 
             return View(quizzes);
         }
+
+
 
         public IActionResult Details(int id)
         {

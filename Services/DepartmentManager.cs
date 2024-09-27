@@ -36,5 +36,17 @@ namespace Services
                 throw new Exception("department not found!");
             return department;
         }
+
+
+        public Department GetDepartmentWithQuizzes(int departmentId, bool trackChanges)
+        {
+            var department = _repository.Department.GetDepartmentWithQuizzes(departmentId, trackChanges);
+            if (department == null)
+            {
+                throw new Exception("Department not found!");
+            }
+
+            return department;
+        }
     }
 }

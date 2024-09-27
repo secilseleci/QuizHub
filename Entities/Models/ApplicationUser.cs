@@ -1,17 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace Entities.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        public int? DepartmentId { get; set; } // Kullanıcının departmanı için ID
+        [Required] 
+        public int DepartmentId { get; set; }  
 
-        // Navigasyon özelliği
-        public Department DepartmentName { get; set; }
+
+        public Department Department { get; set; }
     }
 }

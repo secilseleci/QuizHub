@@ -285,7 +285,7 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
                 .Select(d => new SelectListItem
                 {
                     Value = d.DepartmentId.ToString(),
-                    Text = d.DeparmentName
+                    Text = d.DepartmentName
                 }).ToList();
 
                     if (departments == null || !departments.Any())

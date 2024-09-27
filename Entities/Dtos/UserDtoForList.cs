@@ -20,7 +20,7 @@ namespace Entities.Dtos
 
 
         [Required(ErrorMessage = "Department is required.")]  // Eğer department zorunlu ise
-        public int DepartmentId { get; set; }
+        public int DepartmentId { get; init; }
 
         public List<string> Roles { get; set; } = new List<string>(); // Roller
     }

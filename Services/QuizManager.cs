@@ -127,8 +127,8 @@ namespace Services
 
       public IEnumerable<Quiz> GetShowCaseQuizzes(bool trackChanges)
                 {
-                    var quizzes = _manager.Quiz.GetShowCaseQuizzes(trackChanges);
-                    return quizzes;
-                }
+            var quizzes = _manager.Quiz.GetShowCaseQuizzes(trackChanges);
+            return quizzes;
+        }
     }
 }

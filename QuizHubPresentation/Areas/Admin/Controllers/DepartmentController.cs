@@ -17,7 +17,24 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var departments = _manager.DepartmentService.GetAllDepartments(trackChanges: false);
+            return View(departments);
         }
+
+        [HttpGet]
+        public IActionResult Quizzes(int departmentId)
+        {
+            // Departmana atanmýþ quizleri alýyoruz
+            var department = _manager.DepartmentService.GetDepartmentWithQuizzes(departmentId, trackChanges: false);
+
+            if (department == null)
+            {
+                return NotFound();
+            }
+
+            // O departmana atanmýþ quizleri view'e gönderiyoruz
+            return View(department.Quizzes);
+        }
+
     }
 }
