@@ -32,8 +32,8 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            // O departmana atanmýþ quizleri view'e gönderiyoruz
-            return View(department.Quizzes);
+            return PartialView("_QuizList", department.Quizzes);
+
         }
 
     }

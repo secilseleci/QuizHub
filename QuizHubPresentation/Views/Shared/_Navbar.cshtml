@@ -19,16 +19,6 @@
                 </li>
             </ul>
             <ul class="navbar-nav">
-                @if (User.Identity.IsAuthenticated)
-                {
-                <li class="nav-item">
-
-                        <a class="nav-link" aria-current="page" asp-controller="MyProfile" asp-action="Index">
-                        <i class="fa-solid fa-star"></i>
-                        My Profile 
-                    </a>
-                    </li>
-                    }
                 <partial name="_LoginMenu" />
             </ul>
         </div>

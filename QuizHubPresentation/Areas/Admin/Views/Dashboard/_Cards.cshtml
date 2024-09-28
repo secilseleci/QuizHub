@@ -2,9 +2,7 @@
         <div class="col-md-4">
             <div class="card bg-primary text-white" style="width: 18rem;">
                 <div class="card-body text-center">
-                    <h6 class="card-subtitle mb-2">Number of</h6>
                     <h5 class="card-title">Quizzes</h5>
-              
                     <a asp-controller="Quiz" asp-action="UploadExcel" class="card-link text-white">Upload Quiz</a>
                     <a asp-controller="Quiz" asp-action="Create" class="card-link text-white">Create Quiz</a>
                 </div>
@@ -16,13 +14,22 @@
         <div class="col-md-4">
             <div class="card bg-info text-white" style="width: 18rem;">
                 <div class="card-body text-center">
-                    <h6 class="card-subtitle mb-2">Number of</h6>
                     <h5 class="card-title">Users</h5>
-             
                     <a asp-controller="User" asp-action="Index" class="card-link text-white">Users</a>
-                    <a asp-controller="User" asp-action="Create" class="card-link text-white">New User</a>
+                    <a asp-controller="User" asp-action="Create" class="card-link text-white">Create User</a>
                 </div>
             </div>
         </div>
 
+
+    <div class="col-md-4">
+        <div class="card bg-success text-white" style="width: 18rem;">
+            <div class="card-body text-center">
+                <h5 class="card-title">Departments</h5>
+
+                <a asp-controller="Department" asp-action="Index" class="card-link text-white">Departments</a>
+                <a asp-controller="User" asp-action="Create" class="card-link text-white">Assign a quiz</a>
+            </div>
+        </div>
+    </div>
 </div>

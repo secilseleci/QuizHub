@@ -1,18 +1,64 @@
-﻿ @{
-    ViewData["Title"] = "Home Page";
+﻿@{
+    ViewData["Title"] = "Profile";
 }
 
-<div class="my-5 border-bottom">
+<!-- Sayfa Başlığı -->
+<div class="container my-5">
     <div class="row">
-        <div class="col-md-3">
-            <!-- Score Componenti burada çağrılıyor -->
+        <div class="col-md-4">
+            <!-- Score Component -->
             @await Component.InvokeAsync("Score")
         </div>
 
-        <div class="col-md-9">
-            <!-- QuizFilterMenuViewComponent burada çağrılıyor -->
-            @await Component.InvokeAsync("QuizFilterMenu")
-            
+        <div class="col-md-12">
+            <!-- 3 Modern Kart Tasarımı -->
+            <div class="row text-center mt-4">
+
+                <!-- Birinci Kart -->
+                <div class="col-md-4">
+                    <div class="card custom-card bg-light mb-4" style="border-radius: 10px;">
+                        <div class="card-body">
+                            <div class="icon-circle bg-success mb-3">
+                                <i class="fas fa-check-circle fa-2x text-white"></i>
+                            </div>
+                            <h5 class="card-title">Completed Quizzes</h5>
+                            <p class="card-text text-muted">View your completed quizzes and check your scores.</p>
+                            <a href="@Url.Action("CompletedQuizzes", "Quiz")" class="btn btn-outline-success">Go to Completed</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- İkinci Kart -->
+                <div class="col-md-4">
+                    <div class="card custom-card bg-light mb-4" style="border-radius: 10px;">
+                        <div class="card-body">
+                            <div class="icon-circle bg-warning mb-3">
+                                <i class="fas fa-hourglass-half fa-2x text-white"></i>
+                            </div>
+                            <h5 class="card-title">Pending Quizzes</h5>
+                            <p class="card-text text-muted">There are quizzes waiting for you. Hurry up!</p>
+                            <a href="@Url.Action("PendingQuizzes", "Quiz")" class="btn btn-outline-warning">See Pending Quizzes</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Üçüncü Kart -->
+                <div class="col-md-4">
+                    <div class="card custom-card bg-light mb-4" style="border-radius: 10px;">
+                        <div class="card-body">
+                            <div class="icon-circle bg-info mb-3">
+                                <i class="fas fa-redo fa-2x text-white"></i>
+                            </div>
+                            <h5 class="card-title">Retake Quizzes</h5>
+                            <p class="card-text text-muted">Boost your score by retaking some quizzes!</p>
+                            <a href="@Url.Action("RetakeQuizzes", "Quiz")" class="btn btn-outline-info">Retake Quizzes</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 </div>
+
+

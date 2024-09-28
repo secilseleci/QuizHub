@@ -1,18 +1,64 @@
 @model IEnumerable<Department>
 
-<div class="text-center my-5 border-bottom">
-    <div class="display-6">Departments</div>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sol Taraf: Department Listesi -->
+        <div class="col-3 border-end" style="height: 100vh; overflow-y: auto; padding: 20px;">
+            <!-- Baþlýk ve Açýklama -->
+            <div class="text-center my-3">
+                <h4>Select a Department</h4>
+                <p class="text-muted">Click on a department to view assigned quizzes</p>
+            </div>
+
+            <ul class="list-group">
+                @foreach (var department in Model)
+                {
+                    <li class="list-group-item department-item" data-department-id="@department.DepartmentId" style="cursor: pointer;">
+                        @department.DepartmentName
+                    </li>
+                }
+            </ul>
+        </div>
+
+        <!-- Sað Taraf: Quiz Listesi -->
+        <div class="col-9" id="quiz-container" style="padding: 20px;">
+            <div class="text-center my-4">
+                <h3 class="display-6">Quizzes</h3>
+            </div>
+
+            <!-- Quizlerin yükleneceði alan -->
+            <div id="quizList" class="quiz-list" style="height: 70vh; overflow-y: auto; border: 1px solid #dee2e6; border-radius: 5px; padding: 15px;">
+                <!-- Ýlk baþta boþ olacak -->
+                <p class="text-muted text-center">Please select a department from the left to view its quizzes.</p>
+            </div>
+        </div>
+    </div>
 </div>
 
-<ul class="list-group my-5">
-    @foreach (var department in Model)
-    {
-        <li class="list-group-item">
-            @department.DepartmentName
-            <a class="btn btn-sm btn-primary float-end"
-               href="@Url.Action("Quizzes", "Department", new { departmentId = department.DepartmentId })">
-                View Quizzes
-            </a>
-        </li>
-    }
-</ul>
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.department-item').on('click', function () {
+                var departmentId = $(this).data('department-id');
+
+                // Aktif týklamayý vurgulamak için class ekleyelim
+                $('.department-item').removeClass('active');  // Eski seçimi kaldýr
+                $(this).addClass('active');  // Týklananý vurgula
+
+                // AJAX ile quizleri getiriyoruz
+                $.ajax({
+                    url: '@Url.Action("Quizzes", "Department")',
+                    type: 'GET',
+                    data: { departmentId: departmentId },
+                    success: function (result) {
+                        $('#quizList').html(result); // Quizler buraya yüklenecek
+                    },
+                    error: function () {
+                        alert('Failed to load quizzes.');
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,15 @@
+﻿@model IEnumerable<Quiz>
+
+@if (Model.Any())
+{
+    <ul class="list-group">
+        @foreach (var quiz in Model)
+        {
+            <li class="list-group-item">@quiz.Title</li>
+        }
+    </ul>
+}
+else
+{
+    <p class="text-muted text-center">No quizzes available for this department.</p>
+}
