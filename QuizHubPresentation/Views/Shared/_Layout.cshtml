@@ -16,15 +16,18 @@
         <partial name="_Navbar" />
         @RenderSection("Header", false)
     </header>
-    <div class="container">
+
+    <div class="mainContainer">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
+
     <footer>
         @RenderSection("Footer", false)
         <partial name="_Footer" />
     </footer>
+
     <script asp-append-version="true" src="~/lib/jquery/jquery.min.js"></script>
     <script asp-append-version="true" src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script asp-append-version="true" src="~/js/site.js"></script>

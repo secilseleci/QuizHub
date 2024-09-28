@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Assigned Quizzes";
+}
+
+<div class="container my-5">
+    <!-- Başlık ve Motivasyon Mesajı -->
+    <div class="text-center mb-4">
+        <h1>Hurry Up!</h1>
+        <p class="lead text-muted">These quizzes are assigned to you. Get started and improve your knowledge!</p>
+    </div>
+    <!-- Quiz Kartları -->
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            @await Component.InvokeAsync("QuizFilterMenu")
+        </div>
+    </div>
+</div>
