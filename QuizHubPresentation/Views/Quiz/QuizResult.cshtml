@@ -1,0 +1,55 @@
+﻿@model UserQuizInfo
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Quiz Result</h1>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <table class="table table-bordered table-hover table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th colspan="2" class="text-center">Quiz Summary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>Score</th>
+                        <td>@Model.Score%</td>
+                    </tr>
+                    <tr>
+                        <th>Correct Answers</th>
+                        <td>@Model.CorrectAnswer</td>
+                    </tr>
+                    <tr>
+                        <th>Wrong Answers</th>
+                        <td>@Model.FalseAnswer</td>
+                    </tr>
+                 
+                    <tr>
+                        <th>Passed</th>
+                        <td>@(Model.IsSuccessful ? "Yes" : "No")</td>
+                    </tr>
+                    <tr>
+                        <th>Completion Date</th>
+                        <td>@Model.CompletedAt?.ToString("MM/dd/yyyy")</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="text-center mt-4">
+                @if (Model.IsSuccessful)
+                {
+                    <p class="text-success h4">
+                        Congratulations! You passed the quiz! 😊
+                    </p>
+                }
+                else
+                {
+                    <p class="text-danger h4">
+                        Unfortunately, you did not pass the quiz. 😔 Better luck next time!
+                    </p>
+                }
+            </div>
+        </div>
+    </div>
+</div>

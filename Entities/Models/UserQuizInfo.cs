@@ -6,8 +6,8 @@ namespace Entities.Models
         {
             public int UserQuizInfoId { get; set; }
 
-            public string UserId { get; set; }  // IdentityUser'daki Id, string tipindedir
-            public ApplicationUser User { get; set; }  // IdentityUser ile ilişkilendirme
+            public string UserId { get; set; }  
+            public ApplicationUser User { get; set; } 
 
             public int QuizId { get; set; }
             public Quiz Quiz { get; set; }
@@ -18,7 +18,6 @@ namespace Entities.Models
             public bool IsSuccessful { get; set; }
             public int CorrectAnswer { get; set; }
             public int FalseAnswer { get; set; }
-            public int BlankAnswer { get; set; }
            
         
         public ICollection<UserAnswer> UserAnswers { get; set; }  // UserAnswer ile ilişki

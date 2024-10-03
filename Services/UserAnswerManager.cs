@@ -1,6 +1,7 @@
 ﻿using Repositories.Contracts;
 using Services.Contracts;
 using Entities.Models;
+using Entities.Dtos;
 
 namespace Services
 {
@@ -13,24 +14,10 @@ namespace Services
             _repository = repository;
         }
 
-        // Yeni bir kullanıcı cevabı oluşturma
-        public void CreateUserAnswer(int quizId, int questionId, string userId, int selectedOptionId)
+        public void UpdateUserAnswer(UserAnswer userAnswer)
         {
-            var userQuizInfo = _repository.UserQuizInfo.FindByCondition(uqi => uqi.QuizId == quizId && uqi.UserId == userId, trackChanges: false);
-            if (userQuizInfo == null)
-            {
-                throw new Exception("UserQuizInfo not found.");
-            }
-
-            var userAnswer = new UserAnswer
-            {
-                UserQuizInfoId = userQuizInfo.UserQuizInfoId,
-                QuestionId = questionId,
-                SelectedOptionId = selectedOptionId
-            };
-
-            _repository.UserAnswer.Create(userAnswer);
-            _repository.Save();
+            _repository.UserAnswer.UpdateUserAnswer(userAnswer);
+            _repository.Save();// Update metodu burada
         }
 
         // Quiz'e ait tüm kullanıcı cevaplarını getir
@@ -44,5 +31,12 @@ namespace Services
         {
             return _repository.UserAnswer.GetUserAnswer(userQuizInfoId, questionId, trackChanges);
         }
+
+        public void CreateUserAnswer(UserAnswer userAnswer)
+        {
+            _repository.UserAnswer.CreateUserAnswer(userAnswer);
+            _repository.Save(); // Repository'de işlem yapıldıktan sonra Save çağrılmalı
+        }
     }
 }
+ 

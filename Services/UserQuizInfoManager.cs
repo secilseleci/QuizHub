@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Entities.Models;
+using Repositories;
 using Repositories.Contracts;
 using Services.Contracts;
 
@@ -45,7 +46,6 @@ namespace Services
                         Score = 0,
                         CorrectAnswer = 0,
                         FalseAnswer = 0,
-                        BlankAnswer = 0
                     };
 
                     _manager.UserQuizInfo.CreateOneUserQuizInfo(assignment);
@@ -58,6 +58,19 @@ namespace Services
         public void CreateOneUserQuizInfo(UserQuizInfo userQuizInfo)
         {
             _manager.UserQuizInfo.CreateOneUserQuizInfo(userQuizInfo);
+            _manager.Save();
+        }
+
+        public void UpdateOneUserQuizInfo(UserQuizInfo userQuizInfo)
+        {
+            _manager.UserQuizInfo.Update(userQuizInfo);  // RepositoryBase'in Update metodunu çağırıyor
+            _manager.Save();  // Save metodu çağrılıyor
+        }
+
+        public UserQuizInfo GetUserQuizInfoById(int id, bool trackChanges)
+        {
+            var userQuizInfo=_manager.UserQuizInfo.GetUserQuizInfoById(id,false);     
+            return userQuizInfo;
         }
     }
 }

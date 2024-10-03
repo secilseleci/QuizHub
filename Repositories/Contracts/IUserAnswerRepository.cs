@@ -10,6 +10,7 @@ namespace Repositories.Contracts
     public interface IUserAnswerRepository : IRepositoryBase<UserAnswer>
     {
         void CreateUserAnswer(UserAnswer userAnswer);
+        void UpdateUserAnswer(UserAnswer userAnswer);  // Update metodu burada
 
         // QuizInfoId'ye göre tüm UserAnswer'ları alma
         IEnumerable<UserAnswer> GetUserAnswersByQuizInfoId(int userQuizInfoId, bool trackChanges);

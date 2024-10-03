@@ -13,7 +13,6 @@ public class MappingProfile : Profile
         CreateMap<QuizDtoForUpdate, Quiz>().ReverseMap();
         CreateMap<QuizDto, Quiz>().ReverseMap();
         CreateMap<QuizDtoForList, Quiz>().ReverseMap();
-        CreateMap<QuizDtoForUserShowcase, Quiz>().ReverseMap();
         CreateMap<QuizDtoForUser, Quiz>().ReverseMap();
         
         // Question Mapping
@@ -27,10 +26,7 @@ public class MappingProfile : Profile
         CreateMap<UserDtoForCreation, ApplicationUser>().ReverseMap(); ;
         CreateMap<UserDtoForUpdate, ApplicationUser>().ReverseMap();
 
-        // UserQuizInfo mapping
-      
-
-        CreateMap<UserQuizInfoDtoForCompleted, UserQuizInfo>().ReverseMap();
-
+         
+ 
      }
 }

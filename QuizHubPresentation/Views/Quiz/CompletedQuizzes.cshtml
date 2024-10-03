@@ -1,1 +1,19 @@
-﻿
+﻿@{
+    ViewData["Title"] = "Completed Quizzes";
+}
+
+<div class="container my-5">
+    <div class="text-center mb-4">
+        <h1>Your Quiz Journey</h1>
+        <p class="lead text-muted">
+            View your completed quizzes and check your scores.
+
+
+        </p>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            @await Component.InvokeAsync("UserQuizCards", new {status = "Completed" })
+        </div>
+    </div>
+</div>

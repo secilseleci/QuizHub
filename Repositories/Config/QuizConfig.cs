@@ -33,7 +33,7 @@ namespace Repositories.Config
                     QuizId = 2,
                     Title = "World Country",
                     ShowCase = true,
-                    QuestionCount = 2
+                    QuestionCount = 3
                 },
                 new Quiz
                 {

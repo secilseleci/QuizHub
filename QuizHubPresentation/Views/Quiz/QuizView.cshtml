@@ -1,0 +1,100 @@
+﻿@model QuizDtoForUser
+
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Quiz App</h5>
+        </div>
+
+        <div class="card-body">
+            <h4 class="card-title my-3" id="questionText">@Model.Questions.First().QuestionText</h4>
+
+            <div class="list-group mt-3" id="optionsList">
+                @foreach (var option in Model.Questions.First().Options)
+                {
+                    <label class="list-group-item d-flex align-items-center">
+                        <input type="radio" name="questionOptions" value="@option.OptionId" class="me-2">
+                        <span>@option.OptionText</span>
+                    </label>
+                }
+            </div>
+        </div>
+
+        <div class="card-footer d-flex justify-content-between">
+            <span id="questionOrder">@Model.Questions.First().Order / @Model.QuestionCount</span>
+            <!-- Finish Quiz formu -->
+            <form asp-action="FinishQuiz" method="post">
+                <button class="btn btn-warning" id="finishButton" style="display:none;">Finish Quiz</button>
+            </form>            <button class="btn btn-primary" id="nextButton">Next</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    var currentQuestionOrder = @Model.Questions.First().Order;  // İlk sorunun sırası
+    var questionId = @Model.Questions.First().QuestionId;  // İlk sorunun ID'si
+    var quizId = '@Model.QuizId';  // Quiz ID
+
+    // Next butonuna tıklayınca cevabı kaydediyoruz ve bir sonraki soruya geçiyoruz
+    document.getElementById("nextButton").addEventListener("click", function () {
+        var selectedOptionId = $('input[name="questionOptions"]:checked').val();  // Seçilen şık
+
+        if (!selectedOptionId) {
+            alert("Lütfen bir seçenek seçin.");  // Uyarı göster
+            return;
+        } 
+
+        // Cevabı kaydetmek için AJAX isteği yapıyoruz
+        $.ajax({
+            url: '/Quiz/SaveAnswer',
+            method: 'POST',
+            data: {
+                quizId: quizId,
+                questionId: questionId,
+                selectedOptionId: selectedOptionId
+            },
+            success: function (response) {
+                nextQuestion();
+            },
+            error: function (xhr, status, error) {
+                console.error("Cevap kaydedilemedi:", error);
+            }
+        });
+    });
+
+    function nextQuestion() {
+        $.ajax({
+            url: '/Quiz/NextQuestion',
+            method: 'POST',
+            data: { quizId: quizId, currentQuestionOrder: currentQuestionOrder },
+            success: function (response) {
+                if (response.success) {
+                    // Yeni soru ve seçenekleri DOM'da güncelliyoruz
+                    $('#questionText').text(response.questionText);
+                    $('#questionOrder').text(response.currentOrder + ' / ' + response.totalQuestions);
+
+                    var optionsList = $('#optionsList');
+                    optionsList.empty();
+                    response.options.forEach(function (option) {
+                        optionsList.append('<label class="list-group-item d-flex align-items-center">' +
+                            '<input type="radio" name="questionOptions" value="' + option.id + '" class="me-2">' +
+                            '<span>' + option.text + '</span>' +
+                            '</label>');
+                    });
+
+                    currentQuestionOrder = response.currentOrder;
+                    questionId = response.questionId;
+                } else {
+                    // Quiz tamamlandıysa next butonunu gizleyip finish button'u göster
+                    $('#nextButton').hide();
+                    $('#finishButton').show();
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Bir hata oluştu:", error);
+            }
+        });
+    }
+     
+   
+</script>

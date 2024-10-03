@@ -13,11 +13,9 @@ namespace Repositories
         }
 
         // Yeni bir UserAnswer oluşturma
-        public void CreateUserAnswer(UserAnswer userAnswer)
-        {
-            Create(userAnswer);  // RepositoryBase sınıfındaki Create metodunu kullanıyoruz
-        }
-
+        public void CreateUserAnswer(UserAnswer userAnswer) => Create(userAnswer);
+        public void UpdateUserAnswer(UserAnswer userAnswer) => Update(userAnswer);
+      
         public IEnumerable<UserAnswer> GetUserAnswersByQuizInfoId(int userQuizInfoId, bool trackChanges)
         {
             return FindAll(trackChanges)

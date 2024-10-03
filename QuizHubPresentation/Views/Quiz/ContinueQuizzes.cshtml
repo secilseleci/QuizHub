@@ -1,18 +1,18 @@
 ﻿@{
-    ViewData["Title"] = "Pending Quizzes";
+    ViewData["Title"] = "Continue Quizzes";
 }
 
 <div class="container my-5">
     <div class="text-center mb-4">
-        <h1>Pending Quizzes</h1>
+        <h1>Continue Quizzes</h1>
         <p class="lead text-muted">
-            There are quizzes waiting for you. Hurry up and complete them!
+            Continue your quizzes where you left off!
         </p>
     </div>
 
     <div class="row justify-content-center">
         <div class="col-md-12">
-            @await Component.InvokeAsync("UserQuizCards", new { status = "Pending" })
+            @await Component.InvokeAsync("UserQuizCards", new { status = "Continue" })
         </div>
     </div>
 </div>

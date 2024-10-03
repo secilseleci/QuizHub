@@ -13,7 +13,9 @@ namespace Services.Contracts
             UserQuizInfo? GetUserQuizInfoByQuizIdAndUserId(int quizId, string userId, bool trackChanges);
             IEnumerable<UserQuizInfo> GetUserQuizInfoByUserId(string userId, bool trackChanges);
             void AssignQuizToUsers(int quizId, List<string> userIds);
-        void CreateOneUserQuizInfo(UserQuizInfo userQuizInfo);
+            void CreateOneUserQuizInfo(UserQuizInfo userQuizInfo);
+            void UpdateOneUserQuizInfo(UserQuizInfo userQuizInfo);
+            UserQuizInfo GetUserQuizInfoById(int userQuizInfoId, bool trackChanges);   
 
     }
 }

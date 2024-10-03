@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Quiz Başlamaya Hazır";
+    var quizTitle = ViewBag.QuizTitle;
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title text-center">@quizTitle - Ready to Start?</h2>
+                    <p class="card-text mt-4">
+                        <strong>@quizTitle</strong> quizine başlamak üzeresiniz. Lütfen aşağıdaki kuralları gözden geçirin:
+                    </p>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">1 dakika içinde cevaplanmayan sorular boş sayılacaktır.</li>
+                        <li class="list-group-item">Önceki sorulara geri dönemezsiniz, bu sebeple sürenizi dikkatli kullanınız.</li>
+                        <li class="list-group-item">Soruya yanıt verdikten sonra <strong>Next</strong> butonuna basarak sıradaki soruya geçebilirsiniz.</li>
+                        <li class="list-group-item">Doğru/yanlış sayınızı quiz sonlandıktan sonra görebileceksiniz.</li>
+                    </ul>
+                    <p class="mt-4">Başarılar!</p>
+
+                    <div class="text-center mt-5">
+                        <form asp-action="StartQuiz" asp-controller="Quiz"  method="post">
+                            <input type="hidden" name="quizId" value="@ViewBag.QuizId" />
+                            <button type="submit" class="btn btn-primary">Şimdi Başla</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

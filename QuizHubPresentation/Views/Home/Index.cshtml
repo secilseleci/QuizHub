@@ -1,8 +1,4 @@
-﻿@{
-    ViewData["Title"] = "Profile";
-}
-
-<!-- Sayfa Başlığı -->
+﻿<!-- Sayfa Başlığı -->
 <div class="container my-5">
     <div class="row">
         <div class="col-md-4">
@@ -11,11 +7,11 @@
         </div>
 
         <div class="col-md-12">
-            <!-- 3 Modern Kart Tasarımı -->
+            <!-- 4 Modern Kart Tasarımı -->
             <div class="row text-center mt-4">
 
-                <!-- Birinci Kart -->
-                <div class="col-md-4">
+                <!-- Completed Quizzes Kartı -->
+                <div class="col-md-6">
                     <div class="card custom-card bg-light mb-4" style="border-radius: 10px;">
                         <div class="card-body">
                             <div class="icon-circle bg-success mb-3">
@@ -23,13 +19,13 @@
                             </div>
                             <h5 class="card-title">Completed Quizzes</h5>
                             <p class="card-text text-muted">View your completed quizzes and check your scores.</p>
-                            <a href="@Url.Action("CompletedQuizzes", "Quiz")" class="btn btn-outline-success">Go to Completed</a>
+                            <a asp-controller="Quiz" asp-action="CompletedQuizzes" class="btn btn-outline-success">Go to Completed</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- İkinci Kart -->
-                <div class="col-md-4">
+                <!-- Pending Quizzes Kartı -->
+                <div class="col-md-6">
                     <div class="card custom-card bg-light mb-4" style="border-radius: 10px;">
                         <div class="card-body">
                             <div class="icon-circle bg-warning mb-3">
@@ -37,13 +33,13 @@
                             </div>
                             <h5 class="card-title">Pending Quizzes</h5>
                             <p class="card-text text-muted">There are quizzes waiting for you. Hurry up!</p>
-                            <a href="@Url.Action("PendingQuizzes", "Quiz")" class="btn btn-outline-warning">See Pending Quizzes</a>
+                            <a asp-controller="Quiz" asp-action="PendingQuizzes" class="btn btn-outline-warning">See Pending Quizzes</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Üçüncü Kart -->
-                <div class="col-md-4">
+                <!-- Retake Quizzes Kartı -->
+                <div class="col-md-6">
                     <div class="card custom-card bg-light mb-4" style="border-radius: 10px;">
                         <div class="card-body">
                             <div class="icon-circle bg-info mb-3">
@@ -51,7 +47,21 @@
                             </div>
                             <h5 class="card-title">Retake Quizzes</h5>
                             <p class="card-text text-muted">Boost your score by retaking some quizzes!</p>
-                            <a href="@Url.Action("RetakeQuizzes", "Quiz")" class="btn btn-outline-info">Retake Quizzes</a>
+                            <a asp-controller="Quiz" asp-action="RetakeQuizzes" class="btn btn-outline-info">Retake Quizzes</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Continue Quizzes Kartı -->
+                <div class="col-md-6">
+                    <div class="card custom-card bg-light mb-4" style="border-radius: 10px;">
+                        <div class="card-body">
+                            <div class="icon-circle bg-primary mb-3">
+                                <i class="fas fa-play-circle fa-2x text-white"></i>
+                            </div>
+                            <h5 class="card-title">Continue Quizzes</h5>
+                            <p class="card-text text-muted">Continue where you left off and finish your quizzes!</p>
+                            <a asp-controller="Quiz" asp-action="ContinueQuizzes" class="btn btn-outline-primary">Continue Quizzes</a>
                         </div>
                     </div>
                 </div>
@@ -60,5 +70,3 @@
         </div>
     </div>
 </div>
-
-

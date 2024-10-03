@@ -24,14 +24,15 @@ namespace Repositories
         {
             return trackChanges
                 ? _context.UserQuizInfo.Where(uqi => uqi.UserId == userId).ToList()
-                : _context.UserQuizInfo.AsNoTracking().Where(uqi => uqi.UserId == userId).ToList();
+                : _context.UserQuizInfo.AsNoTracking().Include(uqi => uqi.Quiz).Where(uqi => uqi.UserId == userId).ToList();
         }
 
         // Yeni bir UserQuizInfo kaydı ekle
         public void CreateOneUserQuizInfo(UserQuizInfo userQuizInfo)
         {
             Create(userQuizInfo);
-        }
+           
+          }
 
         // Var olan bir UserQuizInfo kaydını güncelle
         public void UpdateOneUserQuizInfo(UserQuizInfo entity)

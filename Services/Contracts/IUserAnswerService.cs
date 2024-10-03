@@ -9,7 +9,9 @@ namespace Services.Contracts
 {
     public interface IUserAnswerService
     {
-        void CreateUserAnswer(int quizId, int questionId, string userId, int selectedOptionId);
+        void UpdateUserAnswer(UserAnswer userAnswer);  // Update metodu burada
+
+        void CreateUserAnswer(UserAnswer userAnswer);
         IEnumerable<UserAnswer> GetUserAnswersByQuizInfoId(int userQuizInfoId, bool trackChanges);
         UserAnswer GetUserAnswer(int userQuizInfoId, int questionId, bool trackChanges);
     }
