@@ -280,24 +280,31 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
             }
 
             var quiz = _manager.QuizService.GetOneQuiz(id, false);
+            if (quiz == null)
+            {
+                throw new Exception("Quiz bulunamadı!");
+            }
 
-            var departments = _manager.DepartmentService.GetAllDepartments(false)
+            //Quiz'e atanmış olan departmanları alıyoruz
+            var assignedDepartments = _manager.QuizService.GetDepartmentsByQuizId(id, false);
+            var allDepartments = _manager.DepartmentService.GetAllDepartments(false)
                 .Select(d => new SelectListItem
                 {
                     Value = d.DepartmentId.ToString(),
-                    Text = d.DepartmentName
+                    Text = d.DepartmentName,
+                    Selected = assignedDepartments.Any(ad => ad.DepartmentId == d.DepartmentId) // Atanmışsa işaretle
                 }).ToList();
 
-                    if (departments == null || !departments.Any())
-                    {
-                        throw new Exception("Departmanlar listesi boş!");
-                    }
+            if (allDepartments == null || !allDepartments.Any())
+            {
+                throw new Exception("Departmanlar listesi boş!");
+            }
 
             var model = new AssignQuizViewModel
             {
                 QuizId = id,
                 QuizTitle = quiz.Title,
-                Departments = departments // Departmanlar listesini view'e gönder
+                Departments = allDepartments // Departmanlar listesini view'e gönder
             };
 
             return View(model);
@@ -310,13 +317,17 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
             {
                 return View(model);
             }
-            var departmentIds = model.SelectedDepartments.Select(int.Parse).ToList();
 
-            _manager.QuizService.AssignQuizToDepartments(model.QuizId, departmentIds);
+            // 1. Formdan gelen seçili departmanlar (checkbox'ta işaretlenenler)
+            var selectedDepartmentIds = model.SelectedDepartments.Select(int.Parse).ToList();
 
+            // 2. Seçilen departmanlar quiz'e atanıyor, var olan ilişkiler güncelleniyor
+            _manager.QuizService.AssignQuizToDepartments(model.QuizId, selectedDepartmentIds);
 
+            // 3. İşlem tamamlandığında Index sayfasına yönlendiriyoruz
             return RedirectToAction("Index");
         }
+
 
 
 

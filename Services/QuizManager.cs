@@ -94,35 +94,58 @@ namespace Services
             var quizDto = _mapper.Map<QuizDtoForUpdate>(quiz);
             return quizDto;
         }
-        public void AssignQuizToDepartments(int quizId, List<int> departmentIds)
+        public void AssignQuizToDepartments(int quizId, List<int> selectedDepartmentIds)
         {
-            var quiz = _manager.Quiz.GetOneQuiz(quizId, true);
-
+            // 1. Quiz'i departmanları ile birlikte alıyoruz
+            var quiz = _manager.Quiz.GetQuizWithDepartments(quizId, true);
             if (quiz == null)
             {
                 throw new Exception("Quiz bulunamadı!");
             }
+
+            // 2. Eğer quiz.Departments null ise, onu başlatıyoruz
             if (quiz.Departments == null)
             {
-                quiz.Departments = new List<Department>();
+                quiz.Departments = new List<Department>(); // Null ise yeni bir liste oluşturuyoruz
             }
-            foreach (var departmentId in departmentIds)
-            {
-                var department = _manager.Department.GetOneDepartment(departmentId,true);
 
-                if (department == null)
+            // 3. Mevcut atanmış departman ID'lerini alıyoruz
+            var currentDepartmentIds = quiz.Departments.Select(d => d.DepartmentId).ToList();
+
+            // 4. Kaldırılması gereken departmanlar (artık seçilmemiş olanlar)
+            var departmentsToRemove = currentDepartmentIds
+                .Where(id => !selectedDepartmentIds.Contains(id)) // Formda işaretlenmeyen departmanlar
+                .ToList();
+
+            // 5. Eklenmesi gereken departmanlar (yeni seçilenler)
+            var departmentsToAdd = selectedDepartmentIds
+                .Where(id => !currentDepartmentIds.Contains(id)) // Daha önce atanmış olmayanlar
+                .ToList();
+
+            // 6. Kaldırılacak departmanları quiz'den siliyoruz
+            foreach (var departmentId in departmentsToRemove)
+            {
+                var departmentToRemove = quiz.Departments.FirstOrDefault(d => d.DepartmentId == departmentId);
+                if (departmentToRemove != null)
+                {
+                    quiz.Departments.Remove(departmentToRemove); // Departmanı ilişkiden kaldırıyoruz
+                }
+            }
+
+            // 7. Yeni eklenmesi gereken departmanları quiz'e ekliyoruz
+            foreach (var departmentId in departmentsToAdd)
+            {
+                var departmentToAdd = _manager.Department.GetOneDepartment(departmentId, true);
+                if (departmentToAdd == null)
                 {
                     throw new Exception($"Department {departmentId} bulunamadı!");
                 }
 
-                if (!quiz.Departments.Contains(department))
-                {
-                    quiz.Departments.Add(department);
-                }
-                _manager.Save();  
-
+                quiz.Departments.Add(departmentToAdd); // Yeni departmanı ekliyoruz
             }
 
+            // 8. Değişiklikleri kaydediyoruz
+            _manager.Save();
         }
 
         public IEnumerable<Quiz> GetShowCaseQuizzes(bool trackChanges)
@@ -138,5 +161,19 @@ namespace Services
                                .Include(q => q.Departments)  
                                .AsQueryable();
             }
+        public IEnumerable<Department> GetDepartmentsByQuizId(int quizId, bool trackChanges)
+        {
+            // Repository'den quiz'i departmanları ile birlikte getiriyoruz
+            var quiz = _manager.Quiz.GetQuizWithDepartments(quizId, trackChanges);
+
+            if (quiz == null)
+            {
+                throw new Exception("Quiz bulunamadı!");
+            }
+
+            // Quiz'e atanmış departmanları döndürüyoruz
+            return quiz.Departments;
+        }
+
     }
 }

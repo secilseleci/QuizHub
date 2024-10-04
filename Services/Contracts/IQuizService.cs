@@ -19,6 +19,7 @@ namespace Services.Contracts
         void AssignQuizToDepartments(int quizId, List<int> departmentIds);
 
         IQueryable<Quiz> GetQuizzesWithDepartments(bool trackChanges);
+        IEnumerable<Department> GetDepartmentsByQuizId(int quizId, bool trackChanges);
 
     }
 }

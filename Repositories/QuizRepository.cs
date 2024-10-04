@@ -56,8 +56,14 @@ namespace Repositories
                    .SingleOrDefault();
         }
 
-        
+        public Quiz GetQuizWithDepartments(int quizId, bool trackChanges)
+        {
+            var query = trackChanges ?
+            _context.Quizzes.Include(q => q.Departments).AsTracking() :
+            _context.Quizzes.Include(q => q.Departments).AsNoTracking();
 
-       
+            // Quiz'i quizId ile filtreleyip, departmanları dahil ediyoruz
+            return query.SingleOrDefault(q => q.QuizId == quizId);
+        }
     }
 }
