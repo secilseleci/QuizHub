@@ -12,26 +12,26 @@ namespace Services
     
         public class DepartmentManager : IDepartmentService
         {
-            private readonly IRepositoryManager _repository;
+            private readonly IRepositoryManager _manager;
 
-            public DepartmentManager(IRepositoryManager repository)
+            public DepartmentManager(IRepositoryManager  manager)
             {
-                _repository = repository;
+                _manager =  manager;
             }
 
         public IEnumerable<Department> GetAllDepartments(bool trackChanges)
         {
-            return _repository.Department.FindAll(trackChanges).ToList();
+            return _manager.Department.GetAllDepartments(trackChanges);
         }
 
         public Department GetDepartmentWithUsers(int departmentId, bool trackChanges)
         {
-            return _repository.Department.GetDepartmentWithUsers(departmentId, trackChanges);
+            return _manager.Department.GetDepartmentWithUsers(departmentId, trackChanges);
         }
 
         public Department? GetOneDepartment(int id, bool trackChanges)
         {
-            var department = _repository.Department.GetOneDepartment(id, trackChanges);
+            var department = _manager.Department.GetOneDepartment(id, trackChanges);
             if (department is null)
                 throw new Exception("department not found!");
             return department;
@@ -40,7 +40,7 @@ namespace Services
 
         public Department GetDepartmentWithQuizzes(int departmentId, bool trackChanges)
         {
-            var department = _repository.Department.GetDepartmentWithQuizzes(departmentId, trackChanges);
+            var department = _manager.Department.GetDepartmentWithQuizzes(departmentId, trackChanges);
             if (department == null)
             {
                 throw new Exception("Department not found!");

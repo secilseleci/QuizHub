@@ -7,35 +7,35 @@ namespace Services
 {
     public class UserAnswerManager : IUserAnswerService
     {
-        private readonly IRepositoryManager _repository;
+        private readonly IRepositoryManager _manager;
 
-        public UserAnswerManager(IRepositoryManager repository)
+        public UserAnswerManager(IRepositoryManager manager)
         {
-            _repository = repository;
+            _manager = manager;
         }
 
         public void UpdateUserAnswer(UserAnswer userAnswer)
         {
-            _repository.UserAnswer.UpdateUserAnswer(userAnswer);
-            _repository.Save();// Update metodu burada
+            _manager.UserAnswer.UpdateUserAnswer(userAnswer);
+            _manager.Save();// Update metodu burada
         }
 
         // Quiz'e ait tüm kullanıcı cevaplarını getir
         public IEnumerable<UserAnswer> GetUserAnswersByQuizInfoId(int userQuizInfoId, bool trackChanges)
         {
-            return _repository.UserAnswer.GetUserAnswersByQuizInfoId(userQuizInfoId, trackChanges);
+            return _manager.UserAnswer.GetUserAnswersByQuizInfoId(userQuizInfoId, trackChanges);
         }
 
         // Belirli bir soruya ait kullanıcı cevabını getir
         public UserAnswer GetUserAnswer(int userQuizInfoId, int questionId, bool trackChanges)
         {
-            return _repository.UserAnswer.GetUserAnswer(userQuizInfoId, questionId, trackChanges);
+            return _manager.UserAnswer.GetUserAnswer(userQuizInfoId, questionId, trackChanges);
         }
 
         public void CreateUserAnswer(UserAnswer userAnswer)
         {
-            _repository.UserAnswer.CreateUserAnswer(userAnswer);
-            _repository.Save(); // Repository'de işlem yapıldıktan sonra Save çağrılmalı
+            _manager.UserAnswer.CreateUserAnswer(userAnswer);
+            _manager.Save(); // Repository'de işlem yapıldıktan sonra Save çağrılmalı
         }
     }
 }

@@ -50,10 +50,24 @@ namespace QuizHubPresentation.Controllers
                 .Select(uqi => uqi.QuizId)
                 .ToList();
 
-            var pendingQuizzes = quizzes.Where(q => !solvedQuizIds.Contains(q.QuizId)).ToList();
+          
+
+            // Session'da yarım kalmış quiz olup olmadığını kontrol ediyoruz
+            var userQuizInfo = HttpContext.Session.GetJson<UserQuizInfo>("UserQuizInfo");
+            var inProgressQuizId = userQuizInfo?.QuizId;
+
+          
+
+            // Kullanıcının başlattığı ama tamamlamadığı quiz'i Pending listesinden çıkartıyoruz
+            var pendingQuizzes = quizzes
+                .Where(q => !solvedQuizIds.Contains(q.QuizId) && q.QuizId != inProgressQuizId) // Yarım kalan quiz varsa çıkart
+                .ToList();
+
+          
 
             return View("PendingQuizzes", pendingQuizzes);
         }
+
 
 
         [HttpGet]

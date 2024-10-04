@@ -56,7 +56,6 @@ namespace Services
             return question;
         }
 
-       
         public void UpdateOneQuestion(QuestionDto questionDto)
         {
             if (questionDto == null)
@@ -87,11 +86,6 @@ namespace Services
             return _manager.Question.GetQuestionsByQuizId(quizId, trackChanges);
 
         }
-
-       
-
-
-        
 
 
     }

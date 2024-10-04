@@ -31,11 +31,7 @@ namespace Repositories
 
         public IQueryable<Quiz> GetShowCaseQuizzes(bool trackChanges)
         {
-            return FindAll(trackChanges)
-               .Where(q => q.ShowCase)
-               .Include(q => q.Departments);      
-
-
+            return FindAllByCondition(q => q.ShowCase == true, trackChanges);
         }
 
         public IQueryable<Quiz> GetAllQuizzesWithDetails(QuizRequestParameters q)
@@ -62,7 +58,6 @@ namespace Repositories
             _context.Quizzes.Include(q => q.Departments).AsTracking() :
             _context.Quizzes.Include(q => q.Departments).AsNoTracking();
 
-            // Quiz'i quizId ile filtreleyip, departmanları dahil ediyoruz
             return query.SingleOrDefault(q => q.QuizId == quizId);
         }
     }

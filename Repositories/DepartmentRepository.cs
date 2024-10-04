@@ -15,10 +15,11 @@ namespace Repositories
 
         public Department GetDepartmentWithUsers(int departmentId, bool trackChanges)
         {
-            return FindAll(trackChanges)
-                   .Where(d => d.DepartmentId == departmentId)
-                   .Include(d => d.Users)  
-                   .SingleOrDefault();
+            var query = _context.Departments
+               .Include(d => d.Users)   // İlişkili Users varlıklarını dahil ediyoruz
+               .Where(d => d.DepartmentId == departmentId);  // Sadece ilgili Department kaydını alıyoruz
+
+            return trackChanges ? query.SingleOrDefault() : query.AsNoTracking().SingleOrDefault();
         }
 
         public Department? GetOneDepartment(int id, bool trackChanges)
@@ -28,10 +29,11 @@ namespace Repositories
 
         public Department GetDepartmentWithQuizzes(int departmentId, bool trackChanges)
         {
-            return FindAll(trackChanges)
-                   .Where(d => d.DepartmentId == departmentId)
-                   .Include(d => d.Quizzes)  // Departmana atanmış quizleri dahil et
-                   .SingleOrDefault();
+            var query = _context.Departments
+               .Include(d => d.Quizzes)  // İlişkili Quizzes varlıklarını dahil ediyoruz
+               .Where(d => d.DepartmentId == departmentId);  // Yalnızca belirli bir Department kaydını alıyoruz
+
+            return trackChanges ? query.SingleOrDefault() : query.AsNoTracking().SingleOrDefault();
         }
     }
 }

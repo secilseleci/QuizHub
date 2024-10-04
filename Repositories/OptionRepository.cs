@@ -26,8 +26,7 @@ namespace Repositories
 
         public IQueryable<Option> GetOptionsByQuestionId(int questionId, bool trackChanges)
         {
-            return FindAll(trackChanges)
-                       .Where(o => o.QuestionId == questionId);
+            return FindAllByCondition(o => o.QuestionId == questionId, trackChanges);
         }
 
         public Option? GetCorrectOptionForQuestion(int questionId, bool trackChanges)

@@ -18,9 +18,7 @@ namespace Repositories
       
         public IEnumerable<UserAnswer> GetUserAnswersByQuizInfoId(int userQuizInfoId, bool trackChanges)
         {
-            return FindAll(trackChanges)
-                   .Where(ua => ua.UserQuizInfoId == userQuizInfoId)
-                   .ToList();
+            return FindAllByCondition(ua => ua.UserQuizInfoId == userQuizInfoId, trackChanges).ToList();
         }
 
 

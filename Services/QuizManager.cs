@@ -147,14 +147,11 @@ namespace Services
             // 8. Değişiklikleri kaydediyoruz
             _manager.Save();
         }
-
         public IEnumerable<Quiz> GetShowCaseQuizzes(bool trackChanges)
                 {
             var quizzes = _manager.Quiz.GetShowCaseQuizzes(trackChanges);
             return quizzes;
                  }
-
-
         public IQueryable<Quiz> GetQuizzesWithDepartments(bool trackChanges)
             {
                 return _context.Quizzes

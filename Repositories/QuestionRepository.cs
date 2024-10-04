@@ -27,9 +27,8 @@ namespace Repositories
 
         public IQueryable<Question> GetQuestionsByQuizId(int quizId, bool trackChanges)
         {
-            return FindAll(trackChanges).Where(q => q.QuizId == quizId);
+            return FindAllByCondition(q => q.QuizId == quizId, trackChanges);
         }
-
         public Question? GetOneQuestionWithOptions(int id, bool trackChanges)
         {
             var query = _context.Questions
