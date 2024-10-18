@@ -160,7 +160,6 @@ namespace Services
             }
         public IEnumerable<Department> GetDepartmentsByQuizId(int quizId, bool trackChanges)
         {
-            // Repository'den quiz'i departmanları ile birlikte getiriyoruz
             var quiz = _manager.Quiz.GetQuizWithDepartments(quizId, trackChanges);
 
             if (quiz == null)
@@ -168,9 +167,85 @@ namespace Services
                 throw new Exception("Quiz bulunamadı!");
             }
 
-            // Quiz'e atanmış departmanları döndürüyoruz
             return quiz.Departments;
         }
 
+        public Question GetNextQuestion(int quizId, int currentQuestionOrder)
+        {
+            return _manager.Question
+       .GetQuestionsByQuizId(quizId, trackChanges: false)
+       .Include(q => q.Options)  
+       .Where(q => q.Order > currentQuestionOrder)
+       .OrderBy(q => q.Order)
+       .FirstOrDefault();
+        }
+
+        public IEnumerable<Quiz> GetPendingQuizzesForUser(string userId, bool trackChanges)
+        {
+            var user = _context.ApplicationUsers.FirstOrDefault(u => u.Id == userId);
+            if (user == null)
+                return new List<Quiz>();
+
+            var departmentId = user.DepartmentId;
+
+            var allQuizzes = _manager.Quiz.GetQuizzesByDepartmentId(departmentId, trackChanges);
+
+            var solvedQuizIds = _manager.UserQuizInfo.GetUserQuizInfoByUserId(userId, trackChanges)
+                                                       .Select(uqi => uqi.QuizId)
+                                                       .ToList();
+
+            var inProgressQuizIds = _manager.UserQuizInfoTemp.GetIncompleteQuizzesByUserId(userId, trackChanges)
+                                                               .Select(uqi => uqi.QuizId)
+                                                               .ToList();
+
+            var pendingQuizzes = allQuizzes
+                .Where(q => !solvedQuizIds.Contains(q.QuizId) && !inProgressQuizIds.Contains(q.QuizId))
+                .ToList();
+
+            return pendingQuizzes;
+        }
+        public QuizDtoForUser ContinueQuiz(int quizId, string userId)
+        {
+            var userQuizInfoTemp = _manager.UserQuizInfoTemp.GetTempInfoByQuizIdAndUserId(quizId, userId, trackChanges: false);
+            if (userQuizInfoTemp == null)
+            {
+                throw new Exception("Quiz bilgisi bulunamadı.");
+            }
+            var lastUserAnswerTemp = _manager.UserAnswerTemp
+            .GetTempAnswersByTempInfoId(userQuizInfoTemp.UserQuizInfoTempId, trackChanges: false)
+            .OrderByDescending(a => a.QuestionId) // Order'a göre soruları sıraladık
+            .FirstOrDefault(); // Eğer varsa en son cevabı bulduk
+
+            int currentQuestionOrder;
+            if (lastUserAnswerTemp == null)
+            {
+                // Eğer hiç cevap yoksa, quiz en baştan başlasın
+                currentQuestionOrder = 0;
+            }
+            else
+            {
+                // Cevap varsa, en son cevaplanan sorunun sırası ile başlayalım
+                currentQuestionOrder = _manager.Question.GetOneQuestion(lastUserAnswerTemp.QuestionId, trackChanges: false).Order;
+            }
+            var quiz = _manager.Quiz.GetQuizWithDetails(quizId, trackChanges: false);
+            if (quiz == null)
+            {
+                throw new Exception("Quiz bulunamadı.");
+            }
+            var nextQuestion = quiz.Questions
+          .Where(q => q.Order > currentQuestionOrder) // En son cevaplanan sorunun sonrasını getir
+          .OrderBy(q => q.Order)
+          .FirstOrDefault();
+            if (nextQuestion == null)
+            {
+                throw new Exception("Sıradaki soru bulunamadı.");
+            }
+
+            var quizDto = _mapper.Map<QuizDtoForUser>(quiz);
+            quizDto.QuestionCount = quiz.Questions.Count;
+            quizDto.Questions = new List<Question> { nextQuestion };  // Sadece sıradaki soruyu gönderiyoruz
+
+            return quizDto;
+        }
     }
 }

@@ -20,6 +20,8 @@ namespace Services.Contracts
 
         IQueryable<Quiz> GetQuizzesWithDepartments(bool trackChanges);
         IEnumerable<Department> GetDepartmentsByQuizId(int quizId, bool trackChanges);
-
+        Question GetNextQuestion(int quizId, int currentQuestionOrder);
+        IEnumerable<Quiz> GetPendingQuizzesForUser(string userId, bool trackChanges);
+        QuizDtoForUser ContinueQuiz(int quizId, string userId);
     }
 }

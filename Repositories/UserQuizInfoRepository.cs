@@ -1,8 +1,8 @@
-﻿using Entities.Models;
+﻿using Entities.Dtos;
+using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Repositories.Contracts;
-using System.Linq.Expressions;
-
+using System.Linq.Expressions; 
 namespace Repositories
 {
     public class UserQuizInfoRepository : RepositoryBase<UserQuizInfo>, IUserQuizInfoRepository
@@ -31,8 +31,7 @@ namespace Repositories
         public void CreateOneUserQuizInfo(UserQuizInfo userQuizInfo)
         {
             Create(userQuizInfo);
-           
-          }
+        }
 
         // Var olan bir UserQuizInfo kaydını güncelle
         public void UpdateOneUserQuizInfo(UserQuizInfo entity)
@@ -50,6 +49,23 @@ namespace Repositories
         public UserQuizInfo GetUserQuizInfoById(int userQuizInfoId, bool trackChanges)
         {
             return FindByCondition(uqi => uqi.UserQuizInfoId == userQuizInfoId, trackChanges);
+        }
+
+        public IEnumerable<UserQuizInfo> GetRetakeableQuizzesByUserId(string userId, bool trackChanges)
+        {
+            return FindAllByCondition(uqi => uqi.UserId == userId
+                                          && uqi.IsCompleted
+                                          && uqi.Score < 100, trackChanges)
+                            .Include(uqi => uqi.Quiz);
+
+        }
+
+        public IEnumerable<UserQuizInfo> GetCompletedQuizzesByUserId(string userId, bool trackChanges)
+        {
+            return FindAllByCondition(uqi => uqi.UserId == userId
+                                                     && uqi.IsCompleted
+                                                     && uqi.Score >= 60, trackChanges)
+                                       .Include(uqi => uqi.Quiz);
         }
     }
 }

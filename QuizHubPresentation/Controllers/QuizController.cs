@@ -1,14 +1,13 @@
 ﻿using AutoMapper;
-using DocumentFormat.OpenXml.Spreadsheet;
 using Entities.Dtos;
 using Entities.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using QuizHubPresentation.Infrastructure.Extensions;
 using QuizHubPresentation.Models;
 using Repositories.Contracts;
-using Services;
 using Services.Contracts;
 using System.Security.Claims;
 
@@ -32,84 +31,29 @@ namespace QuizHubPresentation.Controllers
         [Authorize]
         public async Task<IActionResult> PendingQuizzes()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = await _userManager.FindByIdAsync(userId);
-
-            if (user == null) return Content("User not found");
-
-            var departmentId = user.DepartmentId;
-
-            // Departmana atanmış quizleri getiriyoruz
-            var quizzes = _serviceManager.QuizService
-                .GetQuizzesWithDepartments(trackChanges: false)
-                .Where(q => q.ShowCase && q.Departments.Any(d => d.DepartmentId == departmentId))
-                .ToList();
-
-            // Kullanıcının daha önce çözmediği quizleri bulmak için `UserQuizInfo` kayıtlarına bakıyoruz
-            var solvedQuizIds = _serviceManager.UserQuizInfoService.GetUserQuizInfoByUserId(userId, trackChanges: false)
-                .Select(uqi => uqi.QuizId)
-                .ToList();
-
-          
-
-            // Session'da yarım kalmış quiz olup olmadığını kontrol ediyoruz
-            var userQuizInfo = HttpContext.Session.GetJson<UserQuizInfo>("UserQuizInfo");
-            var inProgressQuizId = userQuizInfo?.QuizId;
-
-          
-
-            // Kullanıcının başlattığı ama tamamlamadığı quiz'i Pending listesinden çıkartıyoruz
-            var pendingQuizzes = quizzes
-                .Where(q => !solvedQuizIds.Contains(q.QuizId) && q.QuizId != inProgressQuizId) // Yarım kalan quiz varsa çıkart
-                .ToList();
-
-          
-
-            return View("PendingQuizzes", pendingQuizzes);
+            return View();
         }
-
-
 
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> CompletedQuizzes()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            var completedQuizzes = _serviceManager.UserQuizInfoService
-                .GetUserQuizInfoByUserId(userId, trackChanges: false)
-                .Where(uqi => uqi.IsCompleted && (uqi.Score >= 60 || uqi.IsSuccessful))
-                .ToList();
-
-            return View("CompletedQuizzes", completedQuizzes);
+            return View();
         }
 
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> RetakeQuizzes()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            var retakeQuizzes = _serviceManager.UserQuizInfoService
-                .GetUserQuizInfoByUserId(userId, trackChanges: false)
-                .Where(uqi => uqi.IsCompleted && (uqi.Score < 60 || (uqi.Score < 100 && uqi.IsSuccessful)))
-                .ToList();
-
-            return View("RetakeQuizzes", retakeQuizzes);
+            return View();
         }
+
 
         [HttpGet]
         [Authorize]
         public IActionResult ContinueQuizzes()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            var continueQuizzes = _serviceManager.UserQuizInfoService
-                .GetUserQuizInfoByUserId(userId, trackChanges: false)
-                .Where(uqi => !uqi.IsCompleted)
-                .ToList();
-
-            return View("ContinueQuizzes", continueQuizzes);
+            return View();
         }
 
         [HttpGet]
@@ -126,46 +70,66 @@ namespace QuizHubPresentation.Controllers
             ViewBag.QuizId = quiz.QuizId;
             return View();
         }
+        [HttpGet]
+        [Authorize]
+        public IActionResult ContinueQuiz(int quizId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            try
+            {
+                // Servise işlemi yönlendirin
+                var quizDto = _serviceManager.QuizService.ContinueQuiz(quizId, userId);
+                return View("QuizView", quizDto);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+
+        }
         [HttpPost]
         [Authorize]
         public IActionResult StartQuiz(int quizId)
         {
+            // Quiz'i alıyoruz
             var quiz = _manager.Quiz.GetQuizWithDetails(quizId, trackChanges: false);
 
             if (quiz == null)
             {
                 return NotFound("Quiz bulunamadı.");
             }
-            var quizDto = _mapper.Map<QuizDtoForUser>(quiz);
 
+            // Kullanıcı ID'sini alıyoruz
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var userQuizInfo = new UserQuizInfo
+            // Geçici quiz bilgilerini oluşturuyoruz
+            var userQuizInfoTemp = new UserQuizInfoTemp
             {
                 UserId = userId,
                 QuizId = quizId,
                 IsCompleted = false,
                 CorrectAnswer = 0,
                 FalseAnswer = 0,
-                Score = 0
+                StartedAt = DateTime.Now,
             };
 
-            HttpContext.Session.SetJson("UserQuizInfo", userQuizInfo);
-            HttpContext.Session.SetInt32("CurrentQuestionOrder", 1);
-            HttpContext.Session.SetJson("TemporaryAnswers", new List<UserAnswerTemp>());
+            // Temp quiz bilgilerini kaydediyoruz
+            _serviceManager.UserQuizInfoTempService.CreateTempInfo(userQuizInfoTemp);
 
-            // İlk soruyu döndürüyoruz
+            // İlk soruyu alıyoruz
             var firstQuestion = quiz.Questions.OrderBy(q => q.Order).FirstOrDefault();
             if (firstQuestion == null)
             {
                 return NotFound("Bu quiz için sorular bulunamadı.");
             }
 
-            // İlk soruyu ve seçenekleri model olarak view'e gönderiyoruz
+            // Quiz bilgilerini DTO'ya mapliyoruz
+            var quizDto = _mapper.Map<QuizDtoForUser>(quiz);
             quizDto.QuestionCount = quiz.Questions.Count;
-            quizDto.Questions = new List<Question> { firstQuestion };  // Sadece ilk soruyu gönderiyoruz
+            quizDto.Questions = new List<Question> { firstQuestion };  // İlk soruyu gönderiyoruz
 
+            // View'e model ile dönüyoruz
             return View("QuizView", quizDto);
         }
 
@@ -174,96 +138,58 @@ namespace QuizHubPresentation.Controllers
         [Authorize]
         public IActionResult SaveAnswer(int quizId, int questionId, int selectedOptionId)
         {
-            // 1. Kullanıcının session'daki bilgilerini alıyoruz
-            var userQuizInfo = HttpContext.Session.GetJson<UserQuizInfo>("UserQuizInfo");
-            if (userQuizInfo == null)
+            // Kullanıcı ID'sini alıyoruz
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // Kullanıcının geçici quiz bilgilerini alıyoruz
+            var userQuizInfoTemp = _serviceManager.UserQuizInfoTempService.GetTempInfoByQuizIdAndUserId(quizId, userId, trackChanges: false);
+            if (userQuizInfoTemp == null)
             {
                 return BadRequest("Quiz bilgisi bulunamadı. Quiz'e başlamamış olabilirsiniz.");
             }
 
-            // 2. Kullanıcının geçici cevaplarını içeren session'daki listeyi alıyoruz
-            var tempAnswers = HttpContext.Session.GetJson<List<UserAnswerTemp>>("TemporaryAnswers") ?? new List<UserAnswerTemp>();
-
-            // 3. Şu anki sorunun doğru cevabını bulmak için veritabanından question ve correctOptionId'yi alıyoruz
+            // Soruyu alıyoruz ve doğruluk kontrolü yapıyoruz
             var question = _manager.Question.GetOneQuestion(questionId, trackChanges: false);
             if (question == null)
             {
                 return BadRequest("Geçersiz soru ID'si.");
             }
 
-            // 4. Cevap doğruluğunu kontrol et
-            bool isCorrect = false;
- 
-             isCorrect = selectedOptionId == question.CorrectOptionId;
-          
+            // Cevabın doğruluğunu kontrol et
+            bool isCorrect = selectedOptionId == question.CorrectOptionId;
 
-            // 5. Geçici cevabı session'daki listede güncelliyoruz
-            var existingAnswer = tempAnswers.FirstOrDefault(a => a.QuestionId == questionId);
-            if (existingAnswer != null)
+            // Geçici tabloya yeni cevabı kaydediyoruz
+            var newAnswer = new UserAnswerTemp
             {
-                // Eğer cevap zaten varsa güncelliyoruz
-                existingAnswer.SelectedOptionId = selectedOptionId;
-                existingAnswer.IsCorrect = isCorrect;
-            }
-            else
-            {
-                // Eğer cevap yoksa yeni bir cevap ekliyoruz
-                tempAnswers.Add(new UserAnswerTemp
-                {
-                    QuestionId = questionId,
-                    SelectedOptionId = selectedOptionId,
-                    IsCorrect = isCorrect
-                });
-            }
+                UserQuizInfoTempId = userQuizInfoTemp.UserQuizInfoTempId,
+                QuestionId = questionId,
+                SelectedOptionId = selectedOptionId,
+                IsCorrect = isCorrect
+            };
 
-            // 6. Güncellenen cevapları session'a kaydediyoruz
-            HttpContext.Session.SetJson("TemporaryAnswers", tempAnswers);
+            // Cevabı kaydediyoruz
+            _serviceManager.UserAnswerTempService.CreateTempAnswer(newAnswer);
 
-            // 7. Kullanıcının bir sonraki soruya geçebilmesi için current question order'ı güncelliyoruz
-            var currentQuestionOrder = HttpContext.Session.GetInt32("CurrentQuestionOrder") ?? 1;
-            HttpContext.Session.SetInt32("CurrentQuestionOrder", currentQuestionOrder + 1);
-
-            return Json(new { success = true, message = "Cevabınız kaydedildi." });
+            return Json(new { success = true });
         }
-
 
 
         [HttpPost]
         [Authorize]
         public IActionResult NextQuestion(int quizId, int currentQuestionOrder)
         {
-            // 1. Session'daki bilgileri alıyoruz
-            var userQuizInfo = HttpContext.Session.GetJson<UserQuizInfo>("UserQuizInfo");
-            var tempAnswers = HttpContext.Session.GetJson<List<UserAnswerTemp>>("TemporaryAnswers");
-
-            if (userQuizInfo == null || tempAnswers == null)
-            {
-                return BadRequest("Session'da quiz bilgisi bulunamadı. Quiz'e başlamamış olabilirsiniz.");
-            }
-
-            // 2. Veritabanından quiz detaylarını alıyoruz
             var quiz = _manager.Quiz.GetQuizWithDetails(quizId, trackChanges: false);
             if (quiz == null)
             {
                 return NotFound("Quiz bulunamadı.");
             }
-
-            // 3. Sıradaki soruyu buluyoruz
-            var nextQuestion = quiz.Questions
-                .Where(q => q.Order > currentQuestionOrder) // Şu anki sıradan büyük olan soruları buluyoruz
-                .OrderBy(q => q.Order)  // Sıradaki en küçük order'ı bul
-                .FirstOrDefault();
-
+            var nextQuestion = _serviceManager.QuizService.GetNextQuestion(quizId, currentQuestionOrder);
             if (nextQuestion == null)
             {
-                // Daha fazla soru kalmadıysa success = false döndür ve finish butonunu göster
                 return Json(new { success = false });
             }
 
-            // 4. Session'da current question order'ı güncelliyoruz
-            HttpContext.Session.SetInt32("CurrentQuestionOrder", nextQuestion.Order);
-
-            // 5. Sıradaki sorunun bilgilerini JSON formatında döndürüyoruz
+            // Yeni soruyu JSON formatında frontend'e gönderiyoruz
             var response = new
             {
                 success = true,
@@ -277,129 +203,49 @@ namespace QuizHubPresentation.Controllers
                 currentOrder = nextQuestion.Order,
                 totalQuestions = quiz.Questions.Count
             };
+             return Json(response);
 
-            return Json(response);
         }
 
 
         [HttpPost]
         [Authorize]
-        public IActionResult FinishQuiz()
+        public IActionResult FinishQuiz(int quizId)
         {
-            var sessionQuizInfo = HttpContext.Session.GetJson<UserQuizInfo>("UserQuizInfo");
-            var tempAnswers = HttpContext.Session.GetJson<List<UserAnswerTemp>>("TemporaryAnswers");
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            if (sessionQuizInfo == null || tempAnswers == null || tempAnswers.Count == 0)
-            {
-                return BadRequest("Quiz bilgileri eksik veya cevaplar bulunamadı.");
-            }
+            // 1. Serviste quiz'i işleyelim (hesapla, kaydet veya güncelle)
+            var userQuizInfo = _serviceManager.UserQuizInfoService.ProcessQuiz(quizId, userId);
+             // 3. QuizResult sayfasına yönlendirme
+            var quizResultViewModel = _mapper.Map<QuizResultViewModel>(userQuizInfo);
 
-            // 2. Session'daki verilerle Score, CorrectAnswer, FalseAnswer, BlankAnswer ve IsSuccessful bilgisi hesaplanıyor
-            sessionQuizInfo.CorrectAnswer = tempAnswers.Count(a => a.IsCorrect);
-            sessionQuizInfo.FalseAnswer = tempAnswers.Count(a => !a.IsCorrect && a.SelectedOptionId != 0);
-
-            int totalQuestions = sessionQuizInfo.CorrectAnswer + sessionQuizInfo.FalseAnswer;
-            sessionQuizInfo.Score = (int)Math.Floor((double)sessionQuizInfo.CorrectAnswer / totalQuestions * 100);
-            sessionQuizInfo.IsSuccessful = sessionQuizInfo.Score >= 60;
-            sessionQuizInfo.CompletedAt = DateTime.Now;
-            sessionQuizInfo.IsCompleted = true;
-            HttpContext.Session.SetJson("UserQuizInfo", sessionQuizInfo);
-
-            // Veritabanında bu quiz'e ve bu user'a ait önceki bir kayıt var mı diye kontrol edilir
-            var userQuizInfoInDb = _serviceManager.UserQuizInfoService
-                .GetUserQuizInfoByQuizIdAndUserId(sessionQuizInfo.QuizId, sessionQuizInfo.UserId, trackChanges: false);
-
-            // Eğer daha önce kayıt yoksa, yeni bir kayıt oluşturulur
-            if (userQuizInfoInDb == null)
-            {
-                // Yeni kayıt oluşturuluyor
-                _serviceManager.UserQuizInfoService.CreateOneUserQuizInfo(sessionQuizInfo);
-
-                // Cevaplar kaydediliyor
-                foreach (var answer in tempAnswers)
-                {
-                    var userAnswer = new UserAnswer
-                    {
-                        UserQuizInfoId = sessionQuizInfo.UserQuizInfoId,
-                        QuestionId = answer.QuestionId,
-                        SelectedOptionId = answer.SelectedOptionId,
-                        IsCorrect = answer.IsCorrect
-                    };
-                    _serviceManager.UserAnswerService.CreateUserAnswer(userAnswer);
-                }
-
-                // Sonuç sayfasına yönlendiriliyor
-                return RedirectToAction("QuizResult");
-            }
-
-            //  Eğer daha önce kayıt varsa score karşılaştırması yapılır
-            if (userQuizInfoInDb.Score < sessionQuizInfo.Score)
-            {
-                // Databasedeki skor düşükse: hem UserQuizInfo hem de UserAnswers güncellenir
-                userQuizInfoInDb.Score = sessionQuizInfo.Score;
-                userQuizInfoInDb.IsSuccessful = sessionQuizInfo.IsSuccessful;
-                userQuizInfoInDb.CompletedAt = DateTime.Now;
-                userQuizInfoInDb.CorrectAnswer = sessionQuizInfo.CorrectAnswer;
-
-                userQuizInfoInDb.FalseAnswer = sessionQuizInfo.FalseAnswer;
-
-                _serviceManager.UserQuizInfoService.UpdateOneUserQuizInfo(userQuizInfoInDb);
-
-                foreach (var answer in tempAnswers)
-                {
-                    var existingAnswer = _serviceManager.UserAnswerService
-                        .GetUserAnswer(userQuizInfoInDb.UserQuizInfoId, answer.QuestionId, trackChanges: true);
-
-                    if (existingAnswer != null)
-                    {
-                        // Mevcut cevap güncellenir
-                        existingAnswer.SelectedOptionId = answer.SelectedOptionId;
-                        existingAnswer.IsCorrect = answer.IsCorrect;
-                        _serviceManager.UserAnswerService.UpdateUserAnswer(existingAnswer);
-                    }
-                    else
-                    {
-                        // Yeni cevap eklenir
-                        var userAnswer = new UserAnswer
-                        {
-                            UserQuizInfoId = userQuizInfoInDb.UserQuizInfoId,
-                            QuestionId = answer.QuestionId,
-                            SelectedOptionId = answer.SelectedOptionId,
-                            IsCorrect = answer.IsCorrect
-                        };
-                        _serviceManager.UserAnswerService.CreateUserAnswer(userAnswer);
-                    }
-                }
-
-                return RedirectToAction("QuizResult");
-            }
-            else if (userQuizInfoInDb.Score == sessionQuizInfo.Score)
-            {
-                // Databasedeki skor eşitse: sadece CompletedAt güncellenir
-                userQuizInfoInDb.CompletedAt = sessionQuizInfo.CompletedAt;
-                _serviceManager.UserQuizInfoService.UpdateOneUserQuizInfo(userQuizInfoInDb);
-                return RedirectToAction("QuizResult");
-
-            }
-
-            // Databasedeki skor daha yüksekse: hiçbir işlem yapılmaz, direkt sonuç sayfasına yönlendirilir
+            TempData["QuizResult"] = JsonConvert.SerializeObject(quizResultViewModel);
             return RedirectToAction("QuizResult");
-        }
 
+        }
+       
+
+         
         [HttpGet]
         [Authorize]
         public IActionResult QuizResult()
         {
-            // Session'daki Quiz sonucu direkt olarak gösterilecek
-            var sessionQuizInfo = HttpContext.Session.GetJson<UserQuizInfo>("UserQuizInfo");
+            // TempData'dan QuizResult verilerini alıyoruz
+            var quizResultJson = TempData["QuizResult"] as string;
 
-            if (sessionQuizInfo == null)
+            // Eğer TempData'da veri yoksa, hata döndürüyoruz
+            if (string.IsNullOrEmpty(quizResultJson))
             {
-                return NotFound("Sonuç bilgisi bulunamadı.");
+                return NotFound("Quiz sonucu bulunamadı.");
             }
 
-            return View(sessionQuizInfo);  // Session'daki verilerle sonuç gösterilecek
+            // JSON formatındaki veriyi deserialize ederek QuizResultViewModel'e dönüştürüyoruz
+            var quizResultViewModel = JsonConvert.DeserializeObject<QuizResultViewModel>(quizResultJson);
 
+            // Modeli View'e gönderiyoruz
+            return View(quizResultViewModel);
         }
     }
-}
+
+    }
+ 

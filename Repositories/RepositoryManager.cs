@@ -11,14 +11,18 @@ namespace Repositories
         private readonly IUserQuizInfoRepository _userQuizInfoRepository;
         private readonly IUserAnswerRepository _userAnswerRepository;
         private readonly IDepartmentRepository _departmentRepository;
-
+        private readonly IUserQuizInfoTempRepository _userQuizInfoTempRepository;
+        private readonly IUserAnswerTempRepository _userAnswerTempRepository;
         public RepositoryManager(RepositoryContext context,
                                  IQuizRepository quizRepository,
                                  IQuestionRepository questionRepository,
                                  IOptionRepository optionRepository,
                                  IUserQuizInfoRepository userQuizInfoRepository,
                                  IUserAnswerRepository userAnswerRepository,
-                                 IDepartmentRepository departmentRepository)
+                                 IDepartmentRepository departmentRepository,
+                                 IUserQuizInfoTempRepository userQuizInfoTempRepository,
+                                 IUserAnswerTempRepository userAnswerTempRepository
+                                 )
         {
             _context = context;
             _quizRepository = quizRepository;
@@ -27,6 +31,8 @@ namespace Repositories
             _userQuizInfoRepository = userQuizInfoRepository;
             _userAnswerRepository = userAnswerRepository;
             _departmentRepository = departmentRepository;
+            _userAnswerTempRepository = userAnswerTempRepository;
+            _userQuizInfoTempRepository = userQuizInfoTempRepository;
         }
 
         public IQuizRepository Quiz => _quizRepository;
@@ -35,7 +41,8 @@ namespace Repositories
         public IUserQuizInfoRepository UserQuizInfo => _userQuizInfoRepository;
         public IUserAnswerRepository UserAnswer => _userAnswerRepository;
         public IDepartmentRepository Department => _departmentRepository; // Departman repository
-
+        public IUserQuizInfoTempRepository UserQuizInfoTemp => _userQuizInfoTempRepository;
+        public IUserAnswerTempRepository UserAnswerTemp => _userAnswerTempRepository;
         public void Save()
         {
             _context.SaveChanges();

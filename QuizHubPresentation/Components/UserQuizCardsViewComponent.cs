@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using DocumentFormat.OpenXml.Spreadsheet;
 using Entities.Dtos;
 using Entities.Models;
 using Microsoft.AspNetCore.Identity;
@@ -11,7 +10,7 @@ public class UserQuizCardsViewComponent : ViewComponent
 {
     private readonly IServiceManager _serviceManager;
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly IMapper _mapper; // AutoMapper kullanarak dönüşüm yapacağız
+    private readonly IMapper _mapper;
 
     public UserQuizCardsViewComponent(IServiceManager serviceManager, UserManager<ApplicationUser> userManager, IMapper mapper)
     {
@@ -22,71 +21,78 @@ public class UserQuizCardsViewComponent : ViewComponent
 
     public async Task<IViewComponentResult> InvokeAsync(string status)
     {
-        // Kullanıcı giriş yapmışsa rollerine göre ayır
-        var claimsPrincipal = User as ClaimsPrincipal;
-        var userId = claimsPrincipal?.FindFirstValue(ClaimTypes.NameIdentifier); // UserId'yi alıyoruz
-        var user = await _userManager.FindByIdAsync(userId);  // ApplicationUser kullanıyoruz
+         var claimsPrincipal = User as ClaimsPrincipal;
+        var userId = claimsPrincipal?.FindFirstValue(ClaimTypes.NameIdentifier);
+        var user = await _userManager.FindByIdAsync(userId);
 
         if (user == null)
         {
-            return Content("User not found"); // Eğer kullanıcı bulunamazsa
+            return Content("User not found");
         }
 
-        var quizzes = new List<UserQuizInfo>(); // Quiz listesi
+        var quizCardDtos = new List<UserQuizCardDto>();
 
         switch (status)
         {
             case "Pending":
-                var allQuizzes = _serviceManager.QuizService.GetQuizzesWithDepartments(false).ToList();
-                var solvedQuizIds = _serviceManager.UserQuizInfoService
-                    .GetUserQuizInfoByUserId(userId, false)
-                    .Select(uqi => uqi.QuizId).ToList();
-
-                var departmentId = user.DepartmentId;
-
-                quizzes = allQuizzes
-                    .Where(q => q.ShowCase && q.Departments.Any(d => d.DepartmentId == departmentId) && !solvedQuizIds.Contains(q.QuizId))
-                    .Select(q => new UserQuizInfo { Quiz = q }).ToList();
+                quizCardDtos = GetPendingQuizzes(userId, user.DepartmentId);
                 break;
 
             case "Completed":
-                quizzes = _serviceManager.UserQuizInfoService
-                    .GetUserQuizInfoByUserId(userId, false)
-                    .Where(uqi => uqi.IsCompleted && (uqi.Score >= 60 || uqi.IsSuccessful))
-                    .ToList();
+                quizCardDtos = GetCompletedQuizzes(userId);
                 break;
 
             case "Retake":
-                quizzes = _serviceManager.UserQuizInfoService
-                    .GetUserQuizInfoByUserId(userId, false)
-                    .Where(uqi => uqi.IsCompleted && (uqi.Score < 60 || (uqi.Score < 100 && uqi.IsSuccessful)))
-                    .ToList();
+                quizCardDtos = GetRetakeQuizzes(userId);
                 break;
 
             case "Continue":
-                quizzes = _serviceManager.UserQuizInfoService
-                    .GetUserQuizInfoByUserId(userId, false)
-                    .Where(uqi => !uqi.IsCompleted)
-                    .ToList();
+                quizCardDtos = GetContinueQuizzes(userId);
                 break;
 
             default:
-                quizzes = new List<UserQuizInfo>();
+                quizCardDtos = new List<UserQuizCardDto>();
                 break;
         }
-
-        // UserQuizInfo modelini UserQuizCardDto modeline dönüştür
-        var quizCardDtos = quizzes.Select(q => new UserQuizCardDto
+        foreach (var quizCard in quizCardDtos)
         {
-            QuizId = q.Quiz.QuizId,
-            QuizTitle = q.Quiz.Title,
-            QuestionCount = q.Quiz.QuestionCount,
-            Score = q.Score,
-            CompletedAt = q.CompletedAt,
-            CanRetake = q.Score < 100,
-            Status = status
-        }).ToList();
-
+            quizCard.Status = status;  
+        }
         return View("UserQuizCards", quizCardDtos);
+    }
+
+    private List<UserQuizCardDto> GetPendingQuizzes(string userId, int departmentId)
+    {
+        var pendingQuizzes = _serviceManager.QuizService
+            .GetPendingQuizzesForUser(userId, trackChanges: false);
+        return _mapper.Map<List<UserQuizCardDto>>(pendingQuizzes);
+    }
+
+
+    private List<UserQuizCardDto> GetCompletedQuizzes(string userId)
+    {
+        var completedQuizzes = _serviceManager.UserQuizInfoService
+            .GetCompletedQuizzesByUserId(userId, trackChanges: false)
+            .ToList();
+
+        return _mapper.Map<List<UserQuizCardDto>>(completedQuizzes);
+    }
+
+    private List<UserQuizCardDto> GetRetakeQuizzes(string userId)
+    {
+        var retakeQuizzes = _serviceManager.UserQuizInfoService
+         .GetRetakeableQuizzesByUserId(userId, trackChanges: false)   
+         .ToList();
+
+        return _mapper.Map<List<UserQuizCardDto>>(retakeQuizzes);
+    }
+
+    private List<UserQuizCardDto> GetContinueQuizzes(string userId)
+    {
+        var incompleteQuizzes = _serviceManager.UserQuizInfoTempService
+            .GetIncompleteQuizzesByUserId(userId, trackChanges: false)
+            .ToList();
+
+        return _mapper.Map<List<UserQuizCardDto>>(incompleteQuizzes);
     }
 }

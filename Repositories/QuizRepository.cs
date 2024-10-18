@@ -5,11 +5,13 @@ using Entities.RequestParameters;
 using Repositories.Contracts;
 using Repositories.Extensions;
 using System.Linq;
+using Microsoft.AspNetCore.Identity;
 
 namespace Repositories
 {
     public class QuizRepository : RepositoryBase<Quiz>, IQuizRepository
     {
+        
         public QuizRepository(RepositoryContext context) : base(context)
 
         {
@@ -60,5 +62,15 @@ namespace Repositories
 
             return query.SingleOrDefault(q => q.QuizId == quizId);
         }
+        public IEnumerable<Quiz> GetQuizzesByDepartmentId(int departmentId, bool trackChanges)
+        {
+            var query = _context.Quizzes.Include(q => q.Departments)
+                                        .Where(q => q.Departments.Any(d => d.DepartmentId == departmentId)
+                                                 && q.ShowCase); // Aktif quizler (ShowCase)
+
+            return trackChanges ? query.AsTracking().ToList() : query.AsNoTracking().ToList();
+        }
+
+
     }
 }

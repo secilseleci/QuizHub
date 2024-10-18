@@ -16,5 +16,9 @@ namespace Entities.Models
         [ForeignKey("QuestionId")] 
         public int QuestionId { get; set; }
         public Question Question { get; set; }
+
+        public ICollection<UserAnswer> UserAnswers { get; set; }
+        public ICollection<UserAnswerTemp> UserAnswersTemp { get; set; }
+
     }
 }

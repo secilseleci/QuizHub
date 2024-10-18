@@ -10,23 +10,35 @@ namespace Services
         private readonly IAuthService _authService;
         private readonly IUserQuizInfoService _userQuizInfoService;
         private readonly IUserAnswerService _userAnswerService;
-       private readonly IDepartmentService _departmentService;
+        private readonly IDepartmentService _departmentService; 
 
+        private readonly IUserQuizInfoTempService _userQuizInfoTempService;
+        private readonly IUserAnswerTempService _userAnswerTempService;
         public ServiceManager(
             IQuizService quizService,
             IAuthService authService,
             IOptionService optionService,
-            IUserQuizInfoService userQuizInfoService,
+           
+            IUserQuizInfoService userQuizInfoService, 
+            IUserQuizInfoTempService userQuizInfoTempService,
+           
             IQuestionService questionService,
+            
             IUserAnswerService userAnswerService,
+            IUserAnswerTempService userAnswerTempService,
+            
             IDepartmentService departmentService)
         {
             _quizService = quizService;
             _authService = authService;
             _questionService = questionService;
             _optionService = optionService;
+
             _userQuizInfoService = userQuizInfoService;
+            _userQuizInfoTempService = userQuizInfoTempService;
+
             _userAnswerService = userAnswerService;
+            _userAnswerTempService = userAnswerTempService;
             _departmentService = departmentService;
         }
 
@@ -37,5 +49,9 @@ namespace Services
         public IUserAnswerService UserAnswerService => _userAnswerService;
         public IUserQuizInfoService UserQuizInfoService => _userQuizInfoService;
         public IDepartmentService DepartmentService => _departmentService;
+
+        public IUserQuizInfoTempService UserQuizInfoTempService => _userQuizInfoTempService;
+
+        public IUserAnswerTempService UserAnswerTempService => _userAnswerTempService;
     }
 }

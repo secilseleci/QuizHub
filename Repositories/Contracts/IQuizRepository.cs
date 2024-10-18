@@ -18,5 +18,6 @@ namespace Repositories.Contracts
         Quiz? GetQuizWithDetails(int quizId, bool trackChanges);
         Quiz GetQuizWithDepartments(int quizId, bool trackChanges);
 
+        IEnumerable<Quiz> GetQuizzesByDepartmentId(int departmentId, bool trackChanges);
     }
 }

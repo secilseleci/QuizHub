@@ -10,7 +10,7 @@ namespace Entities.Dtos
     {   public int QuizId { get; set; }
         public string QuizTitle { get; set; }
         public int QuestionCount { get; set; }
-        public double? Score { get; set; }
+        public int Score { get; set; }
         public DateTime? CompletedAt { get; set; }
         public bool IsSuccesful { get; set; } // Başarılı mı
         public string Status { get; set; } // Yeniden alabilir mi

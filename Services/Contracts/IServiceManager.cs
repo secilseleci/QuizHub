@@ -15,5 +15,7 @@ namespace Services.Contracts
         IUserQuizInfoService UserQuizInfoService { get; }
         IUserAnswerService UserAnswerService { get; }
         IDepartmentService DepartmentService { get; }
+        IUserQuizInfoTempService UserQuizInfoTempService { get; }
+        IUserAnswerTempService UserAnswerTempService { get; }
     }
 }

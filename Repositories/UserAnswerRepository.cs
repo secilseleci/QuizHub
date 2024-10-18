@@ -14,7 +14,7 @@ namespace Repositories
 
         // Yeni bir UserAnswer oluşturma
         public void CreateUserAnswer(UserAnswer userAnswer) => Create(userAnswer);
-        public void UpdateUserAnswer(UserAnswer userAnswer) => Update(userAnswer);
+        public void UpdateUserAnswer(UserAnswer entity) => Update(entity);
       
         public IEnumerable<UserAnswer> GetUserAnswersByQuizInfoId(int userQuizInfoId, bool trackChanges)
         {

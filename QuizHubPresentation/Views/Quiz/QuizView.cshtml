@@ -22,10 +22,12 @@
 
         <div class="card-footer d-flex justify-content-between">
             <span id="questionOrder">@Model.Questions.First().Order / @Model.QuestionCount</span>
-            <!-- Finish Quiz formu -->
-            <form asp-action="FinishQuiz" method="post">
+             <form asp-action="FinishQuiz" method="post">
+                <input type="hidden" name="quizId" value="@Model.QuizId" />
+
                 <button class="btn btn-warning" id="finishButton" style="display:none;">Finish Quiz</button>
-            </form>            <button class="btn btn-primary" id="nextButton">Next</button>
+            </form>            
+            <button class="btn btn-primary" id="nextButton">Next</button>
         </div>
     </div>
 </div>
@@ -34,6 +36,7 @@
     var currentQuestionOrder = @Model.Questions.First().Order;  // İlk sorunun sırası
     var questionId = @Model.Questions.First().QuestionId;  // İlk sorunun ID'si
     var quizId = '@Model.QuizId';  // Quiz ID
+    var totalQuestions = @Model.QuestionCount;
 
     // Next butonuna tıklayınca cevabı kaydediyoruz ve bir sonraki soruya geçiyoruz
     document.getElementById("nextButton").addEventListener("click", function () {
@@ -68,13 +71,15 @@
             method: 'POST',
             data: { quizId: quizId, currentQuestionOrder: currentQuestionOrder },
             success: function (response) {
+                console.log(response);
                 if (response.success) {
                     // Yeni soru ve seçenekleri DOM'da güncelliyoruz
                     $('#questionText').text(response.questionText);
-                    $('#questionOrder').text(response.currentOrder + ' / ' + response.totalQuestions);
+                    $('#questionOrder').text(response.currentOrder + ' / ' + totalQuestions);
 
                     var optionsList = $('#optionsList');
                     optionsList.empty();
+                    console.log(optionsList.html());
                     response.options.forEach(function (option) {
                         optionsList.append('<label class="list-group-item d-flex align-items-center">' +
                             '<input type="radio" name="questionOptions" value="' + option.id + '" class="me-2">' +

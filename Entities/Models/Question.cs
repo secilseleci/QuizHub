@@ -19,6 +19,7 @@ namespace Entities.Models
         public Quiz Quiz { get; set; }  
         public ICollection<Option> Options { get; set; }
         public ICollection<UserAnswer> UserAnswers { get; set; }  // UserAnswer ile ilişki
+        public ICollection<UserAnswerTemp> UserAnswersTemp { get; set; }  // UserAnswer ile ilişki
 
 
     }

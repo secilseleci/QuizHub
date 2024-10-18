@@ -1,4 +1,4 @@
-﻿@model UserQuizInfo
+﻿@model QuizResultViewModel
 
 <div class="container mt-5">
     <h1 class="text-center mb-4">Quiz Result</h1>
@@ -14,8 +14,8 @@
                 <tbody>
                     <tr>
                         <th>Score</th>
-                        <td>@Model.Score%</td>
-                    </tr>
+                        <td>@Model.Score</td>
+                    </tr>  
                     <tr>
                         <th>Correct Answers</th>
                         <td>@Model.CorrectAnswer</td>
@@ -29,10 +29,7 @@
                         <th>Passed</th>
                         <td>@(Model.IsSuccessful ? "Yes" : "No")</td>
                     </tr>
-                    <tr>
-                        <th>Completion Date</th>
-                        <td>@Model.CompletedAt?.ToString("MM/dd/yyyy")</td>
-                    </tr>
+                 
                 </tbody>
             </table>
 

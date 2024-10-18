@@ -1,4 +1,5 @@
-﻿using Entities.Models;
+﻿using Entities.Dtos;
+using Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,10 @@ namespace Repositories.Contracts
         void UpdateOneUserQuizInfo(UserQuizInfo entity);
 
         void RemoveOneUserQuizInfo(UserQuizInfo userQuizInfo);
-        UserQuizInfo GetUserQuizInfoById(int userQuizInfoId, bool trackChanges); 
+        UserQuizInfo GetUserQuizInfoById(int userQuizInfoId, bool trackChanges);
+        IEnumerable<UserQuizInfo> GetRetakeableQuizzesByUserId( string userId, bool trackChanges);
+        IEnumerable<UserQuizInfo> GetCompletedQuizzesByUserId(string userId, bool trackChanges);
+
     }
 
 }

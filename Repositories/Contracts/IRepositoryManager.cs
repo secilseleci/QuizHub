@@ -14,7 +14,8 @@ namespace Repositories.Contracts
         IUserQuizInfoRepository UserQuizInfo { get; }
         IUserAnswerRepository UserAnswer { get; }
         IDepartmentRepository Department { get; } // Departman repository eklendi
-
+        IUserQuizInfoTempRepository UserQuizInfoTemp { get; }
+        IUserAnswerTempRepository UserAnswerTemp { get; }
         void Save();
     }
 }
