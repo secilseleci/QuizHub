@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;  // IdentityUser için gerekli
-
+﻿ 
 namespace Entities.Models
 {
     public class UserQuizInfo
@@ -20,7 +19,7 @@ namespace Entities.Models
             public int FalseAnswer { get; set; }
            
         
-        public ICollection<UserAnswer> UserAnswers { get; set; }  // UserAnswer ile ilişki
+        public ICollection<UserAnswer> UserAnswers { get; set; }   
             
         }
 

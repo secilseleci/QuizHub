@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entities.RequestParameters
 {
-    public class QuizRequestParameters : RequestParameters
+    public class QuizRequestParameters 
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }

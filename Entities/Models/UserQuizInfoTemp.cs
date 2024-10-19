@@ -6,22 +6,21 @@ namespace Entities.Models
 {
     public class UserQuizInfoTemp
     {
-        public int UserQuizInfoTempId { get; set; }  // Benzersiz ID (temp tablosu için)
+        public int UserQuizInfoTempId { get; set; }  
 
-        public string UserId { get; set; }           // Kullanıcının ID'si
-        public ApplicationUser User { get; set; }    // Kullanıcı ile ilişki
+        public string UserId { get; set; }          
+        public ApplicationUser User { get; set; }    
 
-        public int QuizId { get; set; }              // Hangi quiz'e ait olduğunu belirtir
-        public Quiz Quiz { get; set; }               // Quiz ile ilişki
+        public int QuizId { get; set; }               
+        public Quiz Quiz { get; set; }               
 
-        public bool IsCompleted { get; set; }        // Quiz tamamlandı mı
-        public DateTime? StartedAt { get; set; }     // Quiz'in başladığı zaman
-        public DateTime? LastUpdated { get; set; }   // En son ne zaman güncellendiği (ilerlemeyi takip etmek için)
+        public bool IsCompleted { get; set; }         
+        public DateTime? StartedAt { get; set; }      
 
-        public int CorrectAnswer { get; set; }       // Doğru cevap sayısı (quiz tamamlanınca esas tabloya taşınacak)
-        public int FalseAnswer { get; set; }         // Yanlış cevap sayısı (quiz tamamlanınca esas tabloya taşınacak)
-        public int Score { get; set; }    // Yeni alan
+        public int CorrectAnswer { get; set; }      
+        public int FalseAnswer { get; set; }        
+        public int Score { get; set; }    
 
-        public ICollection<UserAnswerTemp> UserAnswersTemp { get; set; }  // Temp cevaplarla ilişki
+        public ICollection<UserAnswerTemp> UserAnswersTemp { get; set; }  
     }
 }

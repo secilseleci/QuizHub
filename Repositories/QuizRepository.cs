@@ -40,7 +40,6 @@ namespace Repositories
         {
             return _context
             .Quizzes
-            .FilteredBySearchTerm(q.SearchTerm)
             .ToPaginate(q.PageNumber, q.PageSize);
         }
 

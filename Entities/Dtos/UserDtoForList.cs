@@ -15,13 +15,13 @@ namespace Entities.Dtos
         [Required(ErrorMessage = "UserName is required.")]
         public string? UserName { get; init; }
 
-        public string DepartmentName { get; set; }  // Departman adı buraya set ediliyor
+        public string DepartmentName { get; set; }   
 
 
 
-        [Required(ErrorMessage = "Department is required.")]  // Eğer department zorunlu ise
+        [Required(ErrorMessage = "Department is required.")]  
         public int DepartmentId { get; init; }
 
-        public List<string> Roles { get; set; } = new List<string>(); // Roller
+        public List<string> Roles { get; set; } = new List<string>();  
     }
 }

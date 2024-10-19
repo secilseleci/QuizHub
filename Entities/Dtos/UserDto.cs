@@ -14,8 +14,8 @@ public record UserDto
     public string? Email { get; init; }
 
 
-    [Required(ErrorMessage = "Department is required.")]  // Eğer department zorunlu ise
+    [Required(ErrorMessage = "Department is required.")]  
     public int DepartmentId { get; set; }
 
-    public List<string> Roles { get; set; } = new List<string>(); // Roller
+    public List<string> Roles { get; set; } = new List<string>();  
 }

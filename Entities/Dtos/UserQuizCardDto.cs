@@ -12,9 +12,9 @@ namespace Entities.Dtos
         public int QuestionCount { get; set; }
         public int Score { get; set; }
         public DateTime? CompletedAt { get; set; }
-        public bool IsSuccesful { get; set; } // Başarılı mı
-        public string Status { get; set; } // Yeniden alabilir mi
-        public bool CanRetake { get; set; } // Yeniden alabilir mi
+        public bool IsSuccesful { get; set; }  
+        public string Status { get; set; }  
+        public bool CanRetake { get; set; }  
     }
 
 }
