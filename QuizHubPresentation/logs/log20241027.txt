@@ -1,0 +1,218 @@
+2024-10-27 13:21:28.773 +03:00 [INF] User profile is available. Using 'C:\Users\ASUS\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-10-27 13:21:30.139 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2024-10-27 13:21:31.076 +03:00 [INF] Executed DbCommand (43ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2024-10-27 13:21:31.136 +03:00 [INF] Executed DbCommand (33ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2024-10-27 13:21:31.163 +03:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2024-10-27 13:21:31.674 +03:00 [INF] Executed DbCommand (60ms) [Parameters=[@__normalizedUserName_0='ADMIN' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Discriminator], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName], [a].[DepartmentId]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[Discriminator] = N'ApplicationUser' AND [a].[NormalizedUserName] = @__normalizedUserName_0
+2024-10-27 13:21:31.868 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[@__normalizedName_0='EDITOR' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2024-10-27 13:21:31.880 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='USER' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2024-10-27 13:21:31.882 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedUserName_0='AYSELKARA' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Discriminator], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName], [a].[DepartmentId]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[Discriminator] = N'ApplicationUser' AND [a].[NormalizedUserName] = @__normalizedUserName_0
+2024-10-27 13:21:31.883 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedUserName_0='DERYAAFACAN' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Discriminator], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName], [a].[DepartmentId]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[Discriminator] = N'ApplicationUser' AND [a].[NormalizedUserName] = @__normalizedUserName_0
+2024-10-27 13:21:31.884 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedUserName_0='CEMSEKER' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Discriminator], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName], [a].[DepartmentId]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[Discriminator] = N'ApplicationUser' AND [a].[NormalizedUserName] = @__normalizedUserName_0
+2024-10-27 13:21:32.035 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-10-27 13:21:32.039 +03:00 [INF] Hosting environment: Development
+2024-10-27 13:21:32.040 +03:00 [INF] Content root path: C:\QuizHub\QuizHubPresentation\
+2024-10-27 13:21:32.071 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/ - -
+2024-10-27 13:21:32.257 +03:00 [INF] Executing endpoint 'QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation)'
+2024-10-27 13:21:32.274 +03:00 [INF] Route matched with {action = "Index", controller = "Home", area = "", page = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller QuizHubPresentation.Controllers.HomeController (QuizHubPresentation).
+2024-10-27 13:21:32.422 +03:00 [INF] Executing ViewResult, running view Index.
+2024-10-27 13:21:32.533 +03:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [u].[UserQuizInfoId], [u].[CompletedAt], [u].[CorrectAnswer], [u].[FalseAnswer], [u].[IsCompleted], [u].[IsSuccessful], [u].[QuizId], [u].[Score], [u].[UserId], [q].[QuizId], [q].[CreatedDate], [q].[QuestionCount], [q].[ShowCase], [q].[Title], [q].[UpdatedDate]
+FROM [UserQuizInfo] AS [u]
+INNER JOIN [Quizzes] AS [q] ON [u].[QuizId] = [q].[QuizId]
+WHERE 0 = 1
+2024-10-27 13:21:32.917 +03:00 [INF] Executed ViewResult - view Index executed in 495.2987ms.
+2024-10-27 13:21:32.930 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/js/site.js?v=4q1jwFhaPaZgr8WAUSrux6hAuh0XDg9kPS3xIVq36I0 - -
+2024-10-27 13:21:32.930 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/lib/bootstrap/css/bootstrap.min.css?v=PI8n5gCcz9cQqQXm3PEtDuPG8qx9oFsFctPg0S5zb8g - -
+2024-10-27 13:21:32.930 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/lib/font-awesome/js/all.min.js?v=ShtKaqIDL7Iv2AJqPcHXS_s6kjSFvbypN5bRIlKTIk4 - -
+2024-10-27 13:21:32.930 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/lib/font-awesome/css/all.css?v=LQ6pJHst_Odf4UWHWqSJ5xIaYOoGkeYLArakW0apA4I - -
+2024-10-27 13:21:32.930 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/css/site.css?v=gmd4GJYvwhIsyyUu7Rp3t4KkEUiEDTolofucnmg2Bb0 - -
+2024-10-27 13:21:32.930 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/lib/bootstrap/js/bootstrap.bundle.min.js?v=CDOy6cOibCWEdsRiZuaHf8dSGGJRYuBGC-mjoJimHGw - -
+2024-10-27 13:21:32.930 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/lib/jquery/jquery.min.js?v=_JqT3SQfawRcv_BIHPThkBvs0OEvtFFmqPF_lYI_Cxo - -
+2024-10-27 13:21:32.930 +03:00 [INF] Executed action QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation) in 655.5059ms
+2024-10-27 13:21:32.931 +03:00 [INF] Executed endpoint 'QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation)'
+2024-10-27 13:21:32.936 +03:00 [INF] The file /lib/jquery/jquery.min.js was not modified
+2024-10-27 13:21:32.936 +03:00 [INF] The file /js/site.js was not modified
+2024-10-27 13:21:32.936 +03:00 [INF] The file /lib/font-awesome/css/all.css was not modified
+2024-10-27 13:21:32.936 +03:00 [INF] The file /css/site.css was not modified
+2024-10-27 13:21:32.936 +03:00 [INF] The file /lib/bootstrap/js/bootstrap.bundle.min.js was not modified
+2024-10-27 13:21:32.936 +03:00 [INF] The file /lib/bootstrap/css/bootstrap.min.css was not modified
+2024-10-27 13:21:32.936 +03:00 [INF] The file /lib/font-awesome/js/all.min.js was not modified
+2024-10-27 13:21:32.938 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/css/site.css?v=gmd4GJYvwhIsyyUu7Rp3t4KkEUiEDTolofucnmg2Bb0 - - - 304 - text/css 8.0954ms
+2024-10-27 13:21:32.938 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/lib/font-awesome/css/all.css?v=LQ6pJHst_Odf4UWHWqSJ5xIaYOoGkeYLArakW0apA4I - - - 304 - text/css 8.0899ms
+2024-10-27 13:21:32.938 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/lib/bootstrap/js/bootstrap.bundle.min.js?v=CDOy6cOibCWEdsRiZuaHf8dSGGJRYuBGC-mjoJimHGw - - - 304 - application/javascript 8.0950ms
+2024-10-27 13:21:32.938 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/js/site.js?v=4q1jwFhaPaZgr8WAUSrux6hAuh0XDg9kPS3xIVq36I0 - - - 304 - application/javascript 8.0877ms
+2024-10-27 13:21:32.938 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/lib/font-awesome/js/all.min.js?v=ShtKaqIDL7Iv2AJqPcHXS_s6kjSFvbypN5bRIlKTIk4 - - - 304 - application/javascript 8.0903ms
+2024-10-27 13:21:32.938 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/lib/bootstrap/css/bootstrap.min.css?v=PI8n5gCcz9cQqQXm3PEtDuPG8qx9oFsFctPg0S5zb8g - - - 304 - text/css 8.0899ms
+2024-10-27 13:21:32.938 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/lib/jquery/jquery.min.js?v=_JqT3SQfawRcv_BIHPThkBvs0OEvtFFmqPF_lYI_Cxo - - - 304 - application/javascript 8.0908ms
+2024-10-27 13:21:32.954 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/ - - - 200 - text/html;+charset=utf-8 888.0578ms
+2024-10-27 13:21:33.001 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/_framework/aspnetcore-browser-refresh.js - -
+2024-10-27 13:21:33.001 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/lib/font-awesome/webfonts/fa-brands-400.woff2 - -
+2024-10-27 13:21:33.001 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/lib/font-awesome/webfonts/fa-solid-900.woff2 - -
+2024-10-27 13:21:33.001 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/_vs/browserLink - -
+2024-10-27 13:21:33.001 +03:00 [INF] The file /lib/font-awesome/webfonts/fa-solid-900.woff2 was not modified
+2024-10-27 13:21:33.001 +03:00 [INF] The file /lib/font-awesome/webfonts/fa-brands-400.woff2 was not modified
+2024-10-27 13:21:33.002 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/lib/font-awesome/webfonts/fa-brands-400.woff2 - - - 304 - font/woff2 0.9799ms
+2024-10-27 13:21:33.002 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/lib/font-awesome/webfonts/fa-solid-900.woff2 - - - 304 - font/woff2 0.9799ms
+2024-10-27 13:21:33.008 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/_framework/aspnetcore-browser-refresh.js - - - 200 11996 application/javascript;+charset=utf-8 5.5873ms
+2024-10-27 13:21:33.069 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 68.0781ms
+2024-10-27 13:21:33.107 +03:00 [INF] Request starting HTTP/1.1 GET https://localhost:44335/lib/bootstrap/js/bootstrap.bundle.min.js.map - -
+2024-10-27 13:21:33.115 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/favicon.ico - -
+2024-10-27 13:21:33.115 +03:00 [INF] The file /favicon.ico was not modified
+2024-10-27 13:21:33.116 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/favicon.ico - - - 304 - image/x-icon 0.8738ms
+2024-10-27 13:21:33.156 +03:00 [INF] Sending file. Request path: '/lib/bootstrap/js/bootstrap.bundle.min.js.map'. Physical path: 'C:\QuizHub\QuizHubPresentation\wwwroot\lib\bootstrap\js\bootstrap.bundle.min.js.map'
+2024-10-27 13:21:33.162 +03:00 [INF] Request finished HTTP/1.1 GET https://localhost:44335/lib/bootstrap/js/bootstrap.bundle.min.js.map - - - 200 332090 text/plain 55.0896ms
+2024-10-27 13:30:01.143 +03:00 [INF] User profile is available. Using 'C:\Users\ASUS\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-10-27 13:30:02.145 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2024-10-27 13:30:02.874 +03:00 [INF] Executed DbCommand (26ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2024-10-27 13:30:02.915 +03:00 [INF] Executed DbCommand (19ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2024-10-27 13:30:02.931 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2024-10-27 13:30:03.370 +03:00 [INF] Executed DbCommand (50ms) [Parameters=[@__normalizedUserName_0='ADMIN' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Discriminator], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName], [a].[DepartmentId]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[Discriminator] = N'ApplicationUser' AND [a].[NormalizedUserName] = @__normalizedUserName_0
+2024-10-27 13:30:03.525 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@__normalizedName_0='EDITOR' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2024-10-27 13:30:03.540 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='USER' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2024-10-27 13:30:03.541 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedUserName_0='AYSELKARA' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Discriminator], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName], [a].[DepartmentId]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[Discriminator] = N'ApplicationUser' AND [a].[NormalizedUserName] = @__normalizedUserName_0
+2024-10-27 13:30:03.542 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedUserName_0='DERYAAFACAN' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Discriminator], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName], [a].[DepartmentId]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[Discriminator] = N'ApplicationUser' AND [a].[NormalizedUserName] = @__normalizedUserName_0
+2024-10-27 13:30:03.543 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedUserName_0='CEMSEKER' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Discriminator], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName], [a].[DepartmentId]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[Discriminator] = N'ApplicationUser' AND [a].[NormalizedUserName] = @__normalizedUserName_0
+2024-10-27 13:30:03.620 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-10-27 13:30:03.624 +03:00 [INF] Hosting environment: Development
+2024-10-27 13:30:03.625 +03:00 [INF] Content root path: C:\QuizHub\QuizHubPresentation\
+2024-10-27 13:30:03.645 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/ - -
+2024-10-27 13:30:04.317 +03:00 [INF] Executing endpoint 'QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation)'
+2024-10-27 13:30:04.331 +03:00 [INF] Route matched with {action = "Index", controller = "Home", area = "", page = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller QuizHubPresentation.Controllers.HomeController (QuizHubPresentation).
+2024-10-27 13:30:04.475 +03:00 [INF] Executing ViewResult, running view Index.
+2024-10-27 13:30:04.580 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [u].[UserQuizInfoId], [u].[CompletedAt], [u].[CorrectAnswer], [u].[FalseAnswer], [u].[IsCompleted], [u].[IsSuccessful], [u].[QuizId], [u].[Score], [u].[UserId], [q].[QuizId], [q].[CreatedDate], [q].[QuestionCount], [q].[ShowCase], [q].[Title], [q].[UpdatedDate]
+FROM [UserQuizInfo] AS [u]
+INNER JOIN [Quizzes] AS [q] ON [u].[QuizId] = [q].[QuizId]
+WHERE 0 = 1
+2024-10-27 13:30:04.734 +03:00 [INF] Executed ViewResult - view Index executed in 260.2902ms.
+2024-10-27 13:30:04.737 +03:00 [INF] Executed action QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation) in 405.5546ms
+2024-10-27 13:30:04.737 +03:00 [INF] Executed endpoint 'QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation)'
+2024-10-27 13:30:04.758 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/ - - - 200 - text/html;+charset=utf-8 1116.9756ms
+2024-10-27 13:30:04.872 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/_vs/browserLink - -
+2024-10-27 13:30:04.872 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/_framework/aspnetcore-browser-refresh.js - -
+2024-10-27 13:30:04.880 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/_framework/aspnetcore-browser-refresh.js - - - 200 11996 application/javascript;+charset=utf-8 4.1870ms
+2024-10-27 13:30:04.908 +03:00 [INF] Request starting HTTP/1.1 GET https://localhost:44335/lib/bootstrap/js/bootstrap.bundle.min.js.map - -
+2024-10-27 13:30:04.944 +03:00 [INF] Sending file. Request path: '/lib/bootstrap/js/bootstrap.bundle.min.js.map'. Physical path: 'C:\QuizHub\QuizHubPresentation\wwwroot\lib\bootstrap\js\bootstrap.bundle.min.js.map'
+2024-10-27 13:30:04.954 +03:00 [INF] Request finished HTTP/1.1 GET https://localhost:44335/lib/bootstrap/js/bootstrap.bundle.min.js.map - - - 200 332090 text/plain 46.2708ms
+2024-10-27 13:30:05.081 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 209.1195ms
+2024-10-27 13:30:07.742 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/account/login?returnUrl=%2F - -
+2024-10-27 13:30:07.747 +03:00 [INF] Executing endpoint 'QuizHubPresentation.Controllers.AccountController.Login (QuizHubPresentation)'
+2024-10-27 13:30:07.761 +03:00 [INF] Route matched with {action = "Login", controller = "Account", area = "", page = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login(System.String) on controller QuizHubPresentation.Controllers.AccountController (QuizHubPresentation).
+2024-10-27 13:30:07.798 +03:00 [INF] Executing ViewResult, running view Login.
+2024-10-27 13:30:07.844 +03:00 [INF] Executed ViewResult - view Login executed in 46.6672ms.
+2024-10-27 13:30:07.844 +03:00 [INF] Executed action QuizHubPresentation.Controllers.AccountController.Login (QuizHubPresentation) in 83.6017ms
+2024-10-27 13:30:07.844 +03:00 [INF] Executed endpoint 'QuizHubPresentation.Controllers.AccountController.Login (QuizHubPresentation)'
+2024-10-27 13:30:07.845 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/account/login?returnUrl=%2F - - - 200 - text/html;+charset=utf-8 102.9845ms
+2024-10-27 13:30:07.851 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/_vs/browserLink - -
+2024-10-27 13:30:07.851 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/_framework/aspnetcore-browser-refresh.js - -
+2024-10-27 13:30:07.852 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/_framework/aspnetcore-browser-refresh.js - - - 200 11996 application/javascript;+charset=utf-8 1.0976ms
+2024-10-27 13:30:07.865 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 13.6456ms
+2024-10-27 13:30:09.342 +03:00 [INF] Request starting HTTP/2 POST https://localhost:44335/account/login application/x-www-form-urlencoded 235
+2024-10-27 13:30:09.349 +03:00 [INF] No CORS policy found for the specified request.
+2024-10-27 13:30:09.349 +03:00 [INF] Executing endpoint 'QuizHubPresentation.Controllers.AccountController.Login (QuizHubPresentation)'
+2024-10-27 13:30:09.356 +03:00 [INF] Route matched with {action = "Login", controller = "Account", area = "", page = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(QuizHubPresentation.Models.LoginModel) on controller QuizHubPresentation.Controllers.AccountController (QuizHubPresentation).
+2024-10-27 13:30:09.383 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@__normalizedUserName_0='AYSELKARA' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Discriminator], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName], [a].[DepartmentId]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[Discriminator] = N'ApplicationUser' AND [a].[NormalizedUserName] = @__normalizedUserName_0
+2024-10-27 13:30:09.389 +03:00 [INF] AuthenticationScheme: Identity.Application signed out.
+2024-10-27 13:30:09.390 +03:00 [INF] AuthenticationScheme: Identity.External signed out.
+2024-10-27 13:30:09.390 +03:00 [INF] AuthenticationScheme: Identity.TwoFactorUserId signed out.
+2024-10-27 13:30:09.510 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@__user_Id_0='14a918e8-2df6-4857-9a60-44fef981eb90' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClaimType], [a].[ClaimValue], [a].[UserId]
+FROM [AspNetUserClaims] AS [a]
+WHERE [a].[UserId] = @__user_Id_0
+2024-10-27 13:30:09.533 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@__userId_0='14a918e8-2df6-4857-9a60-44fef981eb90' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a0].[Name]
+FROM [AspNetUserRoles] AS [a]
+INNER JOIN [AspNetRoles] AS [a0] ON [a].[RoleId] = [a0].[Id]
+WHERE [a].[UserId] = @__userId_0
+2024-10-27 13:30:09.537 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@__normalizedName_0='USER' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2024-10-27 13:30:09.545 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@__role_Id_0='1473c57b-efd0-452b-a1fa-3183bdae7d8a' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[ClaimType], [a].[ClaimValue]
+FROM [AspNetRoleClaims] AS [a]
+WHERE [a].[RoleId] = @__role_Id_0
+2024-10-27 13:30:09.551 +03:00 [INF] AuthenticationScheme: Identity.Application signed in.
+2024-10-27 13:30:09.557 +03:00 [INF] Executing RedirectResult, redirecting to /.
+2024-10-27 13:30:09.559 +03:00 [INF] Executed action QuizHubPresentation.Controllers.AccountController.Login (QuizHubPresentation) in 202.9648ms
+2024-10-27 13:30:09.559 +03:00 [INF] Executed endpoint 'QuizHubPresentation.Controllers.AccountController.Login (QuizHubPresentation)'
+2024-10-27 13:30:09.563 +03:00 [INF] Request finished HTTP/2 POST https://localhost:44335/account/login application/x-www-form-urlencoded 235 - 302 - - 221.7318ms
+2024-10-27 13:30:09.566 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/ - -
+2024-10-27 13:30:09.571 +03:00 [INF] Executing endpoint 'QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation)'
+2024-10-27 13:30:09.571 +03:00 [INF] Route matched with {action = "Index", controller = "Home", area = "", page = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller QuizHubPresentation.Controllers.HomeController (QuizHubPresentation).
+2024-10-27 13:30:09.576 +03:00 [INF] Executing ViewResult, running view Index.
+2024-10-27 13:30:09.579 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@__userId_0='14a918e8-2df6-4857-9a60-44fef981eb90' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [u].[UserQuizInfoId], [u].[CompletedAt], [u].[CorrectAnswer], [u].[FalseAnswer], [u].[IsCompleted], [u].[IsSuccessful], [u].[QuizId], [u].[Score], [u].[UserId], [q].[QuizId], [q].[CreatedDate], [q].[QuestionCount], [q].[ShowCase], [q].[Title], [q].[UpdatedDate]
+FROM [UserQuizInfo] AS [u]
+INNER JOIN [Quizzes] AS [q] ON [u].[QuizId] = [q].[QuizId]
+WHERE [u].[UserId] = @__userId_0
+2024-10-27 13:30:09.581 +03:00 [INF] Executed ViewResult - view Index executed in 4.6569ms.
+2024-10-27 13:30:09.581 +03:00 [INF] Executed action QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation) in 9.3465ms
+2024-10-27 13:30:09.581 +03:00 [INF] Executed endpoint 'QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation)'
+2024-10-27 13:30:09.581 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/ - - - 200 - text/html;+charset=utf-8 15.2510ms
+2024-10-27 13:30:09.588 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/_vs/browserLink - -
+2024-10-27 13:30:09.591 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/_framework/aspnetcore-browser-refresh.js - -
+2024-10-27 13:30:09.593 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/_framework/aspnetcore-browser-refresh.js - - - 200 11996 application/javascript;+charset=utf-8 1.5670ms
+2024-10-27 13:30:09.602 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 14.2630ms
+2024-10-27 15:10:37.207 +03:00 [INF] User profile is available. Using 'C:\Users\ASUS\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-10-27 15:10:38.257 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2024-10-27 15:13:44.398 +03:00 [INF] User profile is available. Using 'C:\Users\ASUS\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-10-27 15:13:45.288 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2024-10-27 15:16:24.498 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2024-10-27 15:27:23.158 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2024-10-27 15:27:23.334 +03:00 [INF] Entity Framework Core 6.0.0 initialized 'RepositoryContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: SensitiveDataLoggingEnabled MigrationsAssembly=Repositories 
+2024-10-27 15:27:38.380 +03:00 [INF] User profile is available. Using 'C:\Users\ASUS\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-10-27 15:27:39.338 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2024-10-27 15:27:39.608 +03:00 [INF] Entity Framework Core 6.0.0 initialized 'RepositoryContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: SensitiveDataLoggingEnabled MigrationsAssembly=Repositories 
+2024-10-27 15:28:24.724 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2024-10-27 15:28:24.906 +03:00 [INF] Entity Framework Core 6.0.0 initialized 'RepositoryContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: SensitiveDataLoggingEnabled MigrationsAssembly=Repositories 

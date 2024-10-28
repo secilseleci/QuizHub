@@ -79,18 +79,21 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([FromForm] QuizDtoForInsertion quizDto)
         {
+            // 1. Soruların olup olmadığını kontrol ediyoruz
             if (quizDto.Questions == null || quizDto.Questions.Count == 0)
             {
                 ModelState.AddModelError(string.Empty, "En az bir soru eklemeniz gerekiyor.");
                 return View(quizDto);
             }
 
+            // 2. Doğru seçeneğin seçilip seçilmediğini kontrol ediyoruz
             bool correctOptionSelected = true;
 
             foreach (var question in quizDto.Questions)
             {
                 var optionList = question.Options.ToList();
 
+                // Doğru seçenek geçerli mi?
                 if (question.CorrectOptionId < 0 || question.CorrectOptionId >= optionList.Count)
                 {
                     correctOptionSelected = false;
@@ -98,21 +101,36 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
                     return View(quizDto);
                 }
 
+                // Doğru seçenek işaretleniyor
                 if (question.CorrectOptionId >= 0 && question.CorrectOptionId < optionList.Count)
                 {
                     optionList[question.CorrectOptionId].IsCorrect = true;
                 }
             }
 
+            // 3. Eğer validasyonlar başarısız ise tekrar forma dönüyoruz
             if (!ModelState.IsValid)
             {
                 return View(quizDto);
             }
 
-            _manager.QuizService.CreateQuiz(quizDto);
-            TempData["success"] = $"{quizDto.Title} başarıyla oluşturuldu.";
-            return RedirectToAction("Index");
+            // 4. Quiz oluşturma servisini çağırıyoruz ve sonucu kontrol ediyoruz
+            var result = _manager.QuizService.CreateQuiz(quizDto);
+
+            if (result.IsSuccess)
+            {
+                // Başarılı olursa başarı mesajı ile yönlendirme yapıyoruz
+                TempData["success"] = result.Value;
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                // Hata varsa, hatayı ekliyoruz ve kullanıcıya geri dönüyoruz
+                ModelState.AddModelError(string.Empty, result.Error);
+                return View(quizDto);
+            }
         }
+
 
         [HttpGet]
         public IActionResult Update([FromRoute(Name = "id")] int id)
@@ -276,13 +294,13 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
         {
             if (id == 0)
             {
-                throw new Exception("Geçersiz quizId değeri!");
+                return NotFound("Quiz bulunamadı.");
             }
 
             var quiz = _manager.QuizService.GetOneQuiz(id, false);
             if (quiz == null)
             {
-                throw new Exception("Quiz bulunamadı!");
+                return NotFound("Quiz bulunamadı.");
             }
 
             //Quiz'e atanmış olan departmanları alıyoruz
@@ -297,7 +315,7 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
 
             if (allDepartments == null || !allDepartments.Any())
             {
-                throw new Exception("Departmanlar listesi boş!");
+                return NotFound("Departments bulunamadı.");
             }
 
             var model = new AssignQuizViewModel

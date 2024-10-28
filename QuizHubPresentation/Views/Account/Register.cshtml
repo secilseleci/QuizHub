@@ -31,6 +31,15 @@
                 <label asp-for="Password"></label>
                 <input type="password" asp-for="Password" class="form-control" />
             </div>
+            <!-- Department Dropdown List -->
+            <div class="form-group my-3">
+                <label asp-for="DepartmentId"></label>
+                <select asp-for="DepartmentId" class="form-control" asp-items="ViewBag.Departments">
+                    <option value="">Select Department</option>
+                </select>
+                <span asp-validation-for="DepartmentId" class="text-danger"></span>
+
+            </div>
 
             <div class="form-group my-3 d-flex justify-content-center">
                 <button type="submit" class="btn btn-primary">
@@ -40,5 +49,3 @@
             </div>
         </form>
     </div>
-    <div class="col-md-3"></div>
-</div>

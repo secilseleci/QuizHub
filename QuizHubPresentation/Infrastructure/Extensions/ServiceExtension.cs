@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using QuizHubPresentation.Models;
 using Repositories;
 using Repositories.Contracts;
+using Serilog.Events;
+using Serilog;
 using Services;
 using Services.Contracts;
 
@@ -61,7 +63,17 @@ namespace QuizHubPresentation.Infrastructure.Extensions
             services.AddScoped<IUserQuizInfoTempRepository, UserQuizInfoTempRepository>();
             services.AddScoped<IUserAnswerTempRepository, UserAnswerTempRepository>();// Yeni eklediğimiz repository
         }
+        public static void ConfigureServices(IServiceCollection services)
+        {
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.MinimumSameSitePolicy = SameSiteMode.None; // None olarak ayarla
+                options.Secure = CookieSecurePolicy.Always; // HTTPS için zorunlu
+            });
 
+            services.AddControllersWithViews();
+            services.AddRazorPages();
+        }
         public static void ConfigureServiceRegistration(this IServiceCollection services)
         {
             services.AddScoped<IServiceManager, ServiceManager>();
@@ -83,7 +95,7 @@ namespace QuizHubPresentation.Infrastructure.Extensions
                 options.LoginPath = new PathString("/Account/Login");
                 options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
-                options.AccessDeniedPath = new PathString("/Account/AccessDenied");
+                options.AccessDeniedPath = new PathString("/Error/403");
             });
         }
 
@@ -94,6 +106,20 @@ namespace QuizHubPresentation.Infrastructure.Extensions
                 options.LowercaseUrls = true;
                 options.AppendTrailingSlash = false;
             });
+        }
+
+        public static void ConfigureSerilog(this IServiceCollection services)
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                .Enrich.FromLogContext()
+                .WriteTo.Console()  
+                .WriteTo.File("logs/log.txt", rollingInterval: RollingInterval.Day) 
+                .CreateLogger();
+
+            services.AddLogging(loggingBuilder =>
+                loggingBuilder.AddSerilog(dispose: true));
         }
     }
 }

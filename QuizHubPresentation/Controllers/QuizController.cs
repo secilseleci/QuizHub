@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using QuizHubPresentation.Infrastructure.Extensions;
 using QuizHubPresentation.Models;
 using Repositories.Contracts;
 using Services.Contracts;
@@ -70,29 +69,26 @@ namespace QuizHubPresentation.Controllers
             ViewBag.QuizId = quiz.QuizId;
             return View();
         }
+        
         [HttpGet]
         [Authorize]
         public IActionResult ContinueQuiz(int quizId)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            try
+ 
+            var quizDto = _serviceManager.QuizService.ContinueQuiz(quizId, userId);
+            if (quizDto == null)
             {
-                // Servise işlemi yönlendirin
-                var quizDto = _serviceManager.QuizService.ContinueQuiz(quizId, userId);
-                return View("QuizView", quizDto);
-            }
-            catch (Exception ex)
-            {
-                return NotFound(ex.Message);
+                return NotFound();
             }
 
+            return View("QuizView", quizDto);
         }
+        
         [HttpPost]
         [Authorize]
         public IActionResult StartQuiz(int quizId)
         {
-            // Quiz'i alıyoruz
             var quiz = _manager.Quiz.GetQuizWithDetails(quizId, trackChanges: false);
 
             if (quiz == null)
@@ -100,10 +96,8 @@ namespace QuizHubPresentation.Controllers
                 return NotFound("Quiz bulunamadı.");
             }
 
-            // Kullanıcı ID'sini alıyoruz
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            // Geçici quiz bilgilerini oluşturuyoruz
             var userQuizInfoTemp = new UserQuizInfoTemp
             {
                 UserId = userId,
@@ -114,23 +108,19 @@ namespace QuizHubPresentation.Controllers
                 StartedAt = DateTime.Now,
             };
 
-            // Temp quiz bilgilerini kaydediyoruz
             _serviceManager.UserQuizInfoTempService.CreateTempInfo(userQuizInfoTemp);
 
-            // İlk soruyu alıyoruz
             var firstQuestion = quiz.Questions.OrderBy(q => q.Order).FirstOrDefault();
             if (firstQuestion == null)
             {
                 return NotFound("Bu quiz için sorular bulunamadı.");
             }
 
-            // Quiz bilgilerini DTO'ya mapliyoruz
-            var quizDto = _mapper.Map<QuizDtoForUser>(quiz);
+             var quizDto = _mapper.Map<QuizDtoForUser>(quiz);
             quizDto.QuestionCount = quiz.Questions.Count;
-            quizDto.Questions = new List<Question> { firstQuestion };  // İlk soruyu gönderiyoruz
+            quizDto.Questions = new List<Question> { firstQuestion }; 
 
-            // View'e model ile dönüyoruz
-            return View("QuizView", quizDto);
+             return View("QuizView", quizDto);
         }
 
 

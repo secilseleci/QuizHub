@@ -1,4 +1,8 @@
-﻿<div class="text-center text-danger my-5">
+﻿@{
+    ViewBag.Title = "Access Denied";
+}
+
+<div class="text-center text-danger my-5">
     <h3 class="display-3">
         <i class="fa fa-solid fa-bug-slash"></i>
         <br />
@@ -13,7 +17,6 @@
 
     <div class="btn-group my-5">
         <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Index">Home</a>
-        <a class="btn btn-outline-secondary" asp-controller="Quiz" asp-action="Index">Quiz</a>
-        <a class="btn btn-outline-secondary" asp-page="/contact">Contact</a>
+      
     </div>
 </div>

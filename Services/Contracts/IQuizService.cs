@@ -1,12 +1,13 @@
 ﻿using Entities.Models;
 using Entities.Dtos;
 using Entities.RequestParameters;
+using Entities.Exeptions;
 
 namespace Services.Contracts
 {
     public interface IQuizService
     {
-        void CreateQuiz(QuizDtoForInsertion quizDto);
+        Result<string> CreateQuiz(QuizDtoForInsertion quizDto);
         void UpdateOneQuiz(QuizDtoForUpdate quizDto);
         void DeleteOneQuiz(int id);
         IEnumerable<Quiz> GetAllQuizzes(bool trackChanges);

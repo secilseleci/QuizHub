@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Entities.Dtos;
+using Entities.Exeptions;
+using Entities.Middleware;
 using Entities.Models;
 using Entities.RequestParameters;
 using Microsoft.EntityFrameworkCore;
@@ -24,39 +26,57 @@ namespace Services
             _context = context;
         }
 
-        public void CreateQuiz(QuizDtoForInsertion quizDto)
+        public Result<string> CreateQuiz(QuizDtoForInsertion quizDto)
         {
-            var quiz = _mapper.Map<Quiz>(quizDto);
-
-            _manager.Quiz.Create(quiz);
-            quiz.QuestionCount = quiz.Questions.Count;
-            _manager.Save();
-
-            foreach (var question in quiz.Questions)
+            try
             {
-                var correctOption = question.Options.FirstOrDefault(o => o.IsCorrect);
-                if (correctOption != null)
-                {
-                    question.CorrectOptionId = correctOption.OptionId;
-                }
-            }
+                // QuizDto'yu Quiz modeline map ediyoruz
+                var quiz = _mapper.Map<Quiz>(quizDto);
 
-            _manager.Save();
+                // Quiz'i oluşturuyoruz
+                _manager.Quiz.Create(quiz);
+                quiz.QuestionCount = quiz.Questions.Count;
+
+                // Veritabanına kaydediyoruz
+                _manager.Save();
+
+                // Soruların doğru seçeneklerini işaretliyoruz
+                foreach (var question in quiz.Questions)
+                {
+                    var correctOption = question.Options.FirstOrDefault(o => o.IsCorrect);
+                    if (correctOption != null)
+                    {
+                        question.CorrectOptionId = correctOption.OptionId;
+                    }
+                }
+
+                // Değişiklikleri tekrar kaydediyoruz
+                _manager.Save();
+
+                // Başarılı ise Ok döndürülüyor
+                return Result<string>.Ok("Quiz başarıyla oluşturuldu.");
+            }
+            catch (Exception ex)
+            {
+                // Bir hata olursa Fail döndürülüyor
+                return Result<string>.Fail("Quiz oluşturulurken bir hata oluştu: " + ex.Message);
+            }
         }
         public void DeleteOneQuiz(int id)
         {
             Quiz quiz = GetOneQuiz(id, false);
-            if (quiz is not null)
+            if (quiz == null)
             {
-                _manager.Quiz.DeleteOneQuiz(quiz);
-                _manager.Save();
+                throw new NotFoundException("Quiz bulunamadı!");
             }
+            _manager.Quiz.DeleteOneQuiz(quiz);
+            _manager.Save();
         }
         public void UpdateOneQuiz(QuizDtoForUpdate quizDto)
         {
             var existingQuiz = _manager.Quiz.GetQuizWithDetails(quizDto.QuizId, false);  // AsNoTracking ile sorgulayın
             if (existingQuiz == null)
-                throw new Exception("Quiz not found!");
+                throw new NotFoundException("Quiz bulunamadı!");
 
             _mapper.Map(quizDto, existingQuiz);
             _manager.Quiz.Update(existingQuiz);
@@ -72,8 +92,8 @@ namespace Services
             {
                 var quiz = _manager.Quiz.GetOneQuiz(id, trackChanges);
                 if (quiz is null)
-                    throw new Exception("Quiz not found!");
-                return quiz;
+                throw new NotFoundException("Quiz bulunamadı!");
+            return quiz;
             }
         public IEnumerable<Quiz> GetAllQuizzesWithDetails(QuizRequestParameters q)
         {
@@ -82,14 +102,13 @@ namespace Services
         public Quiz? GetQuizWithDetails(int quizId, bool trackChanges)
         {
             return _manager.Quiz.GetQuizWithDetails(quizId, trackChanges);
-
         }
         public QuizDtoForUpdate GetOneQuizForUpdate(int id, bool trackChanges)
         {
             var quiz = _manager.Quiz.GetQuizWithDetails(id, trackChanges);
 
             if (quiz == null)
-                throw new Exception("Quiz not found!");
+                throw new NotFoundException("Quiz bulunamadı!");
 
             var quizDto = _mapper.Map<QuizDtoForUpdate>(quiz);
             return quizDto;
@@ -100,7 +119,7 @@ namespace Services
             var quiz = _manager.Quiz.GetQuizWithDepartments(quizId, true);
             if (quiz == null)
             {
-                throw new Exception("Quiz bulunamadı!");
+                throw new NotFoundException("Quiz bulunamadı!");
             }
 
             // 2. Eğer quiz.Departments null ise, onu başlatıyoruz
@@ -138,7 +157,7 @@ namespace Services
                 var departmentToAdd = _manager.Department.GetOneDepartment(departmentId, true);
                 if (departmentToAdd == null)
                 {
-                    throw new Exception($"Department {departmentId} bulunamadı!");
+                    throw new NotFoundException("Departments bulunamadı!");
                 }
 
                 quiz.Departments.Add(departmentToAdd); // Yeni departmanı ekliyoruz
@@ -164,7 +183,8 @@ namespace Services
 
             if (quiz == null)
             {
-                throw new Exception("Quiz bulunamadı!");
+                throw new NotFoundException("Quiz bulunamadı!");
+
             }
 
             return quiz.Departments;
@@ -209,41 +229,39 @@ namespace Services
             var userQuizInfoTemp = _manager.UserQuizInfoTemp.GetTempInfoByQuizIdAndUserId(quizId, userId, trackChanges: false);
             if (userQuizInfoTemp == null)
             {
-                throw new Exception("Quiz bilgisi bulunamadı.");
+                throw new NotFoundException("Quiz bulunamadı!");
             }
             var lastUserAnswerTemp = _manager.UserAnswerTemp
             .GetTempAnswersByTempInfoId(userQuizInfoTemp.UserQuizInfoTempId, trackChanges: false)
-            .OrderByDescending(a => a.QuestionId) // Order'a göre soruları sıraladık
-            .FirstOrDefault(); // Eğer varsa en son cevabı bulduk
+            .OrderByDescending(a => a.QuestionId)  
+            .FirstOrDefault(); 
 
             int currentQuestionOrder;
             if (lastUserAnswerTemp == null)
             {
-                // Eğer hiç cevap yoksa, quiz en baştan başlasın
                 currentQuestionOrder = 0;
             }
             else
             {
-                // Cevap varsa, en son cevaplanan sorunun sırası ile başlayalım
                 currentQuestionOrder = _manager.Question.GetOneQuestion(lastUserAnswerTemp.QuestionId, trackChanges: false).Order;
             }
             var quiz = _manager.Quiz.GetQuizWithDetails(quizId, trackChanges: false);
             if (quiz == null)
             {
-                throw new Exception("Quiz bulunamadı.");
+                throw new NotFoundException("Quiz bulunamadı!");
             }
             var nextQuestion = quiz.Questions
-          .Where(q => q.Order > currentQuestionOrder) // En son cevaplanan sorunun sonrasını getir
+          .Where(q => q.Order > currentQuestionOrder)  
           .OrderBy(q => q.Order)
           .FirstOrDefault();
             if (nextQuestion == null)
             {
-                throw new Exception("Sıradaki soru bulunamadı.");
+                throw new NotFoundException("Quiz bulunamadı!");
             }
 
             var quizDto = _mapper.Map<QuizDtoForUser>(quiz);
             quizDto.QuestionCount = quiz.Questions.Count;
-            quizDto.Questions = new List<Question> { nextQuestion };  // Sadece sıradaki soruyu gönderiyoruz
+            quizDto.Questions = new List<Question> { nextQuestion };  
 
             return quizDto;
         }

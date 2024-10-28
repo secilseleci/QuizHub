@@ -1,14 +1,14 @@
 using Microsoft.Extensions.Logging;
 using QuizHubPresentation.Infrastructure.Extensions;
- 
-
+using QuizHubPresentation.Infrastructure.Middleware;
+using Serilog;
 var builder = WebApplication.CreateBuilder(args);
-builder.Logging.ClearProviders();
-builder.Logging.AddConsole(); // Konsola loglama eklendi
-builder.Logging.AddDebug(); // Debug penceresine loglama eklendi
- 
+
+
+builder.Services.ConfigureSerilog();
+
 builder.Services.AddControllers();
-builder.Services.AddControllersWithViews(); // MVC hizmetlerini ekler
+builder.Services.AddControllersWithViews(); 
 builder.Services.AddRazorPages();
 
 builder.Services.ConfigureDbContext(builder.Configuration);
@@ -19,7 +19,9 @@ builder.Services.ConfigureServiceRegistration();
 builder.Services.ConfigureRouting();
 builder.Services.ConfigureApplicationCookie();
 builder.Services.AddAutoMapper(typeof(Program));
+ 
 
+builder.Host.UseSerilog();
 var app = builder.Build();
 
 app.UseStaticFiles();
@@ -27,7 +29,9 @@ app.UseSession();
 
 app.UseHttpsRedirection();
 app.UseRouting();
-
+app.UseMiddleware<GlobalExceptionMiddleware>();
+app.UseStatusCodePagesWithReExecute("/Error/{0}");
+app.UseCookiePolicy();
 app.UseAuthentication();
 app.UseAuthorization(); 
 app.UseCors("AllowAll");

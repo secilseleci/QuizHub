@@ -1,8 +1,12 @@
-﻿using Entities.Dtos;
+﻿using DocumentFormat.OpenXml.ExtendedProperties;
+using Entities.Dtos;
 using Entities.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using QuizHubPresentation.Models;
+using Repositories.Contracts;
+using Services.Contracts;
 
 namespace QuizHubPresentation.Controllers
 {
@@ -10,12 +14,15 @@ namespace QuizHubPresentation.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-
+        private readonly IRepositoryManager _manager;
+        private readonly IServiceManager _serviceManager;
         public AccountController(UserManager<ApplicationUser> userManager,
-        SignInManager<ApplicationUser> signInManager)
+        SignInManager<ApplicationUser> signInManager,IRepositoryManager repositoryManager,IServiceManager serviceManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _manager = repositoryManager;
+            _serviceManager = serviceManager;
         }
 
         public IActionResult Login([FromQuery(Name = "ReturnUrl")] string ReturnUrl = "/")
@@ -54,26 +61,48 @@ namespace QuizHubPresentation.Controllers
 
         public IActionResult Register()
         {
-            return View();
+            var departments = _manager.Department.GetAllDepartments(false)
+            .Select(d => new SelectListItem
+            {
+                Value = d.DepartmentId.ToString(),
+                Text = d.DepartmentName
+            }).ToList();
+
+
+            ViewBag.Departments = departments;
+
+            return View(new RegisterDto());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register([FromForm] RegisterDto model)
         {
+            if (!ModelState.IsValid)
+            {
+                // Hataları görüntülemek için tekrar kayıt sayfasını döndür
+                var departments = _serviceManager.DepartmentService.GetAllDepartments(false)
+                    .Select(d => new SelectListItem
+                    {
+                        Value = d.DepartmentId.ToString(),
+                        Text = d.DepartmentName
+                    }).ToList();
+                ViewBag.Departments = departments;
+                return View(model);
+            }
+
             var user = new ApplicationUser
             {
                 UserName = model.UserName,
                 Email = model.Email,
+                DepartmentId = model.DepartmentId
             };
 
-            var result = await _userManager
-                .CreateAsync(user, model.Password);
+            var result = await _userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
             {
-                var roleResult = await _userManager
-                    .AddToRoleAsync(user, "User");
+                var roleResult = await _userManager.AddToRoleAsync(user, "User");
 
                 if (roleResult.Succeeded)
                     return RedirectToAction("Login", new { ReturnUrl = "/" });
@@ -85,13 +114,16 @@ namespace QuizHubPresentation.Controllers
                     ModelState.AddModelError("", err.Description);
                 }
             }
-
+            var departmentsList = _serviceManager.DepartmentService.GetAllDepartments(false)
+       .Select(d => new SelectListItem
+       {
+           Value = d.DepartmentId.ToString(),
+           Text = d.DepartmentName
+       }).ToList();
+            ViewBag.Departments = departmentsList;
             return View();
         }
 
-        public IActionResult AccessDenied([FromQuery(Name = "ReturnUrl")] string returUrl)
-        {
-            return View();
-        }
+       
     }
 }

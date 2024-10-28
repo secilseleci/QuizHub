@@ -11,5 +11,7 @@ namespace Entities.Dtos
         [Required(ErrorMessage = "Password is required.")]
         public String? Password { get; init; }
 
+        [Required]
+        public int DepartmentId { get; set; }
     }
 }
