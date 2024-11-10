@@ -1,26 +1,21 @@
 ﻿using Entities.Dtos;
+using Entities.Exeptions;
 using Entities.Models;
 using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
- 
-
 
 namespace Services.Contracts
 {
     public interface IAuthService
     {
+        Task<ResultGeneric<ApplicationUser>> CreateUser(UserDtoForCreation userDto);
+        Task<Result> DeleteOneUser(string userName);
+        Task<Result> UpdateUser(UserDtoForUpdate userDto);
+        Task<ResultGeneric<IEnumerable<ApplicationUser>>> GetAllUsers();
+        Task<ResultGeneric<ApplicationUser>> GetOneUser(string userName);
+        Task<ResultGeneric<UserDtoForUpdate>> GetOneUserForUpdate(string id);
         IEnumerable<IdentityRole> Roles { get; }
-        IEnumerable<ApplicationUser> GetAllUsers();
-        Task<IdentityResult> CreateUser(UserDtoForCreation userDto);
-        Task<ApplicationUser> GetOneUser(string userName);
-        Task UpdateUser(UserDtoForUpdate userDto);
-        Task<UserDtoForUpdate> GetOneUserForUpdate(string id);
-        Task<IdentityResult> ResetPassword(ResetPasswordDto model);
-        Task<IdentityResult> DeleteOneUser(string userName);
-        Task AssignDepartmentToUser(string userId, int departmentId);  // Departman atama metodu
-        Task<List<UserDtoForList>> GetAllUsersWithRolesAsync();
-
-
-
+        Task<Result> ResetPassword(ResetPasswordDto model);
+        Task<Result> AssignDepartmentToUser(string userId, int departmentId);
+        Task<ResultGeneric<List<UserDtoForList>>> GetAllUsersWithRolesAsync();
     }
 }

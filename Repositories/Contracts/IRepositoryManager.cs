@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Repositories.Contracts
+﻿namespace Repositories.Contracts
 {
     public interface IRepositoryManager
     {
@@ -13,9 +7,9 @@ namespace Repositories.Contracts
         IOptionRepository Option { get; }
         IUserQuizInfoRepository UserQuizInfo { get; }
         IUserAnswerRepository UserAnswer { get; }
-        IDepartmentRepository Department { get; } // Departman repository eklendi
+        IDepartmentRepository Department { get; }  
         IUserQuizInfoTempRepository UserQuizInfoTemp { get; }
         IUserAnswerTempRepository UserAnswerTemp { get; }
-        void Save();
+        Task<bool> SaveAsync();
     }
 }

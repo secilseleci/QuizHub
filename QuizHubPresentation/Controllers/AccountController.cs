@@ -1,11 +1,9 @@
-﻿using DocumentFormat.OpenXml.ExtendedProperties;
-using Entities.Dtos;
+﻿using Entities.Dtos;
 using Entities.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using QuizHubPresentation.Models;
-using Repositories.Contracts;
 using Services.Contracts;
 
 namespace QuizHubPresentation.Controllers
@@ -14,23 +12,20 @@ namespace QuizHubPresentation.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly IRepositoryManager _manager;
         private readonly IServiceManager _serviceManager;
+
         public AccountController(UserManager<ApplicationUser> userManager,
-        SignInManager<ApplicationUser> signInManager,IRepositoryManager repositoryManager,IServiceManager serviceManager)
+                                 SignInManager<ApplicationUser> signInManager,
+                                 IServiceManager serviceManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _manager = repositoryManager;
             _serviceManager = serviceManager;
         }
 
-        public IActionResult Login([FromQuery(Name = "ReturnUrl")] string ReturnUrl = "/")
+        public IActionResult Login([FromQuery(Name = "ReturnUrl")] string returnUrl = "/")
         {
-            return View(new LoginModel()
-            {
-                ReturnUrl = ReturnUrl
-            });
+            return View(new LoginModel { ReturnUrl = returnUrl });
         }
 
         [HttpPost]
@@ -39,38 +34,39 @@ namespace QuizHubPresentation.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = await _userManager.FindByNameAsync(model.Name);
-                if (user is not null)
+                var user = await _userManager.FindByNameAsync(model.Name);
+                if (user != null)
                 {
                     await _signInManager.SignOutAsync();
-                    if ((await _signInManager.PasswordSignInAsync(user, model.Password, false, false)).Succeeded)
+                    var signInResult = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
+
+                    if (signInResult.Succeeded)
                     {
                         return Redirect(model?.ReturnUrl ?? "/");
                     }
                 }
                 ModelState.AddModelError("Error", "Invalid username or password.");
             }
-            return View();
+            return View(model);
         }
 
-        public async Task<IActionResult> Logout([FromQuery(Name = "ReturnUrl")] string ReturnUrl = "/")
+        public async Task<IActionResult> Logout([FromQuery(Name = "ReturnUrl")] string returnUrl = "/")
         {
             await _signInManager.SignOutAsync();
-            return Redirect(ReturnUrl);
+            return Redirect(returnUrl);
         }
 
-        public IActionResult Register()
+        public async Task<IActionResult> Register()
         {
-            var departments = _manager.Department.GetAllDepartments(false)
-            .Select(d => new SelectListItem
+            var departmentsResult = await _serviceManager.DepartmentService.GetAllDepartments(trackChanges: false);
+
+            if (!departmentsResult.IsSuccess || departmentsResult.Data == null)
             {
-                Value = d.DepartmentId.ToString(),
-                Text = d.DepartmentName
-            }).ToList();
+                ModelState.AddModelError("", "No departments found.");
+                return View(new RegisterDto());
+            }
 
-
-            ViewBag.Departments = departments;
-
+            ViewBag.Departments = new SelectList(departmentsResult.Data, "DepartmentId", "DepartmentName");
             return View(new RegisterDto());
         }
 
@@ -80,14 +76,7 @@ namespace QuizHubPresentation.Controllers
         {
             if (!ModelState.IsValid)
             {
-                // Hataları görüntülemek için tekrar kayıt sayfasını döndür
-                var departments = _serviceManager.DepartmentService.GetAllDepartments(false)
-                    .Select(d => new SelectListItem
-                    {
-                        Value = d.DepartmentId.ToString(),
-                        Text = d.DepartmentName
-                    }).ToList();
-                ViewBag.Departments = departments;
+                await LoadDepartmentsIntoViewBag();
                 return View(model);
             }
 
@@ -98,32 +87,31 @@ namespace QuizHubPresentation.Controllers
                 DepartmentId = model.DepartmentId
             };
 
-            var result = await _userManager.CreateAsync(user, model.Password);
+            var createResult = await _userManager.CreateAsync(user, model.Password);
 
-            if (result.Succeeded)
+            if (createResult.Succeeded)
             {
                 var roleResult = await _userManager.AddToRoleAsync(user, "User");
-
                 if (roleResult.Succeeded)
                     return RedirectToAction("Login", new { ReturnUrl = "/" });
             }
-            else
+
+            foreach (var error in createResult.Errors)
             {
-                foreach (var err in result.Errors)
-                {
-                    ModelState.AddModelError("", err.Description);
-                }
+                ModelState.AddModelError("", error.Description);
             }
-            var departmentsList = _serviceManager.DepartmentService.GetAllDepartments(false)
-       .Select(d => new SelectListItem
-       {
-           Value = d.DepartmentId.ToString(),
-           Text = d.DepartmentName
-       }).ToList();
-            ViewBag.Departments = departmentsList;
-            return View();
+
+            await LoadDepartmentsIntoViewBag();
+            return View(model);
         }
 
-       
+        private async Task LoadDepartmentsIntoViewBag()
+        {
+            var departmentsResult = await _serviceManager.DepartmentService.GetAllDepartments(trackChanges: false);
+            if (departmentsResult.IsSuccess && departmentsResult.Data != null)
+            {
+                ViewBag.Departments = new SelectList(departmentsResult.Data, "DepartmentId", "DepartmentName");
+            }
+        }
     }
 }

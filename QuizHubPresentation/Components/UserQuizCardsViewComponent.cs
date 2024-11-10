@@ -21,7 +21,7 @@ public class UserQuizCardsViewComponent : ViewComponent
 
     public async Task<IViewComponentResult> InvokeAsync(string status)
     {
-         var claimsPrincipal = User as ClaimsPrincipal;
+        var claimsPrincipal = User as ClaimsPrincipal;
         var userId = claimsPrincipal?.FindFirstValue(ClaimTypes.NameIdentifier);
         var user = await _userManager.FindByIdAsync(userId);
 
@@ -35,64 +35,75 @@ public class UserQuizCardsViewComponent : ViewComponent
         switch (status)
         {
             case "Pending":
-                quizCardDtos = GetPendingQuizzes(userId, user.DepartmentId);
+                quizCardDtos = await GetPendingQuizzesAsync(userId, user.DepartmentId);
                 break;
 
             case "Completed":
-                quizCardDtos = GetCompletedQuizzes(userId);
+                quizCardDtos = await GetCompletedQuizzesAsync(userId);
                 break;
 
             case "Retake":
-                quizCardDtos = GetRetakeQuizzes(userId);
+                quizCardDtos = await GetRetakeQuizzesAsync(userId);
                 break;
 
             case "Continue":
-                quizCardDtos = GetContinueQuizzes(userId);
+                quizCardDtos = await GetContinueQuizzesAsync(userId);
                 break;
 
             default:
                 quizCardDtos = new List<UserQuizCardDto>();
                 break;
         }
+
         foreach (var quizCard in quizCardDtos)
         {
-            quizCard.Status = status;  
+            quizCard.Status = status;
         }
+
         return View("UserQuizCards", quizCardDtos);
     }
 
-    private List<UserQuizCardDto> GetPendingQuizzes(string userId, int departmentId)
+    private async Task<List<UserQuizCardDto>> GetPendingQuizzesAsync(string userId, int departmentId)
     {
-        var pendingQuizzes = _serviceManager.QuizService
+        var pendingQuizzesResult = await _serviceManager.QuizService
             .GetPendingQuizzesForUser(userId, trackChanges: false);
-        return _mapper.Map<List<UserQuizCardDto>>(pendingQuizzes);
+
+        if (!pendingQuizzesResult.IsSuccess || pendingQuizzesResult.Data == null)
+            return new List<UserQuizCardDto>();
+
+        return _mapper.Map<List<UserQuizCardDto>>(pendingQuizzesResult.Data);
     }
 
-
-    private List<UserQuizCardDto> GetCompletedQuizzes(string userId)
+    private async Task<List<UserQuizCardDto>> GetCompletedQuizzesAsync(string userId)
     {
-        var completedQuizzes = _serviceManager.UserQuizInfoService
-            .GetCompletedQuizzesByUserId(userId, trackChanges: false)
-            .ToList();
+        var completedQuizzesResult = await _serviceManager.UserQuizInfoService
+            .GetCompletedQuizzesByUserId(userId, trackChanges: false);
 
-        return _mapper.Map<List<UserQuizCardDto>>(completedQuizzes);
+        if (!completedQuizzesResult.IsSuccess || completedQuizzesResult.Data == null)
+            return new List<UserQuizCardDto>();
+
+        return _mapper.Map<List<UserQuizCardDto>>(completedQuizzesResult.Data);
     }
 
-    private List<UserQuizCardDto> GetRetakeQuizzes(string userId)
+    private async Task<List<UserQuizCardDto>> GetRetakeQuizzesAsync(string userId)
     {
-        var retakeQuizzes = _serviceManager.UserQuizInfoService
-         .GetRetakeableQuizzesByUserId(userId, trackChanges: false)   
-         .ToList();
+        var retakeQuizzesResult = await _serviceManager.UserQuizInfoService
+            .GetRetakeableQuizzesByUserId(userId, trackChanges: false);
 
-        return _mapper.Map<List<UserQuizCardDto>>(retakeQuizzes);
+        if (!retakeQuizzesResult.IsSuccess || retakeQuizzesResult.Data == null)
+            return new List<UserQuizCardDto>();
+
+        return _mapper.Map<List<UserQuizCardDto>>(retakeQuizzesResult.Data);
     }
 
-    private List<UserQuizCardDto> GetContinueQuizzes(string userId)
+    private async Task<List<UserQuizCardDto>> GetContinueQuizzesAsync(string userId)
     {
-        var incompleteQuizzes = _serviceManager.UserQuizInfoTempService
-            .GetIncompleteQuizzesByUserId(userId, trackChanges: false)
-            .ToList();
+        var incompleteQuizzesResult = await _serviceManager.UserQuizInfoTempService
+            .GetIncompleteQuizzesByUserIdAsync(userId, trackChanges: false);
 
-        return _mapper.Map<List<UserQuizCardDto>>(incompleteQuizzes);
+        if (!incompleteQuizzesResult.IsSuccess || incompleteQuizzesResult.Data == null)
+        return new List<UserQuizCardDto>();
+
+        return _mapper.Map<List<UserQuizCardDto>>(incompleteQuizzesResult.Data);
     }
 }

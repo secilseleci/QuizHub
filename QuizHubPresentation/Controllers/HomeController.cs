@@ -17,20 +17,23 @@ namespace QuizHubPresentation.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IRepositoryManager _manager;
-        private readonly IServiceManager _serviceManager;
 
         private readonly IMapper _mapper;
        
-        public HomeController(IRepositoryManager manager, IMapper mapper,UserManager<ApplicationUser> userManager, IServiceManager serviceManager)
+        public HomeController(IRepositoryManager manager, IMapper mapper,
+            UserManager<ApplicationUser> userManager)
         {
             _manager = manager;
             _mapper = mapper;
             _userManager = userManager;
-          _serviceManager = serviceManager;
         }
         public IActionResult Index()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                return View("UserDashboard"); // Giriş yapmış kullanıcılar için dashboard view
+            }
+            return View("GuestHome");
         }
    
          

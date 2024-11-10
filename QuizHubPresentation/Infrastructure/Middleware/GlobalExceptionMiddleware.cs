@@ -1,5 +1,4 @@
-﻿using Entities.Middleware;
-using Serilog;
+﻿using Serilog;
 
 namespace QuizHubPresentation.Infrastructure.Middleware
 {
@@ -18,37 +17,18 @@ namespace QuizHubPresentation.Infrastructure.Middleware
             {
                 await _next(context);
             }
-            catch (NotFoundException ex)  // NotFoundException yakala
+            catch (Exception ex)
             {
-                // Hata loglanıyor
-                Log.Error(ex, "Quiz bulunamadı! URL: {Url}, Method: {Method}, User: {User}",
-                          context.Request.Path,
-                          context.Request.Method,
-                          context.User.Identity?.Name ?? "Anonymous");
-
-                // 404 sayfasına yönlendir
-                context.Response.Redirect("/Error/404");
+                Log.Error($"Sistemsel hata meydana geldi: {ex.Message}");
+                await HandleExceptionAsync(context, ex);
             }
-            catch (UnauthorizedAccessException ex) // UnauthorizedAccessException yakala
-            {
-                Log.Error(ex, "Yetkisiz erişim. URL: {Url}, Method: {Method}, User: {User}",
-                          context.Request.Path,
-                          context.Request.Method,
-                          context.User.Identity?.Name ?? "Anonymous");
-
-                // 403 sayfasına yönlendir
-                context.Response.Redirect("/Error/403");
-            }
-            catch (Exception ex)  // Diğer tüm hatalar için
-            {
-                // Genel bir hata loglama ve yönlendirme yapıyoruz
-                Log.Error(ex, "Sunucu hatası. URL: {Url}, Method: {Method}, User: {User}",
-                          context.Request.Path,
-                          context.Request.Method,
-                          context.User.Identity?.Name ?? "Anonymous");
-
-                context.Response.Redirect("/Error/500");  // Genel bir sunucu hatası sayfasına yönlendir
-            }
+        }
+        private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+        {
+            // Hata sayfasına yönlendir
+            context.Response.Redirect("/Home/ErrorPage");
+            return Task.CompletedTask;
         }
     }
 }
+ 

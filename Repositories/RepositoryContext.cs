@@ -1,12 +1,11 @@
 ﻿using Entities.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 namespace Repositories;
 
-public class RepositoryContext : IdentityDbContext<IdentityUser>
+public class RepositoryContext : IdentityDbContext<ApplicationUser>
 {
     public DbSet<Quiz> Quizzes { get; set; }
     public DbSet<Question> Questions { get; set; }
@@ -95,8 +94,8 @@ public class RepositoryContext : IdentityDbContext<IdentityUser>
         modelBuilder.Entity<Department>().HasData(
         new Department { DepartmentId = 1, DepartmentName = "IT" },
         new Department { DepartmentId = 2, DepartmentName = "HR" },
-        new Department { DepartmentId = 3, DepartmentName = "Designer" });
-
+        new Department { DepartmentId = 3, DepartmentName = "Designer" },
+        new Department { DepartmentId = 4, DepartmentName = "General"});
     }
 
 

@@ -2,8 +2,11 @@
 
 <form asp-action="Update" method="post">
     <input type="hidden" name="QuizId" value="@Model.QuizId" />
+    <input type="hidden" asp-for="QuestionCount" value="@Model.Questions.Count" />
 
     <div class="container">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
         <div class="form-group">
             <label asp-for="Title">Quiz Title</label>
             <input asp-for="Title" class="form-control" />
@@ -18,7 +21,7 @@
             @for (int i = 0; i < Model.Questions.Count; i++)
             {
                 <div class="form-group question-group">
-                    <input type="hidden" asp-for="Questions[i].Order" value="@i" />
+                    <input type="hidden" asp-for="Questions[i].Order" value="@(i + 1)" />
                     <label asp-for="Questions[i].QuestionText">Question @(i + 1)</label>
                     <textarea asp-for="Questions[i].QuestionText" class="form-control"></textarea>
                     <input type="hidden" asp-for="Questions[i].QuestionId" />

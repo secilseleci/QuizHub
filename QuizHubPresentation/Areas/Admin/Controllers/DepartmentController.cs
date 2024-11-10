@@ -5,36 +5,40 @@ using Services.Contracts;
 namespace QuizHubPresentation.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles = "Admin")]
     public class DepartmentController : Controller
     {
-        private readonly IServiceManager _manager;
+        private readonly IServiceManager _serviceManager;
 
-        public DepartmentController(IServiceManager manager)
+        public DepartmentController(IServiceManager serviceManager)
         {
-            _manager = manager;
+            _serviceManager = serviceManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var departments = _manager.DepartmentService.GetAllDepartments(trackChanges: false);
-            return View(departments);
+            var departmentsResult = await _serviceManager.DepartmentService.GetAllDepartments(trackChanges: false);
+
+            if (!departmentsResult.IsSuccess)
+            {
+                TempData["ErrorMessage"] = "Departmanlar yüklenemedi.";
+                return View("Error"); // Hata sayfasýna yönlendiriliyor.
+            }
+
+            return View(departmentsResult.Data); // Baþarýlýysa View'e departmanlarý gönder.
         }
 
         [HttpGet]
-        public IActionResult Quizzes(int departmentId)
+        public async Task<IActionResult> Quizzes(int departmentId)
         {
-            // Departmana atanmýþ quizleri alýyoruz
-            var department = _manager.DepartmentService.GetDepartmentWithQuizzes(departmentId, trackChanges: false);
+            var departmentResult = await _serviceManager.DepartmentService.GetDepartmentWithQuizzes(departmentId, trackChanges: false);
 
-            if (department == null)
+            if (!departmentResult.IsSuccess)
             {
-                return NotFound();
+                return NotFound("Departman veya atanan quizler bulunamadý.");
             }
 
-            return PartialView("_QuizList", department.Quizzes);
-
+            return PartialView("_QuizList", departmentResult.Data.Quizzes); // Quiz verileriyle partial view döndür.
         }
-
     }
 }

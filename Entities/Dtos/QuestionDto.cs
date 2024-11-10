@@ -1,9 +1,4 @@
-﻿using Entities.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Entities.Dtos
 {
@@ -11,9 +6,13 @@ namespace Entities.Dtos
     {
         public int Order { get; set; }
         public int QuestionId { get; set; }
+        [Required(ErrorMessage = "Question text is required")]
         public string QuestionText { get; set; }
+        public int QuestionCount { get; set; }
+
         public int CorrectOptionId { get; set; }
         public int QuizId { get; set; }
         public List<OptionDto> Options { get; set; } = new List<OptionDto>();
+      public bool IsLastQuestion {  get; set; }
     }
 }

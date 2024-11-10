@@ -1,28 +1,20 @@
-﻿using Entities.Dtos;
-using Entities.Models;
-using System;
+﻿using Entities.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Repositories.Contracts
 {
     public interface IUserQuizInfoRepository : IRepositoryBase<UserQuizInfo>
     {
-        UserQuizInfo? GetUserQuizInfoByQuizIdAndUserId(int quizId, string userId, bool trackChanges);
+        Task CreateOneUserQuizInfoAsync(UserQuizInfo userQuizInfo);
+        Task UpdateOneUserQuizInfoAsync(UserQuizInfo entity);
+        Task RemoveOneUserQuizInfoAsync(UserQuizInfo userQuizInfo);
 
-        IEnumerable<UserQuizInfo> GetUserQuizInfoByUserId(string userId, bool trackChanges);
+        Task<UserQuizInfo?> GetUserQuizInfoByIdAsync(int userQuizInfoId, bool trackChanges);
+        Task<UserQuizInfo?> GetUserQuizInfoByQuizIdAndUserIdAsync(int quizId, string userId, bool trackChanges);
 
-        void CreateOneUserQuizInfo(UserQuizInfo userQuizInfo);
-       
-        void UpdateOneUserQuizInfo(UserQuizInfo entity);
-
-        void RemoveOneUserQuizInfo(UserQuizInfo userQuizInfo);
-        UserQuizInfo GetUserQuizInfoById(int userQuizInfoId, bool trackChanges);
-        IEnumerable<UserQuizInfo> GetRetakeableQuizzesByUserId( string userId, bool trackChanges);
-        IEnumerable<UserQuizInfo> GetCompletedQuizzesByUserId(string userId, bool trackChanges);
-
+        Task<IEnumerable<UserQuizInfo>> GetUserQuizInfoByUserIdAsync(string userId, bool trackChanges);
+        Task<IEnumerable<UserQuizInfo>> GetRetakeableQuizzesByUserIdAsync(string userId, bool trackChanges);
+        Task<IEnumerable<UserQuizInfo>> GetCompletedQuizzesByUserIdAsync(string userId, bool trackChanges);
     }
-
 }

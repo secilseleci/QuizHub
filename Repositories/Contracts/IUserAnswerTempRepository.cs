@@ -9,13 +9,13 @@ namespace Repositories.Contracts
 {
     public interface IUserAnswerTempRepository : IRepositoryBase<UserAnswerTemp>
     {
-        void CreateTempAnswer(UserAnswerTemp userAnswerTemp);
-        void UpdateTempAnswer(UserAnswerTemp entity);
-        void DeleteTempAnswer(UserAnswerTemp userAnswerTemp);
+        Task CreateTempAnswerAsync(UserAnswerTemp userAnswerTemp);
+        Task UpdateTempAnswerAsync(UserAnswerTemp entity);
+        Task DeleteTempAnswerAsync(UserAnswerTemp userAnswerTemp);
         // QuizInfoId'ye göre tüm UserAnswer'ları alma
-        IEnumerable<UserAnswerTemp> GetTempAnswersByTempInfoId(int userQuizInfoTempId, bool trackChanges);
+        Task<IEnumerable<UserAnswerTemp>> GetTempAnswersByTempInfoIdAsync(int userQuizInfoTempId, bool trackChanges);
 
         // Belirli bir UserAnswer'ı alma (InfoId ve QuestionId ile)
-        UserAnswerTemp? GetOneTempAnswer(int userQuizInfoTempId, int questionId, bool trackChanges);
+        Task<UserAnswerTemp?> GetOneTempAnswerAsync(int userQuizInfoTempId, int questionId, bool trackChanges);
     }
 }

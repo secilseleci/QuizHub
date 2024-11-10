@@ -1,24 +1,24 @@
-﻿using Entities.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Entities.Exeptions;
+using Entities.Models;
 
 namespace Services.Contracts
 {
-    public interface IUserQuizInfoTempService 
+    public interface IUserQuizInfoTempService
     {
-        UserQuizInfoTemp? GetTempInfoByQuizIdAndUserId(int quizId, string userId, bool trackChanges);
+        Task<ResultGeneric<UserQuizInfoTemp>> GetTempInfoByQuizIdAndUserIdAsync(int quizId, string userId, bool trackChanges);
 
-        IQueryable<UserQuizInfoTemp> GetTempInfoByUserId(string userId, bool trackChanges);
-        IQueryable<UserQuizInfoTemp> GetIncompleteQuizzesByUserId(string userId, bool trackChanges);
-        void CreateTempInfo(UserQuizInfoTemp userQuizInfoTemp);
+        Task<ResultGeneric<IEnumerable<UserQuizInfoTemp>>> GetTempInfoByUserIdAsync(string userId, bool trackChanges);
 
-        void UpdateTempInfo(UserQuizInfoTemp entity);
+        Task<ResultGeneric<IEnumerable<UserQuizInfoTemp>>> GetIncompleteQuizzesByUserIdAsync(string userId, bool trackChanges);
 
-        void RemoveTempInfo(UserQuizInfoTemp userQuizInfoTemp);
-        UserQuizInfoTemp GetTempInfoById(int userQuizInfoTempId, bool trackChanges);
-        UserQuizInfoTemp GetOneTempInfoByUserId(string userId, bool trackChanges);
+        Task<Result> CreateTempInfoAsync(UserQuizInfoTemp userQuizInfoTemp);
+
+        Task<Result> UpdateTempInfoAsync(UserQuizInfoTemp entity);
+
+        Task<Result> RemoveTempInfoAsync(UserQuizInfoTemp userQuizInfoTemp);
+
+        Task<ResultGeneric<UserQuizInfoTemp>> GetTempInfoByIdAsync(int userQuizInfoTempId, bool trackChanges);
+
+        Task<ResultGeneric<UserQuizInfoTemp>> GetOneTempInfoByUserIdAsync(string userId, bool trackChanges);
     }
 }

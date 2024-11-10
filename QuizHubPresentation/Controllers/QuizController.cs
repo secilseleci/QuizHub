@@ -57,185 +57,136 @@ namespace QuizHubPresentation.Controllers
 
         [HttpGet]
         [Authorize]
-        public IActionResult StartQuizConfirmation(int quizId)
+        public async Task<IActionResult> StartQuizConfirmation(int quizId)
         {
-            var quiz = _manager.Quiz.GetQuizWithDetails(quizId, trackChanges: false);           
-          
-            if (quiz == null)
+            var quizResult = await _serviceManager.QuizService.GetQuizWithDetails(quizId, trackChanges: false);
+
+            if (!quizResult.IsSuccess)
             {
                 return NotFound("Quiz bulunamadı.");
             }
-            ViewBag.QuizTitle = quiz.Title;
-            ViewBag.QuizId = quiz.QuizId;
+
+            ViewBag.QuizTitle = quizResult.Data.Title;
+            ViewBag.QuizId = quizResult.Data.QuizId;
             return View();
         }
-        
+
         [HttpGet]
         [Authorize]
-        public IActionResult ContinueQuiz(int quizId)
+        public async Task<IActionResult> ContinueQuiz(int quizId)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
- 
-            var quizDto = _serviceManager.QuizService.ContinueQuiz(quizId, userId);
-            if (quizDto == null)
+            var quizResult = await _serviceManager.QuizService.ContinueQuiz(quizId, userId);
+
+            if (!quizResult.IsSuccess)
             {
                 return NotFound();
             }
 
-            return View("QuizView", quizDto);
+            return View("QuizView", quizResult.Data);
         }
-        
         [HttpPost]
         [Authorize]
-        public IActionResult StartQuiz(int quizId)
+        public async Task<IActionResult> StartQuiz(int quizId)
         {
-            var quiz = _manager.Quiz.GetQuizWithDetails(quizId, trackChanges: false);
-
-            if (quiz == null)
-            {
-                return NotFound("Quiz bulunamadı.");
-            }
-
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var quizResult = await _serviceManager.QuizService.StartQuiz(quizId, userId);
 
-            var userQuizInfoTemp = new UserQuizInfoTemp
+            if (!quizResult.IsSuccess)
             {
-                UserId = userId,
-                QuizId = quizId,
-                IsCompleted = false,
-                CorrectAnswer = 0,
-                FalseAnswer = 0,
-                StartedAt = DateTime.Now,
-            };
-
-            _serviceManager.UserQuizInfoTempService.CreateTempInfo(userQuizInfoTemp);
-
-            var firstQuestion = quiz.Questions.OrderBy(q => q.Order).FirstOrDefault();
-            if (firstQuestion == null)
-            {
-                return NotFound("Bu quiz için sorular bulunamadı.");
+                return NotFound(quizResult.UserMessage);
             }
 
-             var quizDto = _mapper.Map<QuizDtoForUser>(quiz);
-            quizDto.QuestionCount = quiz.Questions.Count;
-            quizDto.Questions = new List<Question> { firstQuestion }; 
-
-             return View("QuizView", quizDto);
+            return View("QuizView", quizResult.Data);
         }
-
 
         [HttpPost]
         [Authorize]
-        public IActionResult SaveAnswer(int quizId, int questionId, int selectedOptionId)
+        public async Task<IActionResult> SaveAnswer(int quizId, int questionId, int selectedOptionId)
         {
-            // Kullanıcı ID'sini alıyoruz
+
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _serviceManager.QuizService.SaveAnswer(quizId, questionId, selectedOptionId, userId);
 
-            // Kullanıcının geçici quiz bilgilerini alıyoruz
-            var userQuizInfoTemp = _serviceManager.UserQuizInfoTempService.GetTempInfoByQuizIdAndUserId(quizId, userId, trackChanges: false);
-            if (userQuizInfoTemp == null)
+            if (!result.IsSuccess)
             {
-                return BadRequest("Quiz bilgisi bulunamadı. Quiz'e başlamamış olabilirsiniz.");
+                return BadRequest(result.UserMessage);
             }
-
-            // Soruyu alıyoruz ve doğruluk kontrolü yapıyoruz
-            var question = _manager.Question.GetOneQuestion(questionId, trackChanges: false);
-            if (question == null)
-            {
-                return BadRequest("Geçersiz soru ID'si.");
-            }
-
-            // Cevabın doğruluğunu kontrol et
-            bool isCorrect = selectedOptionId == question.CorrectOptionId;
-
-            // Geçici tabloya yeni cevabı kaydediyoruz
-            var newAnswer = new UserAnswerTemp
-            {
-                UserQuizInfoTempId = userQuizInfoTemp.UserQuizInfoTempId,
-                QuestionId = questionId,
-                SelectedOptionId = selectedOptionId,
-                IsCorrect = isCorrect
-            };
-
-            // Cevabı kaydediyoruz
-            _serviceManager.UserAnswerTempService.CreateTempAnswer(newAnswer);
 
             return Json(new { success = true });
         }
 
-
         [HttpPost]
         [Authorize]
-        public IActionResult NextQuestion(int quizId, int currentQuestionOrder)
+        public async Task<IActionResult> NextQuestion(int quizId, int currentQuestionOrder, int selectedOptionId)
         {
-            var quiz = _manager.Quiz.GetQuizWithDetails(quizId, trackChanges: false);
-            if (quiz == null)
+            var nextQuestionResult = await _serviceManager.QuestionService.GetNextQuestion(quizId, currentQuestionOrder, selectedOptionId);
+
+            if (!nextQuestionResult.IsSuccess)
             {
-                return NotFound("Quiz bulunamadı.");
-            }
-            var nextQuestion = _serviceManager.QuizService.GetNextQuestion(quizId, currentQuestionOrder);
-            if (nextQuestion == null)
-            {
-                return Json(new { success = false });
+                return Json(new
+                {
+                    success = false,
+                    message = "Soru bulunamadı veya tüm sorular yanıtlandı."
+                });
             }
 
-            // Yeni soruyu JSON formatında frontend'e gönderiyoruz
+            var questionToShow = nextQuestionResult.Data;
+
             var response = new
             {
                 success = true,
-                questionText = nextQuestion.QuestionText,
-                options = nextQuestion.Options.Select(o => new
+                questionText = questionToShow.QuestionText,
+                options = questionToShow.Options.Select(o => new
                 {
                     id = o.OptionId,
-                    text = o.OptionText
+                    text = o.OptionText,
+                    isSelected = o.IsSelected, 
+                    isDisabled = o.IsDisabled  
                 }).ToList(),
-                questionId = nextQuestion.QuestionId,
-                currentOrder = nextQuestion.Order,
-                totalQuestions = quiz.Questions.Count
+                questionId = questionToShow.QuestionId,
+                currentOrder = questionToShow.Order,
+                totalQuestions = questionToShow.QuestionCount,
+                showFinishButton = questionToShow.IsLastQuestion 
             };
-             return Json(response);
 
+            return Json(response);
         }
 
 
         [HttpPost]
         [Authorize]
-        public IActionResult FinishQuiz(int quizId)
+        public async Task<IActionResult> FinishQuiz(int quizId)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userQuizInfoResult = await _serviceManager.UserQuizInfoService.ProcessQuiz(quizId, userId);
 
-            // 1. Serviste quiz'i işleyelim (hesapla, kaydet veya güncelle)
-            var userQuizInfo = _serviceManager.UserQuizInfoService.ProcessQuiz(quizId, userId);
-             // 3. QuizResult sayfasına yönlendirme
-            var quizResultViewModel = _mapper.Map<QuizResultViewModel>(userQuizInfo);
+            if (!userQuizInfoResult.IsSuccess)
+            {
+                return NotFound("Quiz işlenirken bir hata oluştu.");
+            }
 
+            var quizResultViewModel = _mapper.Map<QuizResultViewModel>(userQuizInfoResult.Data);
             TempData["QuizResult"] = JsonConvert.SerializeObject(quizResultViewModel);
+
             return RedirectToAction("QuizResult");
-
         }
-       
 
-         
         [HttpGet]
         [Authorize]
         public IActionResult QuizResult()
         {
-            // TempData'dan QuizResult verilerini alıyoruz
             var quizResultJson = TempData["QuizResult"] as string;
+        
 
-            // Eğer TempData'da veri yoksa, hata döndürüyoruz
             if (string.IsNullOrEmpty(quizResultJson))
             {
                 return NotFound("Quiz sonucu bulunamadı.");
             }
 
-            // JSON formatındaki veriyi deserialize ederek QuizResultViewModel'e dönüştürüyoruz
             var quizResultViewModel = JsonConvert.DeserializeObject<QuizResultViewModel>(quizResultJson);
-
-            // Modeli View'e gönderiyoruz
+           
             return View(quizResultViewModel);
         }
     }
-
-    }
- 
+}

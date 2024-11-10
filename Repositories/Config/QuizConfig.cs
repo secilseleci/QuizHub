@@ -8,47 +8,58 @@ namespace Repositories.Config
     {
         public void Configure(EntityTypeBuilder<Quiz> builder)
         {
-            // Quiz için temel yapılandırma
             builder.HasKey(p => p.QuizId);
             builder.Property(p => p.Title).IsRequired();
 
-            // Quiz ve Question arasında one-to-many ilişki
             builder.HasMany(q => q.Questions)
                    .WithOne(q => q.Quiz)
                    .HasForeignKey(q => q.QuizId)
-                   .OnDelete(DeleteBehavior.Cascade); // Quiz silinirse, sorular da silinir
+                   .OnDelete(DeleteBehavior.Cascade);
 
-            // Seed data - Quiz
             builder.HasData(
-                
                 new Quiz
                 {
                     QuizId = 1,
-                    Title = "World Capitals",
+                    Title = "HR Basics",
                     ShowCase = true,
-                    QuestionCount = 8
+                    QuestionCount = 5
                 },
                 new Quiz
                 {
                     QuizId = 2,
-                    Title = "World Country",
+                    Title = "IT Fundamentals",
                     ShowCase = true,
-                    QuestionCount = 3
+                    QuestionCount = 5
                 },
                 new Quiz
                 {
                     QuizId = 3,
-                    Title = "General Knowledge",
+                    Title = "Design Principles",
                     ShowCase = true,
-                    QuestionCount = 3
+                    QuestionCount = 5
                 },
                 new Quiz
                 {
                     QuizId = 4,
-                    Title = "Bilişim",
+                    Title = "Geography Trivia",
                     ShowCase = true,
-                    QuestionCount = 2
+                    QuestionCount = 5
+                },
+                new Quiz
+                {
+                    QuizId = 5,
+                    Title = "Historical Events",
+                    ShowCase = true,
+                    QuestionCount = 5
+                },
+                new Quiz
+                {
+                    QuizId = 7,
+                    Title = "Türk Sineması Bilgi Yarışması",
+                    ShowCase = true,
+                    QuestionCount = 5
                 }
+
             );
         }
     }

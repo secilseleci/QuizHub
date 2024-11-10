@@ -13,7 +13,8 @@
                 @foreach (var option in Model.Questions.First().Options)
                 {
                     <label class="list-group-item d-flex align-items-center">
-                        <input type="radio" name="questionOptions" value="@option.OptionId" class="me-2">
+                        <input type="radio" name="questionOptions" value="@option.OptionId" class="me-2"
+                        @(option.IsSelected ? "checked" : "") @(option.IsDisabled ? "disabled" : "")>
                         <span>@option.OptionText</span>
                     </label>
                 }
@@ -22,12 +23,12 @@
 
         <div class="card-footer d-flex justify-content-between">
             <span id="questionOrder">@Model.Questions.First().Order / @Model.QuestionCount</span>
-             <form asp-action="FinishQuiz" method="post">
+            <form asp-action="FinishQuiz" method="post">
                 <input type="hidden" name="quizId" value="@Model.QuizId" />
 
-                <button class="btn btn-warning" id="finishButton" style="display:none;">Finish Quiz</button>
-            </form>            
-            <button class="btn btn-primary" id="nextButton">Next</button>
+                <button class="btn btn-warning" id="finishButton" style="display:@(Model.ShowFinishButton ? "inline" : "none");">Finish Quiz</button>
+            </form>
+            <button class="btn btn-primary" id="nextButton" style="display:@(!Model.ShowFinishButton ? "inline" : "none");">Next</button>
         </div>
     </div>
 </div>
@@ -45,7 +46,7 @@
         if (!selectedOptionId) {
             alert("Lütfen bir seçenek seçin.");  // Uyarı göster
             return;
-        } 
+        }
 
         // Cevabı kaydetmek için AJAX isteği yapıyoruz
         $.ajax({
@@ -69,30 +70,35 @@
         $.ajax({
             url: '/Quiz/NextQuestion',
             method: 'POST',
-            data: { quizId: quizId, currentQuestionOrder: currentQuestionOrder },
+            data: { quizId: quizId, currentQuestionOrder: currentQuestionOrder, selectedOptionId: $('input[name="questionOptions"]:checked').val() },
             success: function (response) {
                 console.log(response);
                 if (response.success) {
-                    // Yeni soru ve seçenekleri DOM'da güncelliyoruz
                     $('#questionText').text(response.questionText);
                     $('#questionOrder').text(response.currentOrder + ' / ' + totalQuestions);
 
                     var optionsList = $('#optionsList');
                     optionsList.empty();
-                    console.log(optionsList.html());
                     response.options.forEach(function (option) {
                         optionsList.append('<label class="list-group-item d-flex align-items-center">' +
-                            '<input type="radio" name="questionOptions" value="' + option.id + '" class="me-2">' +
+                            '<input type="radio" name="questionOptions" value="' + option.id + '" class="me-2" ' +
+                            (option.isSelected ? 'checked' : '') + ' ' + (option.isDisabled ? 'disabled' : '') + '>' +
                             '<span>' + option.text + '</span>' +
                             '</label>');
                     });
 
                     currentQuestionOrder = response.currentOrder;
                     questionId = response.questionId;
+
+                    if (response.showFinishButton) {
+                        $('#nextButton').hide();
+                        $('#finishButton').show();
+                    } else {
+                        $('#nextButton').show();
+                        $('#finishButton').hide();
+                    }
                 } else {
-                    // Quiz tamamlandıysa next butonunu gizleyip finish button'u göster
-                    $('#nextButton').hide();
-                    $('#finishButton').show();
+                    console.log(response.message);
                 }
             },
             error: function (xhr, status, error) {
@@ -100,6 +106,4 @@
             }
         });
     }
-     
-   
 </script>

@@ -1,49 +1,55 @@
 using AutoMapper;
-using DocumentFormat.OpenXml.Bibliography;
 using Entities.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
 using Services.Contracts;
 
 namespace QuizHubPresentation.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
-        private readonly IServiceManager _manager;
+        private readonly IServiceManager _serviceManager;
         private readonly IMapper _mapper;
         private readonly ILogger<UserController> _logger;
 
-        public UserController(IServiceManager manager, IMapper mapper, ILogger<UserController> logger)
+        public UserController(IServiceManager serviceManager, IMapper mapper, ILogger<UserController> logger)
         {
-            _manager = manager;
+            _serviceManager = serviceManager;
             _mapper = mapper;
             _logger = logger;
         }
 
         public async Task<IActionResult> Index()
         {
-            var users = await  _manager.AuthService.GetAllUsersWithRolesAsync();
-            return View(users);
+            var usersResult = await _serviceManager.AuthService.GetAllUsersWithRolesAsync();
+
+            if (!usersResult.IsSuccess)
+            {
+                _logger.LogError("Users could not be loaded: {Message}", usersResult.Error);
+                TempData["ErrorMessage"] = "Users could not be loaded.";
+                return View("Error");
+            }
+
+            return View(usersResult.Data);
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            var departments = _manager.DepartmentService.GetAllDepartments(false)?.ToList();
-            if (departments == null || !departments.Any())
+            var departmentsResult = await _serviceManager.DepartmentService.GetAllDepartments(trackChanges: false);
+            if (!departmentsResult.IsSuccess || !departmentsResult.Data.Any())
             {
                 ModelState.AddModelError("", "No departments found.");
                 return View(new UserDtoForCreation());
             }
 
-            // Tek seçimli SelectList kullanıyoruz
-            ViewBag.Departments = new SelectList(departments, "DepartmentId", "DepartmentName");
+            ViewBag.Departments = new SelectList(departmentsResult.Data, "DepartmentId", "DepartmentName");
 
-            // Rolleri alıyoruz, birden fazla seçilebilir olacak
-            var roles = _manager.AuthService.Roles.Select(r => r.Name).ToList();
+            var roles = _serviceManager.AuthService.Roles.Select(r => r.Name).ToList();
             ViewBag.Roles = roles;
 
             return View(new UserDtoForCreation());
@@ -55,43 +61,51 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var departments = _manager.DepartmentService.GetAllDepartments(false);
-                ViewBag.Departments = new SelectList(departments, "DepartmentId", "DepartmentName");
+                var departmentsResult = await _serviceManager.DepartmentService.GetAllDepartments(trackChanges: false);
+                if (departmentsResult.IsSuccess)
+                {
+                    ViewBag.Departments = new SelectList(departmentsResult.Data, "DepartmentId", "DepartmentName");
+                }
 
-                var roles = _manager.AuthService.Roles.Select(r => r.Name).ToList();
-                ViewBag.Roles = roles;
-
+                ViewBag.Roles = _serviceManager.AuthService.Roles.Select(r => r.Name).ToList();
                 return View(userDto);
             }
 
-            var result = await _manager.AuthService.CreateUser(userDto);
+            var createResult = await _serviceManager.AuthService.CreateUser(userDto);
 
-            if (result.Succeeded)
+            if (createResult.IsSuccess)
             {
                 return RedirectToAction("Index");
             }
 
-            var departmentsList = _manager.DepartmentService.GetAllDepartments(false);
-            ViewBag.Departments = new SelectList(departmentsList, "DepartmentId", "DepartmentName");
+            var departments = await _serviceManager.DepartmentService.GetAllDepartments(trackChanges: false);
+            if (departments.IsSuccess)
+            {
+                ViewBag.Departments = new SelectList(departments.Data, "DepartmentId", "DepartmentName");
+            }
 
-            var rolesList = _manager.AuthService.Roles.Select(r => r.Name).ToList();
-            ViewBag.Roles = rolesList;
-
+            ViewBag.Roles = _serviceManager.AuthService.Roles.Select(r => r.Name).ToList();
+            ModelState.AddModelError("", "User could not be created.");
             return View(userDto);
         }
-
 
         [HttpGet]
         public async Task<IActionResult> Update(string id)
         {
-            var user = await _manager.AuthService.GetOneUserForUpdate(id);
-            var departments = _manager.DepartmentService.GetAllDepartments(false);
-            ViewBag.Departments = new SelectList(departments, "DepartmentId", "DepartmentName", user.DepartmentId);
+            var userResult = await _serviceManager.AuthService.GetOneUserForUpdate(id);
+            if (!userResult.IsSuccess)
+            {
+                return NotFound();
+            }
 
-            return View(user);  
+            var departmentsResult = await _serviceManager.DepartmentService.GetAllDepartments(false);
+            if (departmentsResult.IsSuccess)
+            {
+                ViewBag.Departments = new SelectList(departmentsResult.Data, "DepartmentId", "DepartmentName", userResult.Data.DepartmentId);
+            }
+
+            return View(userResult.Data);
         }
-
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -99,49 +113,60 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var departments = _manager.DepartmentService.GetAllDepartments(false);
-                ViewBag.Departments = new SelectList(departments, "DepartmentId", "DepartmentName", userDto.DepartmentId);
-                var allRoles = _manager.AuthService.Roles.Select(r => r.Name).ToList();
-                userDto.Roles = allRoles;
+                var departmentsResult = await _serviceManager.DepartmentService.GetAllDepartments(false);
+                if (departmentsResult.IsSuccess)
+                {
+                    ViewBag.Departments = new SelectList(departmentsResult.Data, "DepartmentId", "DepartmentName", userDto.DepartmentId);
+                }
+                userDto.Roles = _serviceManager.AuthService.Roles.Select(r => r.Name).ToList();
 
                 return View(userDto);
             }
-            await _manager.AuthService.UpdateUser(userDto);
+
+            var updateResult = await _serviceManager.AuthService.UpdateUser(userDto);
+            if (!updateResult.IsSuccess)
+            {
+                ModelState.AddModelError("", "User could not be updated.");
+                return View(userDto);
+            }
 
             return RedirectToAction("Index");
         }
 
-
-
-        public async Task<IActionResult> ResetPassword([FromRoute(Name = "id")] string id)
+        [HttpGet]
+        public IActionResult ResetPassword(string id)
         {
-            return View(new ResetPasswordDto()
-            {
-                UserName = id
-            });
+            return View(new ResetPasswordDto() { UserName = id });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ResetPassword([FromForm] ResetPasswordDto model)
         {
-            var result = await _manager.AuthService.ResetPassword(model);
-            return result.Succeeded
-                ? RedirectToAction("Index")
-                : View();
+            var resetResult = await _serviceManager.AuthService.ResetPassword(model);
+
+            if (!resetResult.IsSuccess)
+            {
+                ModelState.AddModelError("", "Password reset failed.");
+                return View(model);
+            }
+
+            return RedirectToAction("Index");
         }
 
-        [HttpPost]        
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteOneUser([FromForm] UserDto userDto)
         {
-            var result = await _manager
-                .AuthService
-                .DeleteOneUser(userDto.UserName);
-            
-            return result.Succeeded
-                ? RedirectToAction("Index")
-                : View();
+            var deleteResult = await _serviceManager.AuthService.DeleteOneUser(userDto.UserName);
+
+            if (!deleteResult.IsSuccess)
+            {
+                ModelState.AddModelError("", "User deletion failed.");
+                return View("Index");
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }

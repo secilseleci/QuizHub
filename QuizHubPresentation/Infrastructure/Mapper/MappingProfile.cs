@@ -10,18 +10,20 @@ public class MappingProfile : Profile
     {
         // Quiz Mapping
         CreateMap<QuizDtoForInsertion, Quiz>().ReverseMap();
-        CreateMap<QuizDtoForUpdate, Quiz>().ReverseMap();
-        CreateMap<QuizDto, Quiz>().ReverseMap();
+        CreateMap<Quiz, QuizDtoForUpdate>()
+                   .ForMember(dest => dest.Questions, opt => opt.MapFrom(src => src.Questions))
+                   .ReverseMap(); CreateMap<QuizDto, Quiz>().ReverseMap();
         CreateMap<QuizDtoForList, Quiz>().ReverseMap();
         CreateMap<QuizDtoForUser, Quiz>().ReverseMap();
-        
+
         // Question Mapping
-     
-        CreateMap<QuestionDto, Question>().ReverseMap();
- 
+
+        CreateMap<Question, QuestionDto>()
+                   .ForMember(dest => dest.Options, opt => opt.MapFrom(src => src.Options))
+                   .ReverseMap();
         // Option Mapping
-        CreateMap<OptionDto, Option>().ReverseMap();
- 
+        CreateMap<Option, OptionDto>().ReverseMap();
+
         // User Mapping
         CreateMap<UserDtoForCreation, ApplicationUser>().ReverseMap(); ;
         CreateMap<UserDtoForUpdate, ApplicationUser>().ReverseMap();
@@ -57,6 +59,9 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.QuizTitle, opt => opt.MapFrom(src => src.Title))
             .ForMember(dest => dest.QuestionCount, opt => opt.MapFrom(src => src.QuestionCount))
             .ForMember(dest => dest.Status, opt => opt.Ignore()); // Manuel olarak status ayarlanacak
+                                                                  // Temp'den kalıcı tabloya geçici dönüşüm için map
+        CreateMap<UserQuizInfoTemp, UserQuizInfo>()
+            .ForMember(dest => dest.UserQuizInfoId, opt => opt.Ignore()); // ID değişmemeli
 
     }
 }

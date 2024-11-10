@@ -1,0 +1,55 @@
+﻿<div class="container my-5">
+    <!-- Başlık -->
+    <div class="row">
+        <div class="col-md-8 offset-md-2 text-center">
+            <h1 class="display-4 fw-bold text-primary">Welcome to QuizHub!</h1>
+            <p class="lead text-secondary">Join us to explore an exciting world of quizzes, track your progress, and enhance your knowledge every day!</p>
+            <div class="mt-4">
+                <a asp-controller="Account" asp-action="Login" class="btn btn-lg btn-primary me-3 shadow">Log In</a>
+                <a asp-controller="Account" asp-action="Register" class="btn btn-lg btn-outline-secondary shadow">Sign Up</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Kartlar -->
+    <div class="row mt-5">
+        <!-- Quiz Çöz -->
+        <div class="col-md-4">
+            <div class="card custom-card bg-light mb-4 shadow-sm h-100" style="border-radius: 15px;">
+                <div class="card-body text-center">
+                    <div class="icon-circle mb-3" style="color: #007bff;">
+                        <i class="fas fa-book-open fa-3x"></i>
+                    </div>
+                    <h5 class="card-title text-primary fw-bold">Explore Quizzes</h5>
+                    <p class="card-text text-muted">Discover a range of quizzes that match your interests and challenge your mind!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Sonuçlarını Takip Et -->
+        <div class="col-md-4">
+            <div class="card custom-card bg-light mb-4 shadow-sm h-100" style="border-radius: 15px;">
+                <div class="card-body text-center">
+                    <div class="icon-circle mb-3" style="color: #28a745;">
+                        <i class="fas fa-chart-line fa-3x"></i>
+                    </div>
+                    <h5 class="card-title text-success fw-bold">Track Your Progress</h5>
+                    <p class="card-text text-muted">Create an account to keep track of your quiz scores and monitor your growth over time.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quizleri Tekrar Çöz -->
+        <div class="col-md-4">
+            <div class="card custom-card bg-light mb-4 shadow-sm h-100" style="border-radius: 15px;">
+                <div class="card-body text-center">
+                    <div class="icon-circle mb-3" style="color: #17a2b8;">
+                        <i class="fas fa-redo-alt fa-3x"></i>
+                    </div>
+                    <h5 class="card-title text-info fw-bold">Retake Quizzes</h5>
+                    <p class="card-text text-muted">Missed a few questions? Try again to boost your score and learn even more!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

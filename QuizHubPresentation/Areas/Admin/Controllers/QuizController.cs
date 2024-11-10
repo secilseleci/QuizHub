@@ -1,14 +1,11 @@
 ﻿using AutoMapper;
-using ClosedXML.Excel;
 using Entities.Dtos;
 using Entities.Models;
-using Entities.RequestParameters;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using QuizHubPresentation.Models;
 using Services.Contracts;
-using Microsoft.AspNetCore.Identity;
 
 
 namespace QuizHubPresentation.Areas.Admin.Controllers
@@ -31,118 +28,86 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
 
 
 
-        public IActionResult Index([FromQuery] QuizRequestParameters q)
+        public async Task<IActionResult> Index()
         {
-          
             ViewData["Title"] = "Quizzes";
 
-            var quizzes = _manager.QuizService.GetAllQuizzesWithDetails(q);
-            var pagination = new Pagination()
+            var quizzesResult = await _manager.QuizService.GetAllQuizzes(false);
+            if (!quizzesResult.IsSuccess)
             {
-                CurrenPage = q.PageNumber,
-                ItemsPerPage = q.PageSize,
-                TotalItems = _manager.QuizService.GetAllQuizzes(false).Count()
+                TempData["error"] = quizzesResult.UserMessage;
+                return View(new QuizListViewModel());
+            }
+
+            var model = new QuizListViewModel
+            {
+                Quizzes = quizzesResult.Data
             };
-            return View(new QuizListViewModel()
-            {
-                Quizzes = quizzes,
-                Pagination = pagination
-            });
+
+            return View(model);
         }
-        
+
         [HttpGet]
         public IActionResult Create()
         {
             var quizDto = new QuizDtoForInsertion
             {
                 Questions = new List<QuestionDto>
-                    {
-                        new QuestionDto
-                        {
-                            Order = 1,
-                            Options = new List<OptionDto>
-                                {
-                                new OptionDto { OptionText = string.Empty, IsCorrect = false },
-                                new OptionDto { OptionText = string.Empty, IsCorrect = false },
-                                new OptionDto { OptionText = string.Empty, IsCorrect = false },
-                                new OptionDto { OptionText = string.Empty, IsCorrect = false }
+        {
+            new QuestionDto
+            {
+                Order = 1,
+                Options = new List<OptionDto>
+                {
+                    new OptionDto { OptionText = string.Empty, IsCorrect = false },
+                    new OptionDto { OptionText = string.Empty, IsCorrect = false },
+                    new OptionDto { OptionText = string.Empty, IsCorrect = false },
+                    new OptionDto { OptionText = string.Empty, IsCorrect = false }
                 }
             }
         }
             };
 
-            TempData["info"] = "Please fill the form.";
+            TempData["info"] = "Lütfen formu doldurun.";
             return View(quizDto);
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([FromForm] QuizDtoForInsertion quizDto)
         {
-            // 1. Soruların olup olmadığını kontrol ediyoruz
-            if (quizDto.Questions == null || quizDto.Questions.Count == 0)
-            {
-                ModelState.AddModelError(string.Empty, "En az bir soru eklemeniz gerekiyor.");
-                return View(quizDto);
-            }
-
-            // 2. Doğru seçeneğin seçilip seçilmediğini kontrol ediyoruz
-            bool correctOptionSelected = true;
-
-            foreach (var question in quizDto.Questions)
-            {
-                var optionList = question.Options.ToList();
-
-                // Doğru seçenek geçerli mi?
-                if (question.CorrectOptionId < 0 || question.CorrectOptionId >= optionList.Count)
-                {
-                    correctOptionSelected = false;
-                    ModelState.AddModelError(string.Empty, $"Soru '{question.QuestionText}' için bir doğru seçenek seçmelisiniz.");
-                    return View(quizDto);
-                }
-
-                // Doğru seçenek işaretleniyor
-                if (question.CorrectOptionId >= 0 && question.CorrectOptionId < optionList.Count)
-                {
-                    optionList[question.CorrectOptionId].IsCorrect = true;
-                }
-            }
-
-            // 3. Eğer validasyonlar başarısız ise tekrar forma dönüyoruz
             if (!ModelState.IsValid)
             {
                 return View(quizDto);
             }
 
-            // 4. Quiz oluşturma servisini çağırıyoruz ve sonucu kontrol ediyoruz
-            var result = _manager.QuizService.CreateQuiz(quizDto);
+            var result = await _manager.QuizService.CreateOneQuiz(quizDto);
 
             if (result.IsSuccess)
             {
-                // Başarılı olursa başarı mesajı ile yönlendirme yapıyoruz
-                TempData["success"] = result.Value;
+                TempData["success"] = $"{quizDto.Title} başarıyla oluşturuldu.";
                 return RedirectToAction("Index");
             }
-            else
-            {
-                // Hata varsa, hatayı ekliyoruz ve kullanıcıya geri dönüyoruz
-                ModelState.AddModelError(string.Empty, result.Error);
-                return View(quizDto);
-            }
+
+            ModelState.AddModelError(string.Empty, result.UserMessage);
+            return View(quizDto);
         }
 
 
-        [HttpGet]
-        public IActionResult Update([FromRoute(Name = "id")] int id)
-        {
 
-            var model = _manager.QuizService.GetOneQuizForUpdate(id, false);
-            if (model == null)
+        [HttpGet]
+        public async Task<IActionResult> Update([FromRoute(Name = "id")] int id)
+        {
+            var result =await _manager.QuizService.GetOneQuizForUpdate(id, trackChanges: false);
+            if (!result.IsSuccess)
             {
-                return NotFound();
+                TempData["error"] = "Güncellemek istediğiniz quiz bulunamadı.";
+                return RedirectToAction("Index");
             }
-            var quizDto = _mapper.Map<QuizDtoForUpdate>(model);
-            ViewData["Title"] = model?.Title;
+
+            var quizDto = result.Data;
+            ViewData["Title"] = quizDto.Title;
             return View(quizDto);
         }
 
@@ -150,50 +115,42 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update([FromForm] QuizDtoForUpdate quizDto)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var existingQuiz = _manager.QuizService.GetOneQuizForUpdate(quizDto.QuizId, false);
-                quizDto.QuestionCount = existingQuiz.QuestionCount;
+                return View(quizDto);
+            }
 
-                foreach (var question in quizDto.Questions)
-                {
-                    var existingQuestion = existingQuiz.Questions.FirstOrDefault(q => q.QuestionId == question.QuestionId);
-                    if (existingQuestion != null)
-                    {
-                        question.Order = existingQuestion.Order;
+            var result = await _manager.QuizService.UpdateOneQuiz(quizDto);
 
-                        foreach (var option in question.Options)
-                        {
-                            var existingOption = existingQuestion.Options.FirstOrDefault(o => o.OptionId == option.OptionId);
-                            if (existingOption != null)
-                            {
-                                option.IsCorrect = false;
-                            }
-                        }
-                        var correctOption = question.Options.FirstOrDefault(o => o.OptionId == question.CorrectOptionId);
-                        if (correctOption != null)
-                        {
-                            correctOption.IsCorrect = true;
-                        }
-                    }
-                }
-
-                _manager.QuizService.UpdateOneQuiz(quizDto);
-
-                TempData["success"] = "Quiz baþarýyla güncellendi.";
+            if (result.IsSuccess)
+            {
+                TempData["success"] = "Quiz başarıyla güncellendi.";
                 return RedirectToAction("Index");
             }
 
+            // Hata durumunda kullanıcıya mesaj gösteriyoruz
+            ModelState.AddModelError(string.Empty, result.UserMessage);
             return View(quizDto);
         }
 
+
         [HttpGet]
-        public IActionResult Delete([FromRoute(Name = "id")] int id)
+        public async Task<IActionResult> Delete([FromRoute(Name = "id")] int id)
         {
-            _manager.QuizService.DeleteOneQuiz(id);
-            TempData["danger"] = "The quiz has been removed.";
+            var result = await _manager.QuizService.DeleteOneQuiz(id);
+
+            if (result.IsSuccess)
+            {
+                TempData["danger"] = "The quiz has been removed.";
+            }
+            else
+            {
+                TempData["error"] = result.UserMessage ?? "An error occurred while deleting the quiz.";
+            }
+
             return RedirectToAction("Index");
         }
+
 
         [HttpGet]
         public IActionResult UploadExcel()
@@ -202,90 +159,17 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult UploadExcel(IFormFile file)
+        public async Task<IActionResult> UploadExcel(IFormFile file)
         {
-            if (file == null || file.Length == 0)
+            var result = await _manager.QuizService.UploadExcel(file);
+
+            if (!result.IsSuccess)
             {
-                return BadRequest("Excel dosyası yüklenmedi.");
+                TempData["error"] = result.UserMessage;
+                return RedirectToAction("UploadExcel");
             }
 
-            using (var stream = new MemoryStream())
-            {
-                file.CopyTo(stream);
-                using (var workbook = new XLWorkbook(stream))
-                {
-                    var worksheet = workbook.Worksheet(1);  
-                    var rows = worksheet.RowsUsed();
-
-                    var quizTitle = rows.Skip(1).First().Cell(1).Value.ToString();
-
-                    var quiz = new Quiz
-                    {
-                        Title = quizTitle,
-                        CreatedDate = DateTime.Now,
-                        Questions = new List<Question>()
-                    };
-
-                    foreach (var row in rows.Skip(1))  
-                    {
-                        var questionText = row.Cell(2).Value.ToString();
-                        var option1 = row.Cell(3).IsEmpty() ? null : row.Cell(3).Value.ToString(); 
-                        var option2 = row.Cell(4).IsEmpty() ? null : row.Cell(4).Value.ToString();  
-                        var option3 = row.Cell(5).IsEmpty() ? null : row.Cell(5).Value.ToString();  
-                        var option4 = row.Cell(6).IsEmpty() ? null : row.Cell(6).Value.ToString();  
-                        var option5 = row.Cell(7).IsEmpty() ? null : row.Cell(7).Value.ToString(); 
-
-                        var correctAnswer = row.Cell(8).Value.ToString();  
-
-                        var optionList = new List<Option>();
-
-                        if (!string.IsNullOrWhiteSpace(option1))
-                        {
-                            optionList.Add(new Option { OptionText = option1, IsCorrect = (option1 == correctAnswer) });
-                        }
-                        if (!string.IsNullOrWhiteSpace(option2))
-                        {
-                            optionList.Add(new Option { OptionText = option2, IsCorrect = (option2 == correctAnswer) });
-                        }
-                        if (!string.IsNullOrWhiteSpace(option3))
-                        {
-                            optionList.Add(new Option { OptionText = option3, IsCorrect = (option3 == correctAnswer) });
-                        }
-                        if (!string.IsNullOrWhiteSpace(option4))
-                        {
-                            optionList.Add(new Option { OptionText = option4, IsCorrect = (option4 == correctAnswer) });
-                        }
-                        if (!string.IsNullOrWhiteSpace(option5))
-                        {
-                            optionList.Add(new Option { OptionText = option5, IsCorrect = (option5 == correctAnswer) });
-                        }
-
-                       
-                        if (optionList.Count < 2)
-                        {
-                            continue; 
-                        }
-
-                        var question = new Question
-                        {
-                            QuestionText = questionText,
-                            Quiz = quiz,
-                            Options = optionList
-                        };
-
-                        var correctOption = optionList.FirstOrDefault(o => o.IsCorrect);
-                        if (correctOption != null)
-                        {
-                            question.CorrectOptionId = correctOption.OptionId;  // Doğru cevabın OptionId'sini ayarla
-                        }
-
-                        quiz.Questions.Add(question);
-                    }
-
-                    var quizDto = _mapper.Map<QuizDtoForInsertion>(quiz);
-                    _manager.QuizService.CreateQuiz(quizDto);
-                }
-            }
+            TempData["success"] = "Quiz başarıyla yüklendi!";
             return RedirectToAction("Index", "Quiz");
         }
 
@@ -294,60 +178,59 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
         {
             if (id == 0)
             {
-                return NotFound("Quiz bulunamadı.");
+                TempData["error"] = "Quiz bulunamadı.";
+                return RedirectToAction("Index");
             }
 
-            var quiz = _manager.QuizService.GetOneQuiz(id, false);
-            if (quiz == null)
+            // Quiz'i getiriyoruz
+            var quizResult = await _manager.QuizService.GetOneQuiz(id, trackChanges: false);
+            if (!quizResult.IsSuccess)
             {
-                return NotFound("Quiz bulunamadı.");
+                TempData["error"] = quizResult.UserMessage;
+                return RedirectToAction("Index");
             }
 
-            //Quiz'e atanmış olan departmanları alıyoruz
-            var assignedDepartments = _manager.QuizService.GetDepartmentsByQuizId(id, false);
-            var allDepartments = _manager.DepartmentService.GetAllDepartments(false)
-                .Select(d => new SelectListItem
-                {
-                    Value = d.DepartmentId.ToString(),
-                    Text = d.DepartmentName,
-                    Selected = assignedDepartments.Any(ad => ad.DepartmentId == d.DepartmentId) // Atanmışsa işaretle
-                }).ToList();
-
-            if (allDepartments == null || !allDepartments.Any())
+            // Tüm departmanları getiriyoruz ve seçili olanları işaretliyoruz
+            var departmentsResult = await _manager.DepartmentService.GetAllDepartmentsWithSelection(id, trackChanges: false);
+            if (!departmentsResult.IsSuccess)
             {
-                return NotFound("Departments bulunamadı.");
+                TempData["error"] = departmentsResult.UserMessage;
+                return RedirectToAction("Index");
             }
 
             var model = new AssignQuizViewModel
             {
                 QuizId = id,
-                QuizTitle = quiz.Title,
-                Departments = allDepartments // Departmanlar listesini view'e gönder
+                QuizTitle = quizResult.Data.Title,
+                Departments = departmentsResult.Data // SelectListItem listesi
             };
 
             return View(model);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Assign(AssignQuizViewModel model)
         {
             if (!ModelState.IsValid)
             {
+                TempData["error"] = "Formda geçersiz veriler var.";
                 return View(model);
             }
 
-            // 1. Formdan gelen seçili departmanlar (checkbox'ta işaretlenenler)
+            // Seçili departman ID'lerini topluyoruz
             var selectedDepartmentIds = model.SelectedDepartments.Select(int.Parse).ToList();
+            var result = await _manager.QuizService.AssignQuizToDepartments(model.QuizId, selectedDepartmentIds);
 
-            // 2. Seçilen departmanlar quiz'e atanıyor, var olan ilişkiler güncelleniyor
-            _manager.QuizService.AssignQuizToDepartments(model.QuizId, selectedDepartmentIds);
+            if (!result.IsSuccess)
+            {
+                TempData["error"] = result.UserMessage;
+                return View(model);
+            }
 
-            // 3. İşlem tamamlandığında Index sayfasına yönlendiriyoruz
+            TempData["success"] = "Quiz başarıyla departmanlara atandı.";
             return RedirectToAction("Index");
         }
-
-
-
 
     }
 }

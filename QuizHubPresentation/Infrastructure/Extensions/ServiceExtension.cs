@@ -2,13 +2,15 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using QuizHubPresentation.Models;
 using Repositories;
 using Repositories.Contracts;
-using Serilog.Events;
+using Repositories.Implementations;
 using Serilog;
+using Serilog.Events;
 using Services;
 using Services.Contracts;
+using Services.Implemantations;
+using Services.Implementations;
 
 namespace QuizHubPresentation.Infrastructure.Extensions
 {
@@ -63,29 +65,19 @@ namespace QuizHubPresentation.Infrastructure.Extensions
             services.AddScoped<IUserQuizInfoTempRepository, UserQuizInfoTempRepository>();
             services.AddScoped<IUserAnswerTempRepository, UserAnswerTempRepository>();// Yeni eklediğimiz repository
         }
-        public static void ConfigureServices(IServiceCollection services)
-        {
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                options.MinimumSameSitePolicy = SameSiteMode.None; // None olarak ayarla
-                options.Secure = CookieSecurePolicy.Always; // HTTPS için zorunlu
-            });
-
-            services.AddControllersWithViews();
-            services.AddRazorPages();
-        }
+      
         public static void ConfigureServiceRegistration(this IServiceCollection services)
         {
             services.AddScoped<IServiceManager, ServiceManager>();
-            services.AddScoped<IQuizService, QuizManager>();
-            services.AddScoped<IAuthService, AuthManager>();
-            services.AddScoped<IQuestionService, QuestionManager>();
-            services.AddScoped<IOptionService, OptionManager>();
-            services.AddScoped<IUserQuizInfoService, UserQuizInfoManager>();
-            services.AddScoped<IUserAnswerService, UserAnswerManager>();
-            services.AddScoped<IDepartmentService, DepartmentManager>();
-            services.AddScoped<IUserQuizInfoTempService, UserQuizInfoTempManager>();
-            services.AddScoped<IUserAnswerTempService, UserAnswerTempManager>();// Yeni eklediğimiz service
+            services.AddScoped<IQuizService, QuizService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IQuestionService, QuestionService>();
+            services.AddScoped<IOptionService, OptionService>();
+            services.AddScoped<IUserQuizInfoService, UserQuizInfoService>();
+            services.AddScoped<IUserAnswerService, UserAnswerService>();
+            services.AddScoped<IDepartmentService, DepartmentService>();
+            services.AddScoped<IUserQuizInfoTempService, UserQuizInfoTempService>();
+            services.AddScoped<IUserAnswerTempService, UserAnswerTempService>(); 
         }
 
         public static void ConfigureApplicationCookie(this IServiceCollection services)
@@ -108,18 +100,6 @@ namespace QuizHubPresentation.Infrastructure.Extensions
             });
         }
 
-        public static void ConfigureSerilog(this IServiceCollection services)
-        {
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-                .Enrich.FromLogContext()
-                .WriteTo.Console()  
-                .WriteTo.File("logs/log.txt", rollingInterval: RollingInterval.Day) 
-                .CreateLogger();
-
-            services.AddLogging(loggingBuilder =>
-                loggingBuilder.AddSerilog(dispose: true));
-        }
+      
     }
 }

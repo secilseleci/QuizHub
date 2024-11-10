@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Repositories;
+using Serilog;
 
 namespace QuizHubPresentation.Infrastructure.Extensions
 {
     public static class ApplicationExtension
     {
+        
         public static void ConfigureAndCheckMigration(this IApplicationBuilder app)
         {
             RepositoryContext context = app
@@ -95,14 +97,14 @@ namespace QuizHubPresentation.Infrastructure.Extensions
                 var users = new List<ApplicationUser>
         {
                  new ApplicationUser { UserName = "AyselKara", Email = "aysel@example.com", DepartmentId = 1 },
-                 new ApplicationUser { UserName = "DeryaAfacan", Email = "derya@example.com", DepartmentId = 3 },
+                 new ApplicationUser { UserName = "SedaOyar", Email = "seda@example.com", DepartmentId = 2 },
                  new ApplicationUser { UserName = "CemSeker", Email = "cem@example.com", DepartmentId = 3 }
         };
 
                 var passwords = new Dictionary<string, string>
         {
             { "AyselKara", "Aysel+123456" },
-            { "DeryaAfacan", "Derya+123456" },
+            { "SedaOyar", "Seda+123456" },
             { "CemSeker", "Cem+123456" }
         };
 

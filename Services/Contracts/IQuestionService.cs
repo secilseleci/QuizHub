@@ -1,22 +1,19 @@
 ﻿using Entities.Dtos;
+using Entities.Exeptions;
 using Entities.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services.Contracts
 {
     public interface IQuestionService
     {
-        IEnumerable<Question> GetAllQuestions(bool trackChanges);
-        IEnumerable<Question> GetQuestionsByQuizId(int quizId, bool trackChanges);
-        Question? GetOneQuestion(int id, bool trackChanges);
-        Question? GetOneQuestionWithOptions(int id, bool trackChanges);
-        void CreateOneQuestion(QuestionDto questionDto);
-        void UpdateOneQuestion(QuestionDto questionDto);
-        void DeleteOneQuestion(int id);
-        
+        Task<ResultGeneric<Question>> CreateOneQuestion(QuestionDto questionDto);
+        Task<ResultGeneric<Question>> UpdateOneQuestion(QuestionDto questionDto);
+        Task<Result> DeleteOneQuestion(int id);
+        Task<ResultGeneric<IEnumerable<Question>>> GetAllQuestions(bool trackChanges);
+        Task<ResultGeneric<Question>> GetOneQuestion(int id, bool trackChanges);
+        Task<ResultGeneric<IEnumerable<Question>>> GetQuestionsByQuizId(int quizId, bool trackChanges);
+        Task<ResultGeneric<Question>> GetOneQuestionWithOptions(int id, bool trackChanges);
+        Task<ResultGeneric<QuestionDto>> GetNextQuestion(int quizId, int currentQuestionOrder,int selectedOptionId);
+
     }
 }

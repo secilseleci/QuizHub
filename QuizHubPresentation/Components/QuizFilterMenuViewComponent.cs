@@ -2,9 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace QuizHubPresentation.Components
 {
@@ -23,8 +21,14 @@ namespace QuizHubPresentation.Components
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var quizzes = _serviceManager.QuizService.GetQuizzesWithDepartments(false).ToList();
+            var quizzesResult = await _serviceManager.QuizService.GetQuizzesWithDepartmentsAsync(trackChanges: false);
 
+            if (!quizzesResult.IsSuccess || quizzesResult.Data == null)
+            {
+                return Content("No quizzes available.");
+            }
+
+            var quizzes = quizzesResult.Data.ToList();
 
             // Kullanıcı giriş yapmamışsa (Anonymous user)
             if (!User.Identity.IsAuthenticated)

@@ -1,25 +1,42 @@
-﻿<nav class="navbar bg-light border-bottom navbar-expand-lg bg-body-tertiary">
+﻿<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom shadow-sm">
     <div class="container">
-        <a class="navbar-brand" href="/">
-            <i class="fa-solid fa-trophy"></i>
+        <!-- Logo ve Ana Sayfa -->
+        <a class="navbar-brand d-flex align-items-center fw-bold text-primary" href="/">
+            <i class="fa-solid fa-trophy me-2"></i> QuizHub
         </a>
+
+        <!-- Mobil Menü -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between" id="navbarNavAltMarkup">
-            <ul class="navbar-nav flex-grow-1">
+
+        <!-- Menü Bağlantıları -->
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" asp-controller="Home" asp-action="Index">Home</a>
+                    <a class="nav-link active text-primary" aria-current="page" asp-controller="Home" asp-action="Index">Home</a>
                 </li>
-               
-               
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" asp-page="/Contact">Contact</a>
+                    <a class="nav-link text-primary" asp-page="/Contact">Contact</a>
                 </li>
             </ul>
+
+            <!-- Kullanıcı Menüsü -->
             <ul class="navbar-nav">
-                <partial name="_LoginMenu" />
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <partial name="_LoginMenu" />
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-primary" asp-controller="Account" asp-action="Login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-primary" asp-controller="Account" asp-action="Register">Register</a>
+                    </li>
+                }
             </ul>
         </div>
     </div>

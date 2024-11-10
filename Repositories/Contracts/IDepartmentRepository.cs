@@ -9,12 +9,16 @@ namespace Repositories.Contracts
 {
     public interface IDepartmentRepository : IRepositoryBase<Department>
     {
-        IQueryable<Department> GetAllDepartments(bool trackChanges);
-        
+        Task CreateOneDepartmentAsync(Department department);
+        Task UpdateOneDepartmentAsync(Department entity);
+        Task DeleteOneDepartmentAsync(Department department);
+        Task<IQueryable<Department>> GetAllDepartmentsAsync(bool trackChanges);
+ 
+        Task<Department?> GetOneDepartmentAsync(int id, bool trackChanges);
 
-        Department GetDepartmentWithUsers(int departmentId, bool trackChanges);
-        Department? GetOneDepartment(int id, bool trackChanges);
-        Department GetDepartmentWithQuizzes(int departmentId, bool trackChanges);
+
+        Task<Department> GetDepartmentWithUsersAsync(int departmentId, bool trackChanges);
+        Task<Department> GetDepartmentWithQuizzesAsync(int departmentId, bool trackChanges);
 
     }
 }

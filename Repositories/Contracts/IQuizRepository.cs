@@ -5,19 +5,18 @@ namespace Repositories.Contracts
 {
     public interface IQuizRepository : IRepositoryBase<Quiz>
     {
+        Task<IQueryable<Quiz>> GetAllQuizzesAsync(bool trackChanges);
+        Task<IQueryable<Quiz>> GetShowCaseQuizzesAsync(bool trackChanges);
 
-        IQueryable<Quiz> GetAllQuizzes(bool trackChanges);
-        IQueryable<Quiz> GetShowCaseQuizzes(bool trackChanges);
+        Task CreateOneQuizAsync(Quiz quiz);
+        Task UpdateOneQuizAsync(Quiz entity);
+        Task DeleteOneQuizAsync(Quiz quiz);
 
-        IQueryable<Quiz> GetAllQuizzesWithDetails(QuizRequestParameters q);
-        void CreateOneQuiz(Quiz quiz);
-        void UpdateOneQuiz(Quiz entity);
-        void DeleteOneQuiz(Quiz quiz);
-        Quiz? GetOneQuiz(int id, bool trackChanges);
+        Task<Quiz?> GetOneQuizAsync(int id, bool trackChanges);
+        Task<Quiz?> GetQuizWithDetailsAsync(int quizId, bool trackChanges);
+        Task<Quiz?> GetQuizWithDepartmentsAsync(int quizId, bool trackChanges);
+        Task<IEnumerable<Quiz>> GetQuizzesWithDepartmentsAsync(bool trackChanges);
 
-        Quiz? GetQuizWithDetails(int quizId, bool trackChanges);
-        Quiz GetQuizWithDepartments(int quizId, bool trackChanges);
-
-        IEnumerable<Quiz> GetQuizzesByDepartmentId(int departmentId, bool trackChanges);
+        Task<IEnumerable<Quiz>> GetQuizzesByDepartmentIdAsync(int departmentId, bool trackChanges);
     }
 }

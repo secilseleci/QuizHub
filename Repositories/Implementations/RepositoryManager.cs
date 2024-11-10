@@ -1,6 +1,6 @@
 ﻿using Repositories.Contracts;
 
-namespace Repositories
+namespace Repositories.Implementations
 {
     public class RepositoryManager : IRepositoryManager
     {
@@ -40,12 +40,12 @@ namespace Repositories
         public IOptionRepository Option => _optionRepository;
         public IUserQuizInfoRepository UserQuizInfo => _userQuizInfoRepository;
         public IUserAnswerRepository UserAnswer => _userAnswerRepository;
-        public IDepartmentRepository Department => _departmentRepository; // Departman repository
+        public IDepartmentRepository Department => _departmentRepository;  
         public IUserQuizInfoTempRepository UserQuizInfoTemp => _userQuizInfoTempRepository;
         public IUserAnswerTempRepository UserAnswerTemp => _userAnswerTempRepository;
-        public void Save()
+        public async Task<bool> SaveAsync()
         {
-            _context.SaveChanges();
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }
