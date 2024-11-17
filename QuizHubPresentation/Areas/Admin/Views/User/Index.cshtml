@@ -55,7 +55,7 @@
                         <a class="btn btn-warning rounded-0" asp-action="Update" asp-route-id="@user.Id">
                             <i class="fa fa-solid fa-edit"></i> Edit
                         </a>
-                        <a class="btn btn-info rounded-0" asp-action="ResetPassword" asp-route-id="@user.Id">
+                        <a class="btn btn-info rounded-0" asp-action="AdminResetPassword" asp-area="Admin" asp-route-username="@user.UserName">
                             <i class="fa fa-solid fa-edit"></i> Reset Password
                         </a>
                         <form method="post" asp-action="DeleteOneUser">

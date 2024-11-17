@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using QuizHubPresentation.Models;
 using Services.Contracts;
+using Services.Implementations;
 
 namespace QuizHubPresentation.Controllers
 {
@@ -13,19 +14,23 @@ namespace QuizHubPresentation.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IServiceManager _serviceManager;
+        private readonly IEmailSender _emailSender;
 
         public AccountController(UserManager<ApplicationUser> userManager,
                                  SignInManager<ApplicationUser> signInManager,
-                                 IServiceManager serviceManager)
+                                 IServiceManager serviceManager,
+                                 IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _serviceManager = serviceManager;
+            _serviceManager = serviceManager; 
+            _emailSender = emailSender;
         }
 
-        public IActionResult Login([FromQuery(Name = "ReturnUrl")] string returnUrl = "/")
+        public IActionResult Login()
         {
-            return View(new LoginModel { ReturnUrl = returnUrl });
+            return View(new LoginModel());
+
         }
 
         [HttpPost]
@@ -34,7 +39,7 @@ namespace QuizHubPresentation.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByNameAsync(model.Name);
+                var user = await _userManager.FindByNameAsync(model.Username);
                 if (user != null)
                 {
                     await _signInManager.SignOutAsync();
@@ -42,7 +47,8 @@ namespace QuizHubPresentation.Controllers
 
                     if (signInResult.Succeeded)
                     {
-                        return Redirect(model?.ReturnUrl ?? "/");
+                        return RedirectToAction("Index", "Home");  
+
                     }
                 }
                 ModelState.AddModelError("Error", "Invalid username or password.");
@@ -113,5 +119,72 @@ namespace QuizHubPresentation.Controllers
                 ViewBag.Departments = new SelectList(departmentsResult.Data, "DepartmentId", "DepartmentName");
             }
         }
+
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View(new ForgotPasswordModel());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                // Kullanıcı bulunamazsa bile aynı mesajı vererek güvenliği artırırız.
+                ViewBag.Message = "If the email exists in our system, a reset link has been sent.";
+                return View("ForgotPasswordConfirmation");
+            }
+
+            // Şifre sıfırlama linki oluşturma
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var resetLink = Url.Action("ResetPassword", "Account", new { token, email = model.Email }, Request.Scheme);
+
+            // E-posta gönderme işlemi
+            await _emailSender.SendEmailAsync(model.Email, "Password Reset", $"Please reset your password by clicking here: {resetLink}");
+
+            // Bilgilendirme mesajını göster
+            ViewBag.Message = "If the email exists in our system, a reset link has been sent.";
+            return View("ForgotPasswordConfirmation");
+        }
+
+        [HttpGet]
+        public IActionResult ResetPassword(string token, string email)
+        {
+            return View(new ResetPasswordDto { Token = token, Email = email });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordDto model)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["danger"] = "Please correct the errors and try again.";
+
+                return View(model);
+            }
+
+            var resetResult = await _serviceManager.AuthService.ResetPassword(model);
+
+            if (!resetResult.IsSuccess)
+            {
+                TempData["danger"] = resetResult.Error; // Hata mesajı
+                return View(model);
+            }
+
+            TempData["success"] = "Your password has been reset successfully!"; // Başarı mesajı
+            return RedirectToAction("Login");
+        }
+
+
+
     }
 }

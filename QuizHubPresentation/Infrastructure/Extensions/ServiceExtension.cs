@@ -77,7 +77,8 @@ namespace QuizHubPresentation.Infrastructure.Extensions
             services.AddScoped<IUserAnswerService, UserAnswerService>();
             services.AddScoped<IDepartmentService, DepartmentService>();
             services.AddScoped<IUserQuizInfoTempService, UserQuizInfoTempService>();
-            services.AddScoped<IUserAnswerTempService, UserAnswerTempService>(); 
+            services.AddScoped<IUserAnswerTempService, UserAnswerTempService>();
+            services.AddTransient<IEmailSender, EmailSender>();
         }
 
         public static void ConfigureApplicationCookie(this IServiceCollection services)

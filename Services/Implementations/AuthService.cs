@@ -122,15 +122,44 @@ namespace Services.Implementations
 
         public async Task<Result> ResetPassword(ResetPasswordDto model)
         {
-            var user = await _userManager.FindByNameAsync(model.UserName);
+            ApplicationUser user;
+
+            if (!string.IsNullOrEmpty(model.UserName))
+            {
+                // Admin işlemi için
+                user = await _userManager.FindByNameAsync(model.UserName);
+            }
+            else if (!string.IsNullOrEmpty(model.Email))
+            {
+                // Kullanıcı işlemi için
+                user = await _userManager.FindByEmailAsync(model.Email);
+            }
+            else
+            {
+                return Result.Fail("Invalid request.");
+            }
+
             if (user == null)
+            {
                 return Result.Fail("User not found.");
+            }
 
-            await _userManager.RemovePasswordAsync(user);
-            var resetResult = await _userManager.AddPasswordAsync(user, model.Password);
-
-            return resetResult.Succeeded ? Result.Ok() : Result.Fail("Password could not be reset.");
+            // Token var mı kontrol et. Eğer varsa kullanıcı işlemi, yoksa admin işlemi
+            if (!string.IsNullOrEmpty(model.Token))
+            {
+                // Kullanıcı tarafından gönderilen reset işlemi
+                var resetResult = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+                return resetResult.Succeeded ? Result.Ok() : Result.Fail("Password could not be reset.");
+            }
+            else
+            {
+                // Admin tarafından yapılan reset işlemi
+                await _userManager.RemovePasswordAsync(user);
+                var resetResult = await _userManager.AddPasswordAsync(user, model.Password);
+                return resetResult.Succeeded ? Result.Ok() : Result.Fail("Password could not be reset.");
+            }
         }
+
 
         public async Task<Result> AssignDepartmentToUser(string userId, int departmentId)
         {
