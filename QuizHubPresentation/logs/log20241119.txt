@@ -1,0 +1,78 @@
+2024-11-19 14:38:38.595 +03:00 [INF] User profile is available. Using 'C:\Users\ASUS\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-11-19 14:38:39.541 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2024-11-19 14:38:39.767 +03:00 [INF] Entity Framework Core 6.0.0 initialized 'RepositoryContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: SensitiveDataLoggingEnabled MigrationsAssembly=Repositories 
+2024-11-19 14:38:40.131 +03:00 [INF] Executed DbCommand (24ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2024-11-19 14:38:40.171 +03:00 [INF] Executed DbCommand (18ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2024-11-19 14:38:40.186 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2024-11-19 14:38:40.221 +03:00 [INF] Entity Framework Core 6.0.0 initialized 'RepositoryContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: SensitiveDataLoggingEnabled MigrationsAssembly=Repositories 
+2024-11-19 14:38:40.652 +03:00 [INF] Executed DbCommand (48ms) [Parameters=[@__normalizedUserName_0='ADMIN' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[DepartmentId], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedUserName] = @__normalizedUserName_0
+2024-11-19 14:38:40.784 +03:00 [INF] Entity Framework Core 6.0.0 initialized 'RepositoryContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: SensitiveDataLoggingEnabled MigrationsAssembly=Repositories 
+2024-11-19 14:38:40.794 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[@__normalizedName_0='EDITOR' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2024-11-19 14:38:40.804 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='USER' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2024-11-19 14:38:40.806 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedUserName_0='AYSELKARA' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[DepartmentId], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedUserName] = @__normalizedUserName_0
+2024-11-19 14:38:40.821 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedUserName_0='AYSELKARA' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[DepartmentId], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedUserName] = @__normalizedUserName_0
+2024-11-19 14:38:40.834 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@__normalizedEmail_0='AYSEL@EXAMPLE.COM' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[DepartmentId], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2024-11-19 14:38:40.840 +03:00 [WRN] User validation failed: DuplicateEmail.
+2024-11-19 14:38:40.843 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedUserName_0='SEDAOYAR' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[DepartmentId], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedUserName] = @__normalizedUserName_0
+2024-11-19 14:38:40.845 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedUserName_0='SEDAOYAR' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[DepartmentId], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedUserName] = @__normalizedUserName_0
+2024-11-19 14:38:40.846 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='SEDA@EXAMPLE.COM' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[DepartmentId], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2024-11-19 14:38:40.846 +03:00 [WRN] User validation failed: DuplicateEmail.
+2024-11-19 14:38:40.847 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedUserName_0='CEMSEKER' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[DepartmentId], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedUserName] = @__normalizedUserName_0
+2024-11-19 14:38:40.981 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/ - -
+2024-11-19 14:38:40.984 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-11-19 14:38:40.984 +03:00 [INF] Hosting environment: Development
+2024-11-19 14:38:40.985 +03:00 [INF] Content root path: C:\QuizHub\QuizHubPresentation\
+2024-11-19 14:38:41.689 +03:00 [INF] Executing endpoint 'QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation)'
+2024-11-19 14:38:41.698 +03:00 [INF] Route matched with {action = "Index", controller = "Home", area = "", page = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller QuizHubPresentation.Controllers.HomeController (QuizHubPresentation).
+2024-11-19 14:38:41.828 +03:00 [INF] Executing ViewResult, running view GuestHome.
+2024-11-19 14:38:42.189 +03:00 [INF] Executed ViewResult - view GuestHome executed in 358.4925ms.
+2024-11-19 14:38:42.191 +03:00 [INF] Executed action QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation) in 492.9473ms
+2024-11-19 14:38:42.191 +03:00 [INF] Executed endpoint 'QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation)'
+2024-11-19 14:38:42.206 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/ - - - 200 - text/html;+charset=utf-8 1228.6280ms
+2024-11-19 14:38:42.295 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/_vs/browserLink - -
+2024-11-19 14:38:42.295 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/_framework/aspnetcore-browser-refresh.js - -
+2024-11-19 14:38:42.299 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/_framework/aspnetcore-browser-refresh.js - - - 200 11996 application/javascript;+charset=utf-8 3.6015ms
+2024-11-19 14:38:42.318 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/ - -
+2024-11-19 14:38:42.320 +03:00 [INF] Executing endpoint 'QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation)'
+2024-11-19 14:38:42.320 +03:00 [INF] Route matched with {action = "Index", controller = "Home", area = "", page = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller QuizHubPresentation.Controllers.HomeController (QuizHubPresentation).
+2024-11-19 14:38:42.321 +03:00 [INF] Executing ViewResult, running view GuestHome.
+2024-11-19 14:38:42.323 +03:00 [INF] Executed ViewResult - view GuestHome executed in 1.9561ms.
+2024-11-19 14:38:42.323 +03:00 [INF] Executed action QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation) in 2.6357ms
+2024-11-19 14:38:42.323 +03:00 [INF] Executed endpoint 'QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation)'
+2024-11-19 14:38:42.323 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/ - - - 200 - text/html;+charset=utf-8 5.7064ms
+2024-11-19 14:38:42.382 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 86.9380ms

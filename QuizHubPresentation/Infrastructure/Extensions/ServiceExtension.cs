@@ -5,8 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Repositories;
 using Repositories.Contracts;
 using Repositories.Implementations;
-using Serilog;
-using Serilog.Events;
+
 using Services;
 using Services.Contracts;
 using Services.Implemantations;
@@ -20,8 +19,19 @@ namespace QuizHubPresentation.Infrastructure.Extensions
         {
             services.AddDbContext<RepositoryContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("sqlconnection"),
-                    b => b.MigrationsAssembly("Repositories"));
+                var connectionString = configuration.GetConnectionString("sqlconnection");
+
+                // Ortam Bazlı Bağlantı Dizeleri
+                if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+                {
+                    Console.WriteLine("Using Development Connection String.");
+                }
+                else if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
+                {
+                    Console.WriteLine("Using Production Connection String.");
+                }
+
+                options.UseSqlServer(connectionString, b => b.MigrationsAssembly("Repositories"));
                 options.EnableSensitiveDataLogging(true);
             });
         }

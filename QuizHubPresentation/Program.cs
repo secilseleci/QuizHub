@@ -30,7 +30,17 @@ builder.Services.AddRazorPages();
 var app = builder.Build();
 
 
-
+// Ortam Belirleme
+if (app.Environment.IsDevelopment())
+{
+    // Geliþtirme ortamýna özel ayarlar
+    Console.WriteLine("Application running in Development mode.");
+}
+else if (app.Environment.IsProduction())
+{
+    // Yayýn ortamýna özel ayarlar
+    Console.WriteLine("Application running in Production mode.");
+}
 // Middlewares
 app.UseStaticFiles();
 app.UseSession();
