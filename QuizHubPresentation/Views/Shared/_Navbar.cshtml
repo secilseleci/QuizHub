@@ -28,6 +28,9 @@
             <ul class="navbar-nav">
                 @if (User.Identity.IsAuthenticated)
                 {
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Account/Profile">Profile</a>
+                    </li>
                     <partial name="_LoginMenu" />
                 }
                 else

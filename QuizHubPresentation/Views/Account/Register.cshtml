@@ -33,11 +33,10 @@
 
             <!-- Department Dropdown List -->
             <div class="form-group my-3">
-                <label asp-for="DepartmentId"></label>
+                <label asp-for="DepartmentId">Department</label>
                 <select asp-for="DepartmentId" class="form-control" asp-items="ViewBag.Departments">
-                    <option value="">Select Department</option>
+                    <option value="0">Select Department</option>
                 </select>
-                <span asp-validation-for="DepartmentId" class="text-danger"></span>
             </div>
 
             <div class="form-group my-3 d-flex justify-content-center">

@@ -14,6 +14,7 @@ builder.Host.UseSerilog((context, config) =>
 });
 
 // Servis Extension
+builder.Services.ConfigureMvcWithGlobalAuthorization();
 builder.Services.ConfigureDbContext(builder.Configuration);
 builder.Services.ConfigureIdentity();
 builder.Services.ConfigureSession();

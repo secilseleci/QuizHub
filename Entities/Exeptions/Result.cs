@@ -20,6 +20,8 @@ namespace Entities.Exeptions
             UserMessage = userMessage;
         }
         public static Result Ok() => new Result(true, null, null);
+        public static Result Ok(string userMessage) => new Result(true, null, userMessage);
+
         public static Result Fail(string error, string userMessage = "Bir şeyler ters gitti.")
         {
             LogError(error);
