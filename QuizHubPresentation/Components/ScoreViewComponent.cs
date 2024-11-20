@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using QuizHubPresentation.Models.Profile;
+using QuizHubPresentation.Models;
 using Services.Contracts;
 using System.Security.Claims;
 

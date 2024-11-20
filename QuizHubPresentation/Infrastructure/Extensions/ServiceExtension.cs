@@ -1,6 +1,7 @@
 ﻿using Entities.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Repositories;
 using Repositories.Contracts;
@@ -19,7 +20,7 @@ namespace QuizHubPresentation.Infrastructure.Extensions
         {
             services.AddDbContext<RepositoryContext>(options =>
             {
-                var connectionString = configuration.GetConnectionString("sqlconnection");
+                var connectionString = configuration.GetConnectionString("DefaultConnection");
 
                 // Ortam Bazlı Bağlantı Dizeleri
                 if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
@@ -87,7 +88,10 @@ namespace QuizHubPresentation.Infrastructure.Extensions
             services.AddScoped<IUserAnswerService, UserAnswerService>();
             services.AddScoped<IDepartmentService, DepartmentService>();
             services.AddScoped<IUserQuizInfoTempService, UserQuizInfoTempService>();
-            services.AddScoped<IUserAnswerTempService, UserAnswerTempService>(); 
+            services.AddScoped<IUserAnswerTempService, UserAnswerTempService>();
+            services.AddScoped<IUserProfileService, UserProfileService>();
+
+            services.AddTransient<IEmailSender, EmailSender>();
         }
 
         public static void ConfigureApplicationCookie(this IServiceCollection services)
@@ -97,7 +101,7 @@ namespace QuizHubPresentation.Infrastructure.Extensions
                 options.LoginPath = new PathString("/Account/Login");
                 options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
-                options.AccessDeniedPath = new PathString("/Error/403");
+                options.AccessDeniedPath = new PathString("/Account/Login");
             });
         }
 
@@ -109,7 +113,20 @@ namespace QuizHubPresentation.Infrastructure.Extensions
                 options.AppendTrailingSlash = false;
             });
         }
+        public static void ConfigureMvcWithGlobalAuthorization(this IServiceCollection services)
+        {
+            services.AddControllersWithViews(options =>
+            {
+                // Global Authorization Filter
+                options.Filters.Add(new AuthorizeFilter());
+            }); 
+            services.AddRazorPages(options =>
+            {
+                // Razor Pages istisnalarını açıkça tanımla
+                options.Conventions.AllowAnonymousToPage("/About");
+                options.Conventions.AllowAnonymousToPage("/Contact");
+            });
+        }
 
-      
     }
 }

@@ -11,7 +11,9 @@ namespace Entities.Dtos
         [Required(ErrorMessage = "Password is required.")]
         public String? Password { get; init; }
 
-        [Required]
+        [Required(ErrorMessage = "Department is required.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Please select a valid department.")]
+
         public int DepartmentId { get; set; }
     }
 }

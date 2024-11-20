@@ -1,0 +1,43 @@
+﻿@model ProfileUpdateDto
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">My Profile</h2>
+
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert alert-success text-center">
+            @ViewBag.Message
+        </div>
+    }
+
+    <form method="post">
+        <div class="mb-3">
+            <label for="UserName" class="form-label">Username</label>
+            <input asp-for="UserName" class="form-control" />
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label for="Email" class="form-label">Email</label>
+            <input asp-for="Email" class="form-control" readonly />
+        </div>
+
+        <div class="mb-3">
+            <label for="Department" class="form-label">Department</label>
+            <input asp-for="Department" class="form-control" readonly />
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+    </form>
+
+    <div class="text-center mt-4">
+        <p>If you want to change your password, please click the button below.</p>
+        <a asp-action="ChangePassword" class="btn btn-warning">Change Password</a>
+    </div>
+
+    <div class="text-center mt-4">
+        <a asp-action="Index" asp-controller="Home" class="btn btn-secondary">Back to Home</a>
+    </div>
+</div>

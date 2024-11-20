@@ -13,7 +13,7 @@ namespace Services
         private readonly IDepartmentService _departmentService;
         private readonly IUserQuizInfoTempService _userQuizInfoTempService;
         private readonly IUserAnswerTempService _userAnswerTempService;
-
+        private readonly IUserProfileService _userProfileService;
         public ServiceManager(
             IQuizService quizService,
             IAuthService authService,
@@ -23,7 +23,8 @@ namespace Services
             IQuestionService questionService,
             IUserAnswerService userAnswerService,
             IUserAnswerTempService userAnswerTempService,
-            IDepartmentService departmentService)
+            IDepartmentService departmentService,
+            IUserProfileService userProfileService)
         {
             _quizService = quizService;
             _authService = authService;
@@ -34,6 +35,7 @@ namespace Services
             _userAnswerService = userAnswerService;
             _userAnswerTempService = userAnswerTempService;
             _departmentService = departmentService;
+            _userProfileService = userProfileService;
         }
 
         public IQuizService QuizService => _quizService;
@@ -45,5 +47,6 @@ namespace Services
         public IDepartmentService DepartmentService => _departmentService;
         public IUserQuizInfoTempService UserQuizInfoTempService => _userQuizInfoTempService;
         public IUserAnswerTempService UserAnswerTempService => _userAnswerTempService;
+        public IUserProfileService UserProfileService => _userProfileService;   
     }
 }

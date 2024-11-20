@@ -1,6 +1,7 @@
 using AutoMapper;
 using Entities.Dtos;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
@@ -134,25 +135,33 @@ namespace QuizHubPresentation.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult ResetPassword(string id)
+        public IActionResult AdminResetPassword(string username)
         {
-            return View(new ResetPasswordDto() { UserName = id });
+            return View(new ResetPasswordDto { UserName = username });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ResetPassword([FromForm] ResetPasswordDto model)
+        public async Task<IActionResult> AdminResetPassword(ResetPasswordDto model)
         {
+            if (!ModelState.IsValid)
+            {
+                TempData["danger"] = "Please correct the errors and try again.";
+
+                return View(model);
+            }
             var resetResult = await _serviceManager.AuthService.ResetPassword(model);
 
             if (!resetResult.IsSuccess)
             {
-                ModelState.AddModelError("", "Password reset failed.");
+                TempData["danger"] = resetResult.Error; // Hata mesajý
                 return View(model);
             }
 
-            return RedirectToAction("Index");
+            TempData["success"] = "User's password has been reset successfully!"; // Baþarý mesajý
+            return RedirectToAction("Index", "User");
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]

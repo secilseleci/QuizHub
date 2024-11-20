@@ -27,21 +27,18 @@ namespace QuizHubPresentation.Controllers
             _serviceManager = serviceManager;
         }
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> PendingQuizzes()
         {
             return View();
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> CompletedQuizzes()
         {
             return View();
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> RetakeQuizzes()
         {
             return View();
@@ -49,14 +46,13 @@ namespace QuizHubPresentation.Controllers
 
 
         [HttpGet]
-        [Authorize]
         public IActionResult ContinueQuizzes()
         {
             return View();
         }
 
         [HttpGet]
-        [Authorize]
+       
         public async Task<IActionResult> StartQuizConfirmation(int quizId)
         {
             var quizResult = await _serviceManager.QuizService.GetQuizWithDetails(quizId, trackChanges: false);
@@ -72,7 +68,6 @@ namespace QuizHubPresentation.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> ContinueQuiz(int quizId)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -85,8 +80,8 @@ namespace QuizHubPresentation.Controllers
 
             return View("QuizView", quizResult.Data);
         }
+        
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> StartQuiz(int quizId)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -101,7 +96,6 @@ namespace QuizHubPresentation.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> SaveAnswer(int quizId, int questionId, int selectedOptionId)
         {
 
@@ -117,7 +111,7 @@ namespace QuizHubPresentation.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+      
         public async Task<IActionResult> NextQuestion(int quizId, int currentQuestionOrder, int selectedOptionId)
         {
             var nextQuestionResult = await _serviceManager.QuestionService.GetNextQuestion(quizId, currentQuestionOrder, selectedOptionId);
@@ -155,7 +149,7 @@ namespace QuizHubPresentation.Controllers
 
 
         [HttpPost]
-        [Authorize]
+  
         public async Task<IActionResult> FinishQuiz(int quizId)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -173,7 +167,6 @@ namespace QuizHubPresentation.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public IActionResult QuizResult()
         {
             var quizResultJson = TempData["QuizResult"] as string;
