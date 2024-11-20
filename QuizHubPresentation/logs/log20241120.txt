@@ -1,0 +1,303 @@
+2024-11-20 16:32:21.895 +03:00 [INF] User profile is available. Using 'C:\Users\ASUS\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-11-20 16:32:22.898 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2024-11-20 16:32:23.146 +03:00 [INF] Entity Framework Core 6.0.0 initialized 'RepositoryContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: SensitiveDataLoggingEnabled MigrationsAssembly=Repositories 
+2024-11-20 16:32:23.926 +03:00 [INF] Executed DbCommand (33ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2024-11-20 16:32:23.980 +03:00 [INF] Executed DbCommand (27ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2024-11-20 16:32:24.013 +03:00 [INF] Executed DbCommand (15ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2024-11-20 16:32:24.057 +03:00 [INF] Entity Framework Core 6.0.0 initialized 'RepositoryContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: SensitiveDataLoggingEnabled MigrationsAssembly=Repositories 
+2024-11-20 16:32:24.547 +03:00 [INF] Executed DbCommand (75ms) [Parameters=[@__normalizedUserName_0='ADMIN' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[DepartmentId], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedUserName] = @__normalizedUserName_0
+2024-11-20 16:32:24.687 +03:00 [INF] Entity Framework Core 6.0.0 initialized 'RepositoryContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: SensitiveDataLoggingEnabled MigrationsAssembly=Repositories 
+2024-11-20 16:32:24.694 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[@__normalizedName_0='EDITOR' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2024-11-20 16:32:24.706 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='USER' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2024-11-20 16:32:24.707 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedUserName_0='AYSELKARA' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[DepartmentId], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedUserName] = @__normalizedUserName_0
+2024-11-20 16:32:24.726 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedUserName_0='AYSELKARA' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[DepartmentId], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedUserName] = @__normalizedUserName_0
+2024-11-20 16:32:24.739 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@__normalizedEmail_0='AYSEL@EXAMPLE.COM' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[DepartmentId], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2024-11-20 16:32:24.746 +03:00 [WRN] User validation failed: DuplicateEmail.
+2024-11-20 16:32:24.748 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedUserName_0='SEDAOYAR' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[DepartmentId], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedUserName] = @__normalizedUserName_0
+2024-11-20 16:32:24.751 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedUserName_0='SEDAOYAR' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[DepartmentId], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedUserName] = @__normalizedUserName_0
+2024-11-20 16:32:24.752 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='SEDA@EXAMPLE.COM' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[DepartmentId], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2024-11-20 16:32:24.752 +03:00 [WRN] User validation failed: DuplicateEmail.
+2024-11-20 16:32:24.753 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedUserName_0='CEMSEKER' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[DepartmentId], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedUserName] = @__normalizedUserName_0
+2024-11-20 16:32:24.925 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-11-20 16:32:24.925 +03:00 [INF] Hosting environment: Development
+2024-11-20 16:32:24.925 +03:00 [INF] Content root path: C:\QuizHub\QuizHubPresentation\
+2024-11-20 16:32:24.931 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/ - -
+2024-11-20 16:32:25.133 +03:00 [INF] Executing endpoint 'QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation)'
+2024-11-20 16:32:25.143 +03:00 [INF] Route matched with {action = "Index", controller = "Home", area = "", page = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller QuizHubPresentation.Controllers.HomeController (QuizHubPresentation).
+2024-11-20 16:32:25.286 +03:00 [INF] Executing ViewResult, running view GuestHome.
+2024-11-20 16:32:25.765 +03:00 [INF] Executed ViewResult - view GuestHome executed in 479.7776ms.
+2024-11-20 16:32:25.770 +03:00 [INF] Executed action QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation) in 623.7694ms
+2024-11-20 16:32:25.770 +03:00 [INF] Executed endpoint 'QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation)'
+2024-11-20 16:32:25.805 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/ - - - 200 - text/html;+charset=utf-8 876.3718ms
+2024-11-20 16:32:25.961 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/css/site.css?v=gImt5MZgrNqA4jnUnT1d_u9n-sGgkrhmLowi59xeZjo - -
+2024-11-20 16:32:25.961 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/_framework/aspnetcore-browser-refresh.js - -
+2024-11-20 16:32:25.961 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/_vs/browserLink - -
+2024-11-20 16:32:25.974 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/_framework/aspnetcore-browser-refresh.js - - - 200 11996 application/javascript;+charset=utf-8 7.3464ms
+2024-11-20 16:32:25.993 +03:00 [INF] The file /css/site.css was not modified
+2024-11-20 16:32:25.995 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/css/site.css?v=gImt5MZgrNqA4jnUnT1d_u9n-sGgkrhmLowi59xeZjo - - - 304 - text/css 34.8791ms
+2024-11-20 16:32:26.183 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 221.9814ms
+2024-11-20 16:32:26.203 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/ - -
+2024-11-20 16:32:26.204 +03:00 [INF] Executing endpoint 'QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation)'
+2024-11-20 16:32:26.204 +03:00 [INF] Route matched with {action = "Index", controller = "Home", area = "", page = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller QuizHubPresentation.Controllers.HomeController (QuizHubPresentation).
+2024-11-20 16:32:26.205 +03:00 [INF] Executing ViewResult, running view GuestHome.
+2024-11-20 16:32:26.207 +03:00 [INF] Executed ViewResult - view GuestHome executed in 2.7472ms.
+2024-11-20 16:32:26.208 +03:00 [INF] Executed action QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation) in 3.5987ms
+2024-11-20 16:32:26.208 +03:00 [INF] Executed endpoint 'QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation)'
+2024-11-20 16:32:26.208 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/ - - - 200 - text/html;+charset=utf-8 5.2911ms
+2024-11-20 16:32:31.431 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/account/login - -
+2024-11-20 16:32:31.440 +03:00 [INF] Executing endpoint 'QuizHubPresentation.Controllers.AccountController.Login (QuizHubPresentation)'
+2024-11-20 16:32:31.442 +03:00 [INF] Route matched with {action = "Login", controller = "Account", area = "", page = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login() on controller QuizHubPresentation.Controllers.AccountController (QuizHubPresentation).
+2024-11-20 16:32:31.445 +03:00 [INF] Executing ViewResult, running view Login.
+2024-11-20 16:32:31.482 +03:00 [INF] Executed ViewResult - view Login executed in 38.3245ms.
+2024-11-20 16:32:31.482 +03:00 [INF] Executed action QuizHubPresentation.Controllers.AccountController.Login (QuizHubPresentation) in 40.6353ms
+2024-11-20 16:32:31.482 +03:00 [INF] Executed endpoint 'QuizHubPresentation.Controllers.AccountController.Login (QuizHubPresentation)'
+2024-11-20 16:32:31.482 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/account/login - - - 200 - text/html;+charset=utf-8 51.4908ms
+2024-11-20 16:32:31.524 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/_vs/browserLink - -
+2024-11-20 16:32:31.524 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/_framework/aspnetcore-browser-refresh.js - -
+2024-11-20 16:32:31.527 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/_framework/aspnetcore-browser-refresh.js - - - 200 11996 application/javascript;+charset=utf-8 1.6031ms
+2024-11-20 16:32:31.533 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 12.1434ms
+2024-11-20 16:32:31.540 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/account/login - -
+2024-11-20 16:32:31.542 +03:00 [INF] Executing endpoint 'QuizHubPresentation.Controllers.AccountController.Login (QuizHubPresentation)'
+2024-11-20 16:32:31.542 +03:00 [INF] Route matched with {action = "Login", controller = "Account", area = "", page = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login() on controller QuizHubPresentation.Controllers.AccountController (QuizHubPresentation).
+2024-11-20 16:32:31.543 +03:00 [INF] Executing ViewResult, running view Login.
+2024-11-20 16:32:31.545 +03:00 [INF] Executed ViewResult - view Login executed in 1.8151ms.
+2024-11-20 16:32:31.545 +03:00 [INF] Executed action QuizHubPresentation.Controllers.AccountController.Login (QuizHubPresentation) in 2.3424ms
+2024-11-20 16:32:31.545 +03:00 [INF] Executed endpoint 'QuizHubPresentation.Controllers.AccountController.Login (QuizHubPresentation)'
+2024-11-20 16:32:31.545 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/account/login - - - 200 - text/html;+charset=utf-8 5.3996ms
+2024-11-20 16:32:33.020 +03:00 [INF] Request starting HTTP/2 POST https://localhost:44335/account/login application/x-www-form-urlencoded 222
+2024-11-20 16:32:33.025 +03:00 [INF] No CORS policy found for the specified request.
+2024-11-20 16:32:33.025 +03:00 [INF] Executing endpoint 'QuizHubPresentation.Controllers.AccountController.Login (QuizHubPresentation)'
+2024-11-20 16:32:33.039 +03:00 [INF] Route matched with {action = "Login", controller = "Account", area = "", page = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(QuizHubPresentation.Models.LoginModel) on controller QuizHubPresentation.Controllers.AccountController (QuizHubPresentation).
+2024-11-20 16:32:33.090 +03:00 [INF] Entity Framework Core 6.0.0 initialized 'RepositoryContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: SensitiveDataLoggingEnabled MigrationsAssembly=Repositories 
+2024-11-20 16:32:33.094 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@__normalizedUserName_0='AYSELCIKNASSIN' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[DepartmentId], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedUserName] = @__normalizedUserName_0
+2024-11-20 16:32:33.100 +03:00 [INF] AuthenticationScheme: Identity.Application signed out.
+2024-11-20 16:32:33.101 +03:00 [INF] AuthenticationScheme: Identity.External signed out.
+2024-11-20 16:32:33.101 +03:00 [INF] AuthenticationScheme: Identity.TwoFactorUserId signed out.
+2024-11-20 16:32:33.171 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[@__user_Id_0='5983f9c4-ccaa-412b-b259-345e00e45bdf' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClaimType], [a].[ClaimValue], [a].[UserId]
+FROM [AspNetUserClaims] AS [a]
+WHERE [a].[UserId] = @__user_Id_0
+2024-11-20 16:32:33.212 +03:00 [INF] Executed DbCommand (5ms) [Parameters=[@__userId_0='5983f9c4-ccaa-412b-b259-345e00e45bdf' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a0].[Name]
+FROM [AspNetUserRoles] AS [a]
+INNER JOIN [AspNetRoles] AS [a0] ON [a].[RoleId] = [a0].[Id]
+WHERE [a].[UserId] = @__userId_0
+2024-11-20 16:32:33.215 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='USER' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2024-11-20 16:32:33.224 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@__role_Id_0='295e005a-b1a4-4142-b0aa-2ebaa04b22c8' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[ClaimType], [a].[ClaimValue]
+FROM [AspNetRoleClaims] AS [a]
+WHERE [a].[RoleId] = @__role_Id_0
+2024-11-20 16:32:33.226 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='EDITOR' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2024-11-20 16:32:33.228 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__role_Id_0='a721c8e7-cb62-46e1-9723-ad7fd9de2fd0' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[ClaimType], [a].[ClaimValue]
+FROM [AspNetRoleClaims] AS [a]
+WHERE [a].[RoleId] = @__role_Id_0
+2024-11-20 16:32:33.233 +03:00 [INF] AuthenticationScheme: Identity.Application signed in.
+2024-11-20 16:32:33.239 +03:00 [INF] Executing RedirectResult, redirecting to /.
+2024-11-20 16:32:33.241 +03:00 [INF] Executed action QuizHubPresentation.Controllers.AccountController.Login (QuizHubPresentation) in 201.8902ms
+2024-11-20 16:32:33.241 +03:00 [INF] Executed endpoint 'QuizHubPresentation.Controllers.AccountController.Login (QuizHubPresentation)'
+2024-11-20 16:32:33.247 +03:00 [INF] Request finished HTTP/2 POST https://localhost:44335/account/login application/x-www-form-urlencoded 222 - 302 - - 226.3486ms
+2024-11-20 16:32:33.248 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/ - -
+2024-11-20 16:32:33.253 +03:00 [INF] Executing endpoint 'QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation)'
+2024-11-20 16:32:33.253 +03:00 [INF] Route matched with {action = "Index", controller = "Home", area = "", page = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller QuizHubPresentation.Controllers.HomeController (QuizHubPresentation).
+2024-11-20 16:32:33.254 +03:00 [INF] Executing ViewResult, running view UserDashboard.
+2024-11-20 16:32:33.271 +03:00 [INF] Entity Framework Core 6.0.0 initialized 'RepositoryContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: SensitiveDataLoggingEnabled MigrationsAssembly=Repositories 
+2024-11-20 16:32:33.307 +03:00 [INF] Executed DbCommand (6ms) [Parameters=[@__userId_0='5983f9c4-ccaa-412b-b259-345e00e45bdf' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [u].[UserQuizInfoId], [u].[CompletedAt], [u].[CorrectAnswer], [u].[FalseAnswer], [u].[IsCompleted], [u].[IsSuccessful], [u].[QuizId], [u].[Score], [u].[UserId], [q].[QuizId], [q].[CreatedDate], [q].[QuestionCount], [q].[ShowCase], [q].[Title], [q].[UpdatedDate]
+FROM [UserQuizInfo] AS [u]
+INNER JOIN [Quizzes] AS [q] ON [u].[QuizId] = [q].[QuizId]
+WHERE [u].[UserId] = @__userId_0
+2024-11-20 16:32:33.310 +03:00 [ERR] Hata: Kullanıcı quiz bilgisi bulunamadı.
+2024-11-20 16:32:33.334 +03:00 [INF] Executed ViewResult - view UserDashboard executed in 79.8364ms.
+2024-11-20 16:32:33.334 +03:00 [INF] Executed action QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation) in 80.3004ms
+2024-11-20 16:32:33.334 +03:00 [INF] Executed endpoint 'QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation)'
+2024-11-20 16:32:33.334 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/ - - - 200 - text/html;+charset=utf-8 86.2701ms
+2024-11-20 16:32:33.376 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/_framework/aspnetcore-browser-refresh.js - -
+2024-11-20 16:32:33.376 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/_vs/browserLink - -
+2024-11-20 16:32:33.377 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/_framework/aspnetcore-browser-refresh.js - - - 200 11996 application/javascript;+charset=utf-8 1.0227ms
+2024-11-20 16:32:33.385 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/ - -
+2024-11-20 16:32:33.386 +03:00 [INF] Executing endpoint 'QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation)'
+2024-11-20 16:32:33.386 +03:00 [INF] Route matched with {action = "Index", controller = "Home", area = "", page = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller QuizHubPresentation.Controllers.HomeController (QuizHubPresentation).
+2024-11-20 16:32:33.387 +03:00 [INF] Executing ViewResult, running view UserDashboard.
+2024-11-20 16:32:33.387 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 11.1438ms
+2024-11-20 16:32:33.388 +03:00 [INF] Entity Framework Core 6.0.0 initialized 'RepositoryContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: SensitiveDataLoggingEnabled MigrationsAssembly=Repositories 
+2024-11-20 16:32:33.393 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[@__userId_0='5983f9c4-ccaa-412b-b259-345e00e45bdf' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [u].[UserQuizInfoId], [u].[CompletedAt], [u].[CorrectAnswer], [u].[FalseAnswer], [u].[IsCompleted], [u].[IsSuccessful], [u].[QuizId], [u].[Score], [u].[UserId], [q].[QuizId], [q].[CreatedDate], [q].[QuestionCount], [q].[ShowCase], [q].[Title], [q].[UpdatedDate]
+FROM [UserQuizInfo] AS [u]
+INNER JOIN [Quizzes] AS [q] ON [u].[QuizId] = [q].[QuizId]
+WHERE [u].[UserId] = @__userId_0
+2024-11-20 16:32:33.394 +03:00 [ERR] Hata: Kullanıcı quiz bilgisi bulunamadı.
+2024-11-20 16:32:33.395 +03:00 [INF] Executed ViewResult - view UserDashboard executed in 8.2834ms.
+2024-11-20 16:32:33.395 +03:00 [INF] Executed action QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation) in 8.5384ms
+2024-11-20 16:32:33.395 +03:00 [INF] Executed endpoint 'QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation)'
+2024-11-20 16:32:33.395 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/ - - - 200 - text/html;+charset=utf-8 10.0781ms
+2024-11-20 16:32:35.648 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/quiz/completedquizzes - -
+2024-11-20 16:32:35.652 +03:00 [INF] Executing endpoint 'QuizHubPresentation.Controllers.QuizController.CompletedQuizzes (QuizHubPresentation)'
+2024-11-20 16:32:35.654 +03:00 [INF] Route matched with {action = "CompletedQuizzes", controller = "Quiz", area = "", page = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CompletedQuizzes() on controller QuizHubPresentation.Controllers.QuizController (QuizHubPresentation).
+2024-11-20 16:32:35.656 +03:00 [INF] Executing ViewResult, running view CompletedQuizzes.
+2024-11-20 16:32:35.665 +03:00 [INF] Entity Framework Core 6.0.0 initialized 'RepositoryContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: SensitiveDataLoggingEnabled MigrationsAssembly=Repositories 
+2024-11-20 16:32:35.676 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@__p_0='5983f9c4-ccaa-412b-b259-345e00e45bdf' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[DepartmentId], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[Id] = @__p_0
+2024-11-20 16:32:35.697 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[@__userId_0='5983f9c4-ccaa-412b-b259-345e00e45bdf' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [u].[UserQuizInfoId], [u].[CompletedAt], [u].[CorrectAnswer], [u].[FalseAnswer], [u].[IsCompleted], [u].[IsSuccessful], [u].[QuizId], [u].[Score], [u].[UserId], [q].[QuizId], [q].[CreatedDate], [q].[QuestionCount], [q].[ShowCase], [q].[Title], [q].[UpdatedDate]
+FROM [UserQuizInfo] AS [u]
+INNER JOIN [Quizzes] AS [q] ON [u].[QuizId] = [q].[QuizId]
+WHERE (([u].[UserId] = @__userId_0) AND ([u].[IsCompleted] = CAST(1 AS bit))) AND ([u].[Score] >= 60)
+2024-11-20 16:32:35.699 +03:00 [ERR] Hata: Tamamlanmış quiz bulunamadı.
+2024-11-20 16:32:35.773 +03:00 [INF] Executed ViewResult - view CompletedQuizzes executed in 117.078ms.
+2024-11-20 16:32:35.775 +03:00 [INF] Executed action QuizHubPresentation.Controllers.QuizController.CompletedQuizzes (QuizHubPresentation) in 120.4997ms
+2024-11-20 16:32:35.775 +03:00 [INF] Executed endpoint 'QuizHubPresentation.Controllers.QuizController.CompletedQuizzes (QuizHubPresentation)'
+2024-11-20 16:32:35.775 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/quiz/completedquizzes - - - 200 - text/html;+charset=utf-8 126.8364ms
+2024-11-20 16:32:35.806 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/_vs/browserLink - -
+2024-11-20 16:32:35.806 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/_framework/aspnetcore-browser-refresh.js - -
+2024-11-20 16:32:35.807 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/_framework/aspnetcore-browser-refresh.js - - - 200 11996 application/javascript;+charset=utf-8 0.8496ms
+2024-11-20 16:32:35.813 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 6.9511ms
+2024-11-20 16:32:35.817 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/quiz/completedquizzes - -
+2024-11-20 16:32:35.819 +03:00 [INF] Executing endpoint 'QuizHubPresentation.Controllers.QuizController.CompletedQuizzes (QuizHubPresentation)'
+2024-11-20 16:32:35.820 +03:00 [INF] Route matched with {action = "CompletedQuizzes", controller = "Quiz", area = "", page = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CompletedQuizzes() on controller QuizHubPresentation.Controllers.QuizController (QuizHubPresentation).
+2024-11-20 16:32:35.820 +03:00 [INF] Executing ViewResult, running view CompletedQuizzes.
+2024-11-20 16:32:35.821 +03:00 [INF] Entity Framework Core 6.0.0 initialized 'RepositoryContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: SensitiveDataLoggingEnabled MigrationsAssembly=Repositories 
+2024-11-20 16:32:35.825 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_0='5983f9c4-ccaa-412b-b259-345e00e45bdf' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[DepartmentId], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[Id] = @__p_0
+2024-11-20 16:32:35.828 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='5983f9c4-ccaa-412b-b259-345e00e45bdf' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [u].[UserQuizInfoId], [u].[CompletedAt], [u].[CorrectAnswer], [u].[FalseAnswer], [u].[IsCompleted], [u].[IsSuccessful], [u].[QuizId], [u].[Score], [u].[UserId], [q].[QuizId], [q].[CreatedDate], [q].[QuestionCount], [q].[ShowCase], [q].[Title], [q].[UpdatedDate]
+FROM [UserQuizInfo] AS [u]
+INNER JOIN [Quizzes] AS [q] ON [u].[QuizId] = [q].[QuizId]
+WHERE (([u].[UserId] = @__userId_0) AND ([u].[IsCompleted] = CAST(1 AS bit))) AND ([u].[Score] >= 60)
+2024-11-20 16:32:35.828 +03:00 [ERR] Hata: Tamamlanmış quiz bulunamadı.
+2024-11-20 16:32:35.829 +03:00 [INF] Executed ViewResult - view CompletedQuizzes executed in 9.6275ms.
+2024-11-20 16:32:35.830 +03:00 [INF] Executed action QuizHubPresentation.Controllers.QuizController.CompletedQuizzes (QuizHubPresentation) in 9.8502ms
+2024-11-20 16:32:35.830 +03:00 [INF] Executed endpoint 'QuizHubPresentation.Controllers.QuizController.CompletedQuizzes (QuizHubPresentation)'
+2024-11-20 16:32:35.830 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/quiz/completedquizzes - - - 200 - text/html;+charset=utf-8 12.4679ms
+2024-11-20 16:32:37.229 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/ - -
+2024-11-20 16:32:37.232 +03:00 [INF] Executing endpoint 'QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation)'
+2024-11-20 16:32:37.232 +03:00 [INF] Route matched with {action = "Index", controller = "Home", area = "", page = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller QuizHubPresentation.Controllers.HomeController (QuizHubPresentation).
+2024-11-20 16:32:37.232 +03:00 [INF] Executing ViewResult, running view UserDashboard.
+2024-11-20 16:32:37.232 +03:00 [INF] Entity Framework Core 6.0.0 initialized 'RepositoryContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: SensitiveDataLoggingEnabled MigrationsAssembly=Repositories 
+2024-11-20 16:32:37.235 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@__userId_0='5983f9c4-ccaa-412b-b259-345e00e45bdf' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [u].[UserQuizInfoId], [u].[CompletedAt], [u].[CorrectAnswer], [u].[FalseAnswer], [u].[IsCompleted], [u].[IsSuccessful], [u].[QuizId], [u].[Score], [u].[UserId], [q].[QuizId], [q].[CreatedDate], [q].[QuestionCount], [q].[ShowCase], [q].[Title], [q].[UpdatedDate]
+FROM [UserQuizInfo] AS [u]
+INNER JOIN [Quizzes] AS [q] ON [u].[QuizId] = [q].[QuizId]
+WHERE [u].[UserId] = @__userId_0
+2024-11-20 16:32:37.235 +03:00 [ERR] Hata: Kullanıcı quiz bilgisi bulunamadı.
+2024-11-20 16:32:37.239 +03:00 [INF] Executed ViewResult - view UserDashboard executed in 6.942ms.
+2024-11-20 16:32:37.239 +03:00 [INF] Executed action QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation) in 7.1749ms
+2024-11-20 16:32:37.239 +03:00 [INF] Executed endpoint 'QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation)'
+2024-11-20 16:32:37.239 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/ - - - 200 - text/html;+charset=utf-8 10.6500ms
+2024-11-20 16:32:37.276 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/_vs/browserLink - -
+2024-11-20 16:32:37.278 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/_framework/aspnetcore-browser-refresh.js - -
+2024-11-20 16:32:37.282 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/_framework/aspnetcore-browser-refresh.js - - - 200 11996 application/javascript;+charset=utf-8 4.8385ms
+2024-11-20 16:32:37.287 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 11.0041ms
+2024-11-20 16:32:37.291 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/ - -
+2024-11-20 16:32:37.292 +03:00 [INF] Executing endpoint 'QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation)'
+2024-11-20 16:32:37.292 +03:00 [INF] Route matched with {action = "Index", controller = "Home", area = "", page = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller QuizHubPresentation.Controllers.HomeController (QuizHubPresentation).
+2024-11-20 16:32:37.292 +03:00 [INF] Executing ViewResult, running view UserDashboard.
+2024-11-20 16:32:37.292 +03:00 [INF] Entity Framework Core 6.0.0 initialized 'RepositoryContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: SensitiveDataLoggingEnabled MigrationsAssembly=Repositories 
+2024-11-20 16:32:37.294 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='5983f9c4-ccaa-412b-b259-345e00e45bdf' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [u].[UserQuizInfoId], [u].[CompletedAt], [u].[CorrectAnswer], [u].[FalseAnswer], [u].[IsCompleted], [u].[IsSuccessful], [u].[QuizId], [u].[Score], [u].[UserId], [q].[QuizId], [q].[CreatedDate], [q].[QuestionCount], [q].[ShowCase], [q].[Title], [q].[UpdatedDate]
+FROM [UserQuizInfo] AS [u]
+INNER JOIN [Quizzes] AS [q] ON [u].[QuizId] = [q].[QuizId]
+WHERE [u].[UserId] = @__userId_0
+2024-11-20 16:32:37.294 +03:00 [ERR] Hata: Kullanıcı quiz bilgisi bulunamadı.
+2024-11-20 16:32:37.295 +03:00 [INF] Executed ViewResult - view UserDashboard executed in 3.0953ms.
+2024-11-20 16:32:37.295 +03:00 [INF] Executed action QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation) in 3.3033ms
+2024-11-20 16:32:37.295 +03:00 [INF] Executed endpoint 'QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation)'
+2024-11-20 16:32:37.295 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/ - - - 200 - text/html;+charset=utf-8 4.2444ms
+2024-11-20 16:32:42.141 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/account/logout?returnUrl=%2F - -
+2024-11-20 16:32:42.145 +03:00 [INF] Executing endpoint 'QuizHubPresentation.Controllers.AccountController.Logout (QuizHubPresentation)'
+2024-11-20 16:32:42.147 +03:00 [INF] Route matched with {action = "Logout", controller = "Account", area = "", page = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Logout(System.String) on controller QuizHubPresentation.Controllers.AccountController (QuizHubPresentation).
+2024-11-20 16:32:42.157 +03:00 [INF] AuthenticationScheme: Identity.Application signed out.
+2024-11-20 16:32:42.157 +03:00 [INF] AuthenticationScheme: Identity.External signed out.
+2024-11-20 16:32:42.157 +03:00 [INF] AuthenticationScheme: Identity.TwoFactorUserId signed out.
+2024-11-20 16:32:42.158 +03:00 [INF] Executing RedirectResult, redirecting to /.
+2024-11-20 16:32:42.158 +03:00 [INF] Executed action QuizHubPresentation.Controllers.AccountController.Logout (QuizHubPresentation) in 10.3248ms
+2024-11-20 16:32:42.158 +03:00 [INF] Executed endpoint 'QuizHubPresentation.Controllers.AccountController.Logout (QuizHubPresentation)'
+2024-11-20 16:32:42.158 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/account/logout?returnUrl=%2F - - - 302 - - 17.0928ms
+2024-11-20 16:32:42.161 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/ - -
+2024-11-20 16:32:42.163 +03:00 [INF] Executing endpoint 'QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation)'
+2024-11-20 16:32:42.163 +03:00 [INF] Route matched with {action = "Index", controller = "Home", area = "", page = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller QuizHubPresentation.Controllers.HomeController (QuizHubPresentation).
+2024-11-20 16:32:42.163 +03:00 [INF] Executing ViewResult, running view GuestHome.
+2024-11-20 16:32:42.164 +03:00 [INF] Executed ViewResult - view GuestHome executed in 0.8779ms.
+2024-11-20 16:32:42.164 +03:00 [INF] Executed action QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation) in 1.1977ms
+2024-11-20 16:32:42.164 +03:00 [INF] Executed endpoint 'QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation)'
+2024-11-20 16:32:42.164 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/ - - - 200 - text/html;+charset=utf-8 3.6668ms
+2024-11-20 16:32:42.219 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/_vs/browserLink - -
+2024-11-20 16:32:42.222 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/_framework/aspnetcore-browser-refresh.js - -
+2024-11-20 16:32:42.224 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/_framework/aspnetcore-browser-refresh.js - - - 200 11996 application/javascript;+charset=utf-8 2.0335ms
+2024-11-20 16:32:42.227 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 7.4389ms
+2024-11-20 16:32:42.235 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/ - -
+2024-11-20 16:32:42.235 +03:00 [INF] Executing endpoint 'QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation)'
+2024-11-20 16:32:42.235 +03:00 [INF] Route matched with {action = "Index", controller = "Home", area = "", page = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller QuizHubPresentation.Controllers.HomeController (QuizHubPresentation).
+2024-11-20 16:32:42.236 +03:00 [INF] Executing ViewResult, running view GuestHome.
+2024-11-20 16:32:42.237 +03:00 [INF] Executed ViewResult - view GuestHome executed in 0.9835ms.
+2024-11-20 16:32:42.237 +03:00 [INF] Executed action QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation) in 1.3006ms
+2024-11-20 16:32:42.237 +03:00 [INF] Executed endpoint 'QuizHubPresentation.Controllers.HomeController.Index (QuizHubPresentation)'
+2024-11-20 16:32:42.237 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/ - - - 200 - text/html;+charset=utf-8 1.9860ms
+2024-11-20 16:32:46.317 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/getintouch - -
+2024-11-20 16:32:46.320 +03:00 [INF] Executing endpoint '/Contact'
+2024-11-20 16:32:46.328 +03:00 [INF] Route matched with {page = "/Contact", action = "", controller = "", area = ""}. Executing page /Contact
+2024-11-20 16:32:46.335 +03:00 [INF] Executing an implicit handler method - ModelState is "Valid"
+2024-11-20 16:32:46.336 +03:00 [INF] Executed an implicit handler method, returned result Microsoft.AspNetCore.Mvc.RazorPages.PageResult.
+2024-11-20 16:32:46.344 +03:00 [INF] Executed page /Contact in 15.7491ms
+2024-11-20 16:32:46.344 +03:00 [INF] Executed endpoint '/Contact'
+2024-11-20 16:32:46.344 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/getintouch - - - 200 - text/html;+charset=utf-8 26.9318ms
+2024-11-20 16:32:46.376 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/_vs/browserLink - -
+2024-11-20 16:32:46.377 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/_framework/aspnetcore-browser-refresh.js - -
+2024-11-20 16:32:46.378 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/_framework/aspnetcore-browser-refresh.js - - - 200 11996 application/javascript;+charset=utf-8 1.1400ms
+2024-11-20 16:32:46.382 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 6.3643ms
+2024-11-20 16:32:46.393 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44335/getintouch - -
+2024-11-20 16:32:46.394 +03:00 [INF] Executing endpoint '/Contact'
+2024-11-20 16:32:46.394 +03:00 [INF] Route matched with {page = "/Contact", action = "", controller = "", area = ""}. Executing page /Contact
+2024-11-20 16:32:46.394 +03:00 [INF] Executing an implicit handler method - ModelState is "Valid"
+2024-11-20 16:32:46.394 +03:00 [INF] Executed an implicit handler method, returned result Microsoft.AspNetCore.Mvc.RazorPages.PageResult.
+2024-11-20 16:32:46.395 +03:00 [INF] Executed page /Contact in 1.5669ms
+2024-11-20 16:32:46.395 +03:00 [INF] Executed endpoint '/Contact'
+2024-11-20 16:32:46.396 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44335/getintouch - - - 200 - text/html;+charset=utf-8 2.4210ms
