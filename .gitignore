@@ -54,12 +54,9 @@ node_modules/
 *.snupkg
 .nuget/
 
-# Entity Framework Migrations
-Migrations/
-
-# Publish output
+# Publish output (except wwwroot)
 publish/
-wwwroot/
+!publish/wwwroot/
 
 # Logs
 *.log
@@ -77,3 +74,32 @@ TestResults/
 
 # Git Extensions and other Git-related files
 *.orig
+
+# Entity Framework Migrations
+Migrations/
+
+# Include wwwroot folder
+!wwwroot/
+!wwwroot/**/*
+
+# Ignore any unnecessary runtime files
+*.runtimeconfig.json
+*.deps.json
+*.dll.config
+
+# Avoid publishing build artifacts
+*.pdb
+*.mdb
+*.ilk
+*.idb
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*.swo
+*.~*
+
+# Backup files
+*.bak
+*~

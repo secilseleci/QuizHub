@@ -1,0 +1,233 @@
+html {
+    font-size: 16px;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f5f7fa; /* Genel arka plan için hafif mavi ton */
+}
+
+.mainContainer {
+    background-color: #f3f6fa;
+    flex: 1;
+    padding: 20px;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #1f2937 !important; /* Koyu mavi-gri arka plan */
+    color: #ffffff !important; /* Beyaz yazý rengi */
+}
+
+    .navbar .navbar-brand,
+    .navbar .nav-link {
+        color: #ffffff !important; /* Beyaz yazý rengi */
+        font-weight: 600;
+    }
+
+        .navbar .nav-link:hover {
+            color: #60a5fa !important; /* Hover için açýk mavi */
+        }
+
+.navbar-toggler-icon {
+    filter: brightness(200%);
+}
+
+/* Butonlar */
+.btn-primary {
+    color: #ffffff;
+    background-color: #2563eb; /* Daha koyu mavi */
+    border-color: #2563eb;
+    border-radius: 8px;
+    padding: 8px 16px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+    .btn-primary:hover {
+        background-color: #1d4ed8; /* Hover sýrasýnda daha koyu mavi */
+        border-color: #1d4ed8;
+    }
+
+.btn-outline-secondary {
+    color: #374151; /* Koyu gri */
+    border-color: #374151;
+    background-color: transparent;
+}
+
+    .btn-outline-secondary:hover {
+        color: #ffffff;
+        background-color: #374151;
+        border-color: #374151;
+    }
+
+/* Kart Stilleri */
+.custom-card {
+    background-color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .custom-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+/* Kart ikonlarý */
+.icon-circle {
+    background-color: #e5e7eb; /* Hafif gri arka plan */
+    border-radius: 50%;
+    padding: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Footer */
+footer {
+    background-color: #1f2937; /* Koyu mavi-gri arka plan */
+    color: #d1d5db; /* Açýk gri yazý rengi */
+    padding: 2rem 0;
+}
+
+    footer .lead {
+        color: #ffffff;
+        font-weight: bold;
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    footer .text-muted {
+        color: #9ca3af;
+    }
+
+    footer .btn-icon {
+        font-size: 1.25rem;
+        width: 40px;
+        height: 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background-color: #374151;
+        color: #ffffff;
+        margin: 0 5px;
+        transition: background-color 0.3s ease;
+    }
+
+        footer .btn-icon:hover {
+            background-color: #2563eb; /* Mavi hover efekti */
+        }
+
+    footer .btn-group {
+        margin-top: 1rem;
+    }
+
+    footer .copyright {
+        color: #9ca3af;
+        font-size: 0.9rem;
+        margin-top: 1rem;
+    }
+
+/* Kart Genel Stili */
+.card-custom {
+    background-color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Hafif gölge efekti */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 1rem;
+}
+
+    .card-custom:hover {
+        transform: translateY(-5px); /* Hover sýrasýnda kart yukarý kalkar */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Hover'da daha belirgin gölge */
+    }
+
+/* Kart Baþlýk ve Yazý Renkleri */
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #2c3e50; /* Daha koyu ve uyumlu bir renk */
+}
+
+.card-text {
+    color: #7f8c8d; /* Yumuþak gri renk */
+}
+
+/* Button Özelleþtirme */
+.btn-custom-start {
+    background-color: #28a745; /* Baþlatma butonu için yeþil */
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1.5rem;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-custom-start:hover {
+        background-color: #218838; /* Daha koyu yeþil */
+    }
+
+.btn-custom-retake {
+    background-color: #ffc107; /* Retake için sarý */
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1.5rem;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-custom-retake:hover {
+        background-color: #e0a800; /* Daha koyu sarý */
+    }
+
+.btn-custom-continue {
+    background-color: #007bff; /* Devam butonu için mavi */
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1.5rem;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-custom-continue:hover {
+        background-color: #0056b3; /* Daha koyu mavi */
+    }
+
+/* Tamamlanmýþ Yazý Stili */
+.text-completed {
+    font-weight: bold;
+    color: #28a745; /* Yeþil tamamlandý rengi */
+}
+
+
+
+/* Diðer Genel Ayarlar */
+.navbar-toggler-icon {
+    background-color: #2563eb;
+}
+/* Baþlýk Stili */
+.page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2c3e50; /* Daha koyu ve uyumlu bir renk */
+    margin-bottom: 1rem;
+}
+
+.page-subtitle {
+    font-size: 1rem;
+    color: #7f8c8d; /* Yumuþak, gri alt baþlýk rengi */
+}
+
+
+input[readonly] {
+    background-color: #e9ecef; /* Gri arka plan */
+    cursor: not-allowed; /* Týklanamaz olduðunu gösterir */
+    border: 1px solid #ced4da; /* Standart bir görünüm */
+}
