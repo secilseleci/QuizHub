@@ -19,7 +19,7 @@ jobs:
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '3.1'
+          dotnet-version: '6.0'
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
@@ -62,4 +62,3 @@ jobs:
           app-name: 'quizhubapp'
           slot-name: 'Production'
           package: .
-          
