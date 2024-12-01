@@ -50,6 +50,17 @@ Global Exception Handling
 
 
 
-### Dashboard View
-The Admin Dashboard provides an overview of quizzes, users, and departments.
-![Dashboard View](QuizHubPresentation/wwwroot/images/admindashboard.png)
+## Screenshots
+
+<div style="display: flex; justify-content: space-between;">
+  <img src="./Images/admindashboard.png" alt="Dashboard View" width="23%" />
+  <img src="./Images/admin-quiz-settings.png" alt="Quiz Page" width="23%" />
+  <img src="./Images/addingquiz.png" alt="Add Quiz" width="23%" />
+  <img src="./Images/uploadingquiz.png" alt="Uploading Quiz " width="23%" />
+
+</div>
+<div style="display: flex; justify-content: space-between;">
+  <img src="./Images/user-settings.png" alt="User Page" width="30%" />
+  <img src="./Images/createuser.png" alt="Add User" width="30%" />
+  <img src="./Images/assignquiz.png" alt="Assign Quiz" width="30%" />
+</div>
