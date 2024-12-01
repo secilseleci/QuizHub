@@ -57,10 +57,26 @@ Global Exception Handling
   <img src="QuizHubPresentation/wwwroot/images/admin-quiz-settings.png" alt="Quiz Page" width="23%" />
   <img src="QuizHubPresentation/wwwroot/images/addingquiz.png" alt="Add Quiz" width="23%" />
   <img src="QuizHubPresentation/wwwroot/images/uploadingquiz.png" alt="Uploading Quiz " width="23%" />
-
 </div>
 <div style="display: flex; justify-content: space-between;">
   <img src="QuizHubPresentation/wwwroot/images/user-settings.png" alt="User Page" width="30%" />
   <img src="QuizHubPresentation/wwwroot/images/createuser.png" alt="Add User" width="30%" />
-  <img src="QuizHubPresentation/wwwroot/images/assignquiz.png" alt="Assign Quiz" width="30%" />
+  <img src="QuizHubPresentation/wwwroot/images/assign.png" alt="Assign Quiz" width="30%" />
+</div>
+<div style="display: flex; justify-content: space-between;">
+  <img src="QuizHubPresentation/wwwroot/images/home.png" alt="userhome" width="23%" />
+  <img src="QuizHubPresentation/wwwroot/images/login.png" alt="login" width="23%" />
+  <img src="QuizHubPresentation/wwwroot/images/register.png" alt="register" width="23%" />  
+  <img src="QuizHubPresentation/wwwroot/images/profile.png" alt="userprofile" width="23%" />
+
+</div>
+<div style="display: flex; justify-content: space-between;">
+  <img src="QuizHubPresentation/wwwroot/images/pendingquizzes.png" alt="pending" width="23%" />
+  <img src="QuizHubPresentation/wwwroot/images/retakequizzes.png" alt="retake" width="23%" />
+  <img src="QuizHubPresentation/wwwroot/images/solving.png" alt="solve" width="23%" />
+  <img src="QuizHubPresentation/wwwroot/images/quizfailresult.png" alt="quizfailresult" width="23%" />
+</div>
+<div style="display: flex; justify-content: space-between;">
+  <img src="QuizHubPresentation/wwwroot/images/db.png" alt="db" width="43%" />
+  <img src="QuizHubPresentation/wwwroot/images/vs.png" alt="vs" width="43%" />
 </div>
