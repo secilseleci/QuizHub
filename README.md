@@ -82,7 +82,7 @@ A robust ASP.NET Core MVC application for corporate training teams to manage, as
    git clone https://github.com/secilseleci/QuizHub.git
 ```
 
-### 2. Navigate to the API Directory
+### 2. Navigate to the Project Directory
  ```bash
 cd QuizHub
 ```
