@@ -53,7 +53,7 @@ Global Exception Handling
 ## Screenshots
 
 <div style="display: flex; justify-content: space-between;">
-  <img src="./Images/admindashboard.png" alt="Dashboard View" width="23%" />
+  <img src="./QuizHubPresentation/wwwroot/Images/admindashboard.png" alt="Dashboard View" width="23%" />
   <img src="./Images/admin-quiz-settings.png" alt="Quiz Page" width="23%" />
   <img src="./Images/addingquiz.png" alt="Add Quiz" width="23%" />
   <img src="./Images/uploadingquiz.png" alt="Uploading Quiz " width="23%" />
