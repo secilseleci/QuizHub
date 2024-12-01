@@ -52,4 +52,4 @@ Global Exception Handling
 
 ### Dashboard View
 The Admin Dashboard provides an overview of quizzes, users, and departments.
-![Dashboard View](./Images/admindashboard.png)
+![Dashboard View](QuizHubPresentation/wwwroot/images/admindashboard.png)
