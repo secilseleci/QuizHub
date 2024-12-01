@@ -76,4 +76,41 @@ A robust ASP.NET Core MVC application for corporate training teams to manage, as
   <img src="QuizHubPresentation/wwwroot/images/quizfailresult.png" alt="quizfailresult" width="23%" />
 </div>
 
+## 🛠 How to Run
+### 1. Clone the Repository
+   ```bash
+   git clone https://github.com/secilseleci/QuizHub.git
+```
 
+### 2. Navigate to the API Directory
+ ```bash
+cd QuizHub
+```
+
+### 3- Open the LibraryApp.sln file with a code editor (preferably Visual Studio)
+  ```bash
+start QuizHub.sln
+```
+
+### 4- Open WebUI project folders
+Find appsettings.json file and change the connection string with yours.
+
+
+### 5- Open Package Manager Console and Run Command Below
+  ```bash- 
+  update-database
+```
+*All data will be seeded to your database
+
+### 6- Run the program
+Login Credential
+
+username:
+```bash
+Admin
+```
+
+password:
+```bash
+Admin+123456
+```
