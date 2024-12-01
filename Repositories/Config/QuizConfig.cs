@@ -55,7 +55,7 @@ namespace Repositories.Config
                 new Quiz
                 {
                     QuizId = 7,
-                    Title = "Türk Sineması Bilgi Yarışması",
+                    Title = "Türk Sineması",
                     ShowCase = true,
                     QuestionCount = 5
                 }

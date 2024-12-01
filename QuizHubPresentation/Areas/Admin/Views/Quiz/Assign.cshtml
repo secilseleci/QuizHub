@@ -1,31 +1,34 @@
 ﻿@model AssignQuizViewModel
 
-<form method="post">
-    <input type="hidden" asp-for="QuizId" />
-    <input type="hidden" asp-for="QuizTitle" />
-    <div class="form-group">
-        <label>Quiz: @Model.QuizTitle</label>
-    </div>
-
-    <div class="form-group">
-        <label>Select Departments:</label>
-        <div>
-            @foreach (var department in Model.Departments)
-            {
-                <div class="form-check">
-                    <input type="checkbox" 
-                        class="form-check-input" 
-                        name="SelectedDepartments" 
-                        value="@department.Value"
-                        @(department.Selected ? "checked" : "") />
-                    <label class="form-check-label">@department.Text</label>
-                </div>
-            }
+<div class="container mt-5">
+    <form method="post" class="p-4 border rounded shadow-sm">
+        <!-- Quiz Title -->
+        <div class="form-group mb-4">
+            <h3 class="mb-2">Quiz: <span class="text-primary">@Model.QuizTitle</span></h3>
         </div>
-    </div>
 
-    <div class="form-group mt-3">
-        <input type="submit" value="Assign" class="btn btn-primary" />
-        <a class="btn btn-secondary" asp-action="Index">Back</a>
-    </div>
-</form>
+        <!-- Departments Selection -->
+        <div class="form-group mb-4">
+            <label class="form-label">Select Departments:</label>
+            <div class="border rounded p-3 bg-light">
+                @foreach (var department in Model.Departments)
+                {
+                    <div class="form-check">
+                        <input type="checkbox"
+                               class="form-check-input"
+                               name="SelectedDepartments"
+                               value="@department.Value"
+                        @(department.Selected ? "checked" : "") />
+                        <label class="form-check-label ms-2">@department.Text</label>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="form-group d-flex justify-content-end gap-3">
+            <input type="submit" value="Assign" class="btn btn-primary" />
+            <a class="btn btn-secondary" asp-action="Index">Back</a>
+        </div>
+    </form>
+</div>

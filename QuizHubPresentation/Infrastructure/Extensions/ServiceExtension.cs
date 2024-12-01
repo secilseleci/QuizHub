@@ -20,19 +20,9 @@ namespace QuizHubPresentation.Infrastructure.Extensions
         {
             services.AddDbContext<RepositoryContext>(options =>
             {
-                var connectionString = configuration.GetConnectionString("DefaultConnection");
+                options.UseSqlServer(configuration.GetConnectionString("sqlconnection"),
+                    b => b.MigrationsAssembly("Repositories"));
 
-                // Ortam Bazlı Bağlantı Dizeleri
-                if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
-                {
-                    Console.WriteLine("Using Development Connection String.");
-                }
-                else if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
-                {
-                    Console.WriteLine("Using Production Connection String.");
-                }
-
-                options.UseSqlServer(connectionString, b => b.MigrationsAssembly("Repositories"));
                 options.EnableSensitiveDataLogging(true);
             });
         }
