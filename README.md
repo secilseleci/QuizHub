@@ -68,7 +68,7 @@ A robust ASP.NET Core MVC application for corporate training teams to manage, as
   <img src="QuizHubPresentation/wwwroot/images/register.png" alt="register" width="30%" />  
 </div>
 
-### User Viewa
+### User Views
 <div style="align="center"">
   <img src="QuizHubPresentation/wwwroot/images/pendingquizzes.png" alt="pending" width="23%" />
   <img src="QuizHubPresentation/wwwroot/images/retakequizzes.png" alt="retake" width="23%" />
@@ -87,7 +87,7 @@ A robust ASP.NET Core MVC application for corporate training teams to manage, as
 cd QuizHub
 ```
 
-### 3- Open the LibraryApp.sln file with a code editor (preferably Visual Studio)
+### 3- Open the QuizHub.sln file with a code editor (preferably Visual Studio)
   ```bash
 start QuizHub.sln
 ```
