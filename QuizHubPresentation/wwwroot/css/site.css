@@ -231,3 +231,22 @@ input[readonly] {
     cursor: not-allowed; /* Týklanamaz olduðunu gösterir */
     border: 1px solid #ced4da; /* Standart bir görünüm */
 }
+
+.d-flex {
+    display: flex;
+    justify-content: space-between; /* Sol ve saðda hizalama */
+    align-items: center; /* Dikey hizalama */
+    padding: 0 20px; /* Sað ve sol boþluk ekler */
+}
+
+.weather-info {
+    font-size: 16px; /* Daha okunabilir bir boyut */
+    color: #555; /* Score ile uyumlu bir renk */
+    margin-right: 15px; /* Sað kenar ile arasýnda boþluk býrak */
+    text-align: right; /* Sað hizalamayý koru */
+}
+
+
+.weather-info img {
+    margin-right: 5px; /* Eðer ikon eklerseniz, yanýna boþluk býrakýr */
+}

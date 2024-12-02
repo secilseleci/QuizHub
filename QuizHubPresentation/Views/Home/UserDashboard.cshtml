@@ -1,11 +1,17 @@
-﻿<!-- Sayfa Başlığı -->
-<div class="container my-5">
-    <div class="row">
-        <div class="col-md-4">
-            <!-- Score Component -->
+﻿<div class="container my-5">
+    <div class="row  space-between">
+        <!-- Sol: Score -->
+        <div class="col-md-6">
             @await Component.InvokeAsync("Score")
         </div>
 
+        <!-- Sağ: Weather Info -->
+        <div class="col-md-6 text-right">
+            <div id="weather-info" class="weather-info">
+                <!-- Hava durumu bilgisi burada gösterilecek -->
+            </div>
+        </div>
+    </div>
         <div class="col-md-12">
             <!-- 4 Modern Kart Tasarımı -->
             <div class="row text-center mt-4">
@@ -69,4 +75,18 @@
             </div>
         </div>
     </div>
-</div>
+ 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch('/api/weather')
+            .then(response => response.json())
+            .then(data => {
+                const weatherInfo = `${data.weather[0].description}, ${data.main.temp}°C in ${data.name}`;
+                document.getElementById('weather-info').innerHTML = weatherInfo;
+            })
+            .catch(error => {
+                console.error('Error fetching weather data:', error);
+                document.getElementById('weather-info').innerHTML = "Weather data not available";
+            });
+    });
+</script>

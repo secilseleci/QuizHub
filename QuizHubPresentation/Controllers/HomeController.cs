@@ -16,33 +16,61 @@ namespace QuizHubPresentation.Controllers
         private readonly IMapper _mapper;
 
         public HomeController(IRepositoryManager manager, IMapper mapper,
-            UserManager<ApplicationUser> userManager)
+        UserManager<ApplicationUser> userManager){
+            
+        _manager = manager;
+        _mapper = mapper;
+        _userManager = userManager;}
+            
+
+        [AllowAnonymous]
+        public IActionResult Index()
         {
-            _manager = manager;
-            _mapper = mapper;
-            _userManager = userManager;
-        }
-            [AllowAnonymous]
-            public IActionResult Index()
-        {
-            // Kullanıcı Admin rolündeyse Admin Index sayfasına yönlendir
             if (User.IsInRole("Admin"))
             {
                 return RedirectToAction("Index", "Dashboard", new { area = "Admin" });
             }
 
-            // Kullanıcı giriş yapmışsa UserDashboard'u göster
             else if (User.Identity.IsAuthenticated)
             {
                 return View("UserDashboard");
             }
 
-            // Kullanıcı giriş yapmamışsa GuestHome'u göster
             return View("GuestHome");
         }
-   
-         
-        
+
+
+        [HttpGet("api/weather")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetWeather()
+        {
+            string cityName = "Istanbul"; // Varsayılan şehir
+            string apiKey = "adab173a0f78ebe3515f89888f4dad8c"; 
+
+            // OpenWeatherMap API endpointi
+            string apiUrl = $"https://api.openweathermap.org/data/2.5/weather?q={cityName}&appid={apiKey}&units=metric";
+
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var response = await client.GetAsync(apiUrl);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var json = await response.Content.ReadAsStringAsync();
+                        return Ok(json); // Hava durumu bilgisi JSON olarak döndürülür
+                    }
+
+                    return BadRequest("Unable to fetch weather data");
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, $"Internal server error: {ex.Message}");
+                }
+            }
+        }
+
 
 
     }
